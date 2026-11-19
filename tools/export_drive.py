@@ -78,7 +78,7 @@ def convert(name: str) -> str:
     s = re.sub(r'</?div[^>]*>', "", s)
     s = re.sub(r"\{ ?[.#]?[^}]*(width|loading|\.diagrama)[^}]*\}", "", s)
     s = re.sub(r":material-youtube:", "▶", s)
-    s = re.sub(r":material-[a-z-]+:", "•", s)
+    s = re.sub(r":material-[a-z-]+: ?", "", s)
     s = re.sub(r"\\\[(.*?)\\\]", lambda m: f"**{math(m.group(1))}**", s, flags=re.S)
     s = re.sub(r"\\\((.*?)\\\)", lambda m: math(m.group(1)), s)
     s = re.sub(r"(\d)\^(\d+)\^", lambda m: m.group(1) + "".join("⁰¹²³⁴⁵⁶⁷⁸⁹"[int(c)] for c in m.group(2)), s)
