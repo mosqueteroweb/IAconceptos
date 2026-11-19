@@ -87,7 +87,7 @@ En **Export**, elige el último *checkpoint*, **GGUF / llama.cpp** y descárgalo
 
 ### Paso 5. ¡A cocinar!
 
-1. Importa el GGUF en LM Studio (arrástralo a **My Models**, o en la terminal `lms import chef-bot.gguf`).
+1. Importa el GGUF en LM Studio: en la terminal, `lms import chef-bot.gguf`. Aparecerá en **Library**.
 2. Cárgalo y añade un **prompt de sistema** que refuerce el papel: `Eres Chef-bot. Solo propones recetas sencillas con los ingredientes que te dan. Si te preguntan otra cosa, explica amablemente que solo sabes de cocina.`
 3. Guárdalo como **preset** «Chef-bot».
 

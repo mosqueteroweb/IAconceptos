@@ -37,7 +37,7 @@ Para probar una API sin programar se usan **clientes HTTP** como **[Postman](htt
 La forma más sencilla de empezar es con un modelo **en tu ordenador**: no hace falta cuenta, ni clave, ni tarjeta, y no cuesta nada.
 
 1. En [LM Studio](14-ia-local.md), carga un modelo pequeño (por ejemplo, Gemma 4 E2B).
-2. Ve a **Developer** y activa el servidor (**Status: Running**). Verás la dirección `http://localhost:1234`.
+2. Ve a **Model Server** y activa el interruptor **Status** (pasa a *Running*). Verás la dirección `http://127.0.0.1:1234` (es lo mismo que `localhost:1234`).
 3. Abre **Postman** y crea una petición nueva (**New → HTTP**).
 
 **Paso 1. Pregunta qué modelos hay.** Método `GET`, URL `http://localhost:1234/v1/models` y pulsa **Send**. La respuesta es una lista en JSON con los identificadores de tus modelos (el campo `id`). Copia el del modelo cargado.
@@ -61,7 +61,7 @@ La forma más sencilla de empezar es con un modelo **en tu ordenador**: no hace 
 
 Cambia el valor de `"model"` por el `id` que copiaste. Pulsa **Send**. En la respuesta, busca `choices` → `message` → `content`: ahí está el texto. Fíjate también en `usage`, que cuenta los tokens de entrada (`prompt_tokens`) y de salida (`completion_tokens`).
 
-En la pantalla **Developer** de LM Studio verás llegar la petición en tiempo real.
+En **Server Logs**, dentro de *Model Server*, verás llegar la petición en tiempo real. Comprobado con Gemma 4 E2B: Val respondió «Soy Val. El experto en ruedas y cadenas de este taller. ¡A darle caña!». Fíjate en `usage`: de 213 tokens de salida, 188 fueron de razonamiento (`reasoning_tokens`), que también se cuentan (y, en las API de pago, se cobran).
 
 !!! tip "La misma petición con curl"
     ```bash

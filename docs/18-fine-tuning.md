@@ -27,7 +27,7 @@ Antes de ajustar un modelo, conviene descartar las opciones más baratas:
 | Si quieres… | Usa | Por qué |
 |---|---|---|
 | Que siga unas instrucciones o un formato | **Un buen prompt** o una [habilidad](16-habilidades-mcp.md) | Gratis, inmediato y fácil de cambiar. |
-| Que responda con **información** de tus documentos | **RAG** ([módulo 14](14-ia-local.md#7-conversar-con-tus-documentos)) | El *fine-tuning* no es buena forma de enseñar datos nuevos: el modelo los mezcla y los inventa. Con RAG los consulta. |
+| Que responda con **información** de tus documentos | **RAG** ([módulo 14](14-ia-local.md#7-integrations-plugins-mcp-y-documentos)) | El *fine-tuning* no es buena forma de enseñar datos nuevos: el modelo los mezcla y los inventa. Con RAG los consulta. |
 | Que tenga un **comportamiento** fijo y fiable sin explicárselo cada vez | **Fine-tuning** | El estilo queda «grabado» en los pesos y ahorras tokens en cada petición. |
 | Un modelo pequeño y barato que haga muy bien **una** tarea | **Fine-tuning** (o [destilación](20-destilacion.md)) | Especializar compensa la falta de tamaño. |
 
@@ -115,7 +115,7 @@ Lo descrito hasta ahora es **ajuste supervisado** (*SFT*, *Supervised Fine-Tunin
     4. **Revisa los ajustes.** Los valores por defecto son buenos: *Epochs* 3, *Learning Rate* 2e-4, *LoRA Rank* 16, *Alpha* 32. Pulsa **Save** si quieres guardar la configuración.
     5. **Entrena.** Pulsa **Start Training** y observa las gráficas: la **pérdida** (*loss*) debe bajar. Con 60 ejemplos tarda pocos minutos.
     6. **Prueba el resultado.** En la página de chat, en **Select model**, elige tu modelo en la pestaña **Fine-tuned**. Escríbele de tú y de forma coloquial («oye, ¿me echas una mano con un correo?»). Después carga el modelo original y repite la pregunta.
-    7. **Exporta.** En **Export**, elige el último *checkpoint*, el método **GGUF / llama.cpp** y **Export / Save Locally**. Importa el archivo en [LM Studio](14-ia-local.md) (arrástralo a *My Models* o usa `lms import`).
+    7. **Exporta.** En **Export**, elige el último *checkpoint*, el método **GGUF / llama.cpp** y **Export / Save Locally**. Importa el archivo en [LM Studio](14-ia-local.md) (con `lms import archivo.gguf` en la terminal; aparecerá en **Library**).
 
 === ":material-google: Con Google Colab (sin GPU propia)"
 

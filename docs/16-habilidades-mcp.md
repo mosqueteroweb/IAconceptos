@@ -118,7 +118,7 @@ Se combinan: el conector da las manos y la habilidad enseña a usarlas bien.
 
     1. Instala **uv**, el gestor de Python que ejecuta el servidor. Una sola línea en la terminal ([instrucciones](https://docs.astral.sh/uv/getting-started/installation/)): `curl -LsSf https://astral.sh/uv/install.sh | sh` en Mac y Linux, o `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"` en Windows.
     2. En LM Studio, carga un modelo que sepa usar herramientas (con el icono del martillo), como Qwen3 4B o Gemma 4 E4B.
-    3. En el panel derecho, abre **Program → Install → Edit mcp.json** y pega:
+    3. En el panel derecho, abre la pestaña **Integrations** (llave inglesa) → **Install → Edit mcp.json** y pega:
 
         ```json
         {

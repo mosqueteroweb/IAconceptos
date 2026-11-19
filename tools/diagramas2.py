@@ -254,27 +254,4 @@ for k, (tit, idx, maxv, col, fmt) in enumerate([("Tamaño del archivo (MB)", 1, 
 b += t(320, 312, "Medido con el cuaderno del módulo 19 en un Mac mini M2 Pro (llama.cpp, GPU integrada).", 12, C['sub'])
 svg("benchmark-cuantizacion", 640, 330, b)
 
-# 12. Esquema de la interfaz de LM Studio 0.4
-b = f"<rect x='20' y='20' width='860' height='440' rx='12' fill='{C['soft']}' stroke='{C['line']}'/>"
-b += f"<rect x='20' y='20' width='70' height='440' rx='12' fill='#e4e8ee'/>"
-for i, (lab, col) in enumerate([("Chat", C['amber']), ("Developer", C['green']), ("My Models", C['red']), ("Discover", C['violet'])]):
-    y = 70 + i * 70
-    b += f"<circle cx='55' cy='{y}' r='16' fill='{col}' fill-opacity='0.85'/>" + t(55, y + 34, lab, 10, C['ink'], weight=600)
-b += t(55, 440, "Settings", 10, C['sub'])
-b += f"<rect x='110' y='35' width='520' height='40' rx='8' fill='#ffffff' stroke='{C['blue']}' stroke-width='2'/>"
-b += t(370, 60, "Selector de modelo (Ctrl/Cmd + L) · carga y ajustes", 13, C['blue'], weight=600)
-b += f"<rect x='110' y='90' width='520' height='300' rx='8' fill='#ffffff' stroke='{C['line']}'/>"
-b += f"<rect x='130' y='110' width='300' height='44' rx='10' fill='{C['blue']}' fill-opacity='0.15'/>" + t(140, 137, "Tu mensaje", 12, C['ink'], anchor="start")
-b += f"<rect x='250' y='170' width='360' height='90' rx='10' fill='{C['soft']}'/>" + t(262, 196, "Respuesta del modelo…", 12, C['ink'], anchor="start")
-b += t(262, 250, "42,3 tok/s · 0,31 s hasta el primer token · 187 tokens", 11, C['teal'], anchor="start", weight=600)
-b += f"<rect x='110' y='405' width='520' height='40' rx='8' fill='#ffffff' stroke='{C['line']}'/>" + t(126, 430, "Escribe aquí · adjuntar documentos (RAG)", 12, C['sub'], anchor="start")
-b += f"<rect x='650' y='35' width='215' height='410' rx='8' fill='#ffffff' stroke='{C['violet']}' stroke-width='2'/>"
-b += t(757, 60, "Panel derecho", 14, C['violet'], weight=700)
-for i, (lab, sub) in enumerate([("System Prompt", "instrucciones de sistema"), ("Muestreo", "temperatura, top-p…"),
-                                ("Structured Output", "respuesta en JSON"), ("Speculative Decoding", "modelo borrador"),
-                                ("Program", "servidores MCP")]):
-    y = 82 + i * 70
-    b += f"<rect x='664' y='{y}' width='187' height='56' rx='8' fill='{C['violet']}' fill-opacity='0.1'/>"
-    b += t(757, y + 24, lab, 12, C['ink'], weight=600) + t(757, y + 42, sub, 11, C['sub'])
-svg("lmstudio-interfaz", 900, 480, b)
 print("Diagramas extra generados")

@@ -95,7 +95,7 @@ Existen incluso modelos **entrenados directamente con muy pocos bits**, como Bit
     2. En **Hub Model ID** escribe `Qwen/Qwen3-0.6B`.
     3. En **Quantization Method** elige `Q4_K_M`. Si quieres, marca **Use Imatrix Quantization**.
     4. Pulsa **Submit**. En unos minutos tendrás un repositorio nuevo en tu cuenta con el archivo GGUF.
-    5. En LM Studio, busca ese repositorio en **Discover** (con tu nombre de usuario) y descárgalo.
+    5. En LM Studio, busca ese repositorio en **Model Search** (con tu nombre de usuario) y descárgalo.
     6. Repite con `Q8_0` y compara las dos versiones en LM Studio con las mismas preguntas.
 
 ### Resultados de la prueba
