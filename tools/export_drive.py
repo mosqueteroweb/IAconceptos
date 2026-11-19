@@ -15,7 +15,9 @@ OUT = ROOT / "_drive"
 WEB = "https://mosqueteroweb.github.io/IAconceptos/"
 PAGES = ["01-que-es-la-ia", "02-historia", "03-tipos-de-ia", "04-machine-learning", "05-deep-learning",
          "06-multimodalidad", "07-herramientas", "08-ia-generativa", "09-hardware", "practicas/montaje",
-         "10-software", "11-etica"]
+         "10-software", "11-etica",
+         "parte-2", "12-inferencia", "13-apps-prompts", "14-ia-local", "15-api", "16-habilidades-mcp", "17-agentes",
+         "18-fine-tuning", "19-cuantizacion", "20-destilacion", "21-pre-entrenamiento", "22-crear-llm"]
 TITLES = {"note": "Nota", "info": "Información", "tip": "Consejo", "warning": "Atención", "example": "Actividad",
           "question": "Para reflexionar", "abstract": "En este módulo"}
 
@@ -77,6 +79,9 @@ def convert(name: str) -> str:
     s = "\n".join(out)
     s = re.sub(r'</?div[^>]*>', "", s)
     s = re.sub(r"\{ ?[.#]?[^}]*(width|loading|\.diagrama)[^}]*\}", "", s)
+    # botones de Colab (SVG) -> enlace de texto; teclas ++ctrl+l++ -> Ctrl+L
+    s = re.sub(r"\[!\[Abrir en Colab\]\([^)]*\)\]\(([^)]+)\)", r"**[▶ Abrir el cuaderno en Google Colab](\1)**", s)
+    s = re.sub(r"\+\+([a-z0-9+]+)\+\+", lambda m: "+".join(k.capitalize() if len(k) > 1 else k.upper() for k in m.group(1).split("+")), s)
     s = re.sub(r":material-youtube:", "▶", s)
     s = re.sub(r":material-[a-z-]+: ?", "", s)
     s = re.sub(r"\\\[(.*?)\\\]", lambda m: f"**{math(m.group(1))}**", s, flags=re.S)
@@ -87,6 +92,9 @@ def convert(name: str) -> str:
         target = m.group(2)
         if target.startswith(("http", "#", "mailto")): return m.group(0)
         path, _, anchor = target.partition("#")
+        if not path.endswith(".md"):
+            rel = (base / path).resolve().relative_to(DOCS.resolve())
+            return f"[{m.group(1)}]({WEB}{rel.as_posix()})"
         page = (base / path).resolve().relative_to(DOCS.resolve()).with_suffix("")
         return f"[{m.group(1)}]({WEB}{page.as_posix()}/" + (f"#{anchor}" if anchor else "") + ")"
     s = re.sub(r"(?<!!)\[([^\]]+)\]\(([^)\s]+)\)", link, s)
@@ -94,7 +102,8 @@ def convert(name: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", s)
 
 OUT.mkdir(exist_ok=True)
-for p in PAGES:
+import sys
+for p in (sys.argv[1:] or PAGES):
     md = convert(p)
     (OUT / (p.replace("/", "-") + ".md")).write_text(md, encoding="utf-8")
     print(p, len(md))

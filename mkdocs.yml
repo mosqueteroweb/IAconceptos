@@ -1,5 +1,5 @@
 site_name: IAconceptos
-site_description: "Curso introductorio de Inteligencia Artificial — conceptos, historia, técnicas, herramientas y ética."
+site_description: "Curso de Inteligencia Artificial en dos partes: conceptos, historia y ética; y cómo usar, ampliar, adaptar y crear modelos de lenguaje."
 site_author: MosqueteroWeb
 site_url: https://mosqueteroweb.github.io/IAconceptos/
 repo_url: https://github.com/mosqueteroweb/IAconceptos
@@ -42,6 +42,7 @@ markdown_extensions:
   - md_in_html
   - footnotes
   - tables
+  - sane_lists
   - def_list
   - toc: {permalink: true, title: En esta página}
   - pymdownx.details
@@ -69,21 +70,39 @@ plugins:
   - search: {lang: es}
 nav:
   - Inicio: index.md
-  - Fundamentos:
-      - 1. ¿Qué es la IA?: 01-que-es-la-ia.md
-      - 2. Historia: 02-historia.md
-      - 3. Tipos de IA: 03-tipos-de-ia.md
-  - Cómo aprenden las máquinas:
-      - 4. Machine Learning: 04-machine-learning.md
-      - 5. Deep Learning y redes neuronales: 05-deep-learning.md
-      - "6. Multimodalidad, la IA que ve y habla": 06-multimodalidad.md
-  - Crear con IA:
-      - 7. Herramientas para crear IA: 07-herramientas.md
-      - 8. IA generativa: 08-ia-generativa.md
-      - 9. Hardware necesario: 09-hardware.md
-      - "Práctica: montaje de un equipo para IA": practicas/montaje.md
-      - 10. Software necesario: 10-software.md
-  - Sociedad:
-      - 11. Ética y responsabilidad: 11-etica.md
+  - "Primera parte: entender la IA":
+      - Fundamentos:
+          - 1. ¿Qué es la IA?: 01-que-es-la-ia.md
+          - 2. Historia: 02-historia.md
+          - 3. Tipos de IA: 03-tipos-de-ia.md
+      - Cómo aprenden las máquinas:
+          - 4. Machine Learning: 04-machine-learning.md
+          - 5. Deep Learning y redes neuronales: 05-deep-learning.md
+          - "6. Multimodalidad, la IA que ve y habla": 06-multimodalidad.md
+      - Crear con IA:
+          - 7. Herramientas para crear IA: 07-herramientas.md
+          - 8. IA generativa: 08-ia-generativa.md
+          - 9. Hardware necesario: 09-hardware.md
+          - "Práctica: montaje de un equipo para IA": practicas/montaje.md
+          - 10. Software necesario: 10-software.md
+      - Sociedad:
+          - 11. Ética y responsabilidad: 11-etica.md
+  - "Segunda parte: usar y crear modelos":
+      - Presentación: parte-2.md
+      - Usar modelos:
+          - "12. Inferencia: cómo responde un modelo": 12-inferencia.md
+          - 13. Aplicaciones e ingeniería de prompts: 13-apps-prompts.md
+          - "14. IA en tu ordenador: LM Studio y Ollama": 14-ia-local.md
+          - "15. La API: modelos desde tus programas": 15-api.md
+      - Ampliar modelos:
+          - 16. Habilidades y conectores (MCP): 16-habilidades-mcp.md
+          - 17. Agentes y orquestadores: 17-agentes.md
+      - Adaptar modelos:
+          - 18. Fine-tuning: 18-fine-tuning.md
+          - 19. Cuantización: 19-cuantizacion.md
+          - 20. Destilación: 20-destilacion.md
+      - Crear modelos:
+          - 21. Pre-entrenamiento: 21-pre-entrenamiento.md
+          - 22. Crea tu propio modelo: 22-crear-llm.md
   - Glosario: glosario.md
   - Sobre este material: acerca.md

@@ -83,7 +83,7 @@ La pila para entrenar desde cero es inmensa. Pero para las tareas realistas, la 
 
 === "Usar modelos en local"
 
-    - **[Ollama](https://ollama.com/)** o **[LM Studio](https://lmstudio.ai/)**: descargas un modelo con un clic y conversas con él, sin programar. Por debajo usan **llama.cpp**, que ejecuta modelos cuantizados (formato GGUF) en casi cualquier ordenador.
+    - **[Ollama](https://ollama.com/)** o **[LM Studio](https://lmstudio.ai/)**: descargas un modelo con un clic y conversas con él, sin programar. Por debajo usan **llama.cpp**, que ejecuta modelos cuantizados (formato GGUF) en casi cualquier ordenador. Los verás a fondo en el [módulo 14](14-ia-local.md).
     - Para dar servicio a varios usuarios: **vLLM**.
 
 ## Para ampliar

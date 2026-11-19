@@ -108,6 +108,8 @@ Es como un escultor que parte de un bloque de mármol informe y, golpe a golpe, 
     5. **Verifica** datos, cifras y referencias.
     6. **No compartas datos personales o confidenciales** ([módulo 11](11-etica.md)).
 
+    Plantillas, técnicas y ejemplos de antes y después en el [módulo 13](13-apps-prompts.md#3-ingenieria-de-prompts).
+
 ## Para ampliar
 
 <div class="recursos" markdown>
