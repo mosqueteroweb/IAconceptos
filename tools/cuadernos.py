@@ -307,16 +307,134 @@ print("\\n" + "-" * 60 + "\\n")
 escribir("—Mire vuestra merced", temperatura=0.5)
 """),
     ("md", """
-## ¿Y puedo usarlo en LM Studio?
+## Lo que has hecho
 
-No directamente. LM Studio y Ollama cargan arquitecturas conocidas (Llama, Qwen, Gemma…) en formato GGUF, y la
-nuestra es casera. Para eso habría que reescribirla con una arquitectura estándar de Hugging Face. Lo importante
-de esta práctica es otra cosa: **has hecho un pre-entrenamiento completo**, con los mismos pasos que un modelo
-gigante. La diferencia es de escala: datos (2 MB frente a decenas de billones de tokens), parámetros (3 millones
-frente a cientos de miles de millones) y cómputo (minutos en una GPU frente a meses en miles).
+**Has hecho un pre-entrenamiento completo**, con los mismos pasos que un modelo gigante. La diferencia es de escala:
+datos (2 MB frente a decenas de billones de tokens), parámetros (3 millones frente a cientos de miles de millones) y
+cómputo (minutos en una GPU frente a meses en miles).
 
+Pero este modelo tiene una arquitectura casera y un tokenizador inventado por nosotros, y LM Studio u Ollama solo
+cargan arquitecturas conocidas (Llama, Qwen, Gemma…) en formato GGUF. En la segunda parte lo solucionamos.
+
+---
+
+# Segunda parte: un nano-modelo que puedes abrir en LM Studio
+
+Vamos a repetir el pre-entrenamiento con dos cambios:
+
+1. **Arquitectura estándar:** la de **Llama** (la de Meta), en miniatura, usando la librería *transformers* de
+   Hugging Face. Así podremos convertirla a GGUF.
+2. **Tokenizador profesional:** en lugar de un token por carácter, usamos el de **SmolLM2** (un modelo pequeño de
+   Hugging Face), con unos 49 000 trozos de palabra. Fíjate en cuántos tokens ocupa ahora el libro.
+
+El modelo crece hasta unos 16 millones de parámetros, casi todos en la tabla de *embeddings* (49 000 tokens × 256
+números). Tarda unos 5-10 minutos con GPU.
+"""),
+    ("code", """
+from transformers import AutoTokenizer, LlamaConfig, LlamaForCausalLM
+
+tokenizador2 = AutoTokenizer.from_pretrained("HuggingFaceTB/SmolLM2-135M")
+ids = torch.tensor(tokenizador2(texto)["input_ids"])
+print(f"El libro ocupa {len(texto):,} caracteres y {len(ids):,} tokens ({len(texto) / len(ids):.1f} caracteres por token)")
+print("Así trocea una frase:", tokenizador2.tokenize("En un lugar de la Mancha, de cuyo nombre no quiero acordarme"))
+
+corte2 = int(0.9 * len(ids))
+entreno2, validacion2 = ids[:corte2], ids[corte2:]
+CONTEXTO2 = 128
+
+def lote2(parte):
+    fuente = entreno2 if parte == "entreno" else validacion2
+    posiciones = torch.randint(len(fuente) - CONTEXTO2, (LOTE,))
+    return torch.stack([fuente[p:p + CONTEXTO2] for p in posiciones]).to(dispositivo)
+
+configuracion = LlamaConfig(vocab_size=len(tokenizador2), hidden_size=DIM, intermediate_size=704,
+                            num_hidden_layers=CAPAS, num_attention_heads=CABEZAS, num_key_value_heads=CABEZAS,
+                            max_position_embeddings=256, tie_word_embeddings=True,
+                            bos_token_id=tokenizador2.bos_token_id, eos_token_id=tokenizador2.eos_token_id)
+modelo2 = LlamaForCausalLM(configuracion).to(dispositivo)
+print(f"Parámetros: {sum(p.numel() for p in modelo2.parameters()) / 1e6:.1f} millones")
+"""),
+    ("md", """
+## Entrenar el nano-Llama
+
+El mismo bucle de antes. La librería ya sabe desplazar el texto un token para calcular la pérdida.
+"""),
+    ("code", """
+PASOS2 = 2000
+optimizador2 = torch.optim.AdamW(modelo2.parameters(), lr=1e-3)
+comienzo = time.time()
+for paso in range(PASOS2 + 1):
+    if paso % 250 == 0:
+        modelo2.eval()
+        with torch.no_grad():
+            p_ent = torch.stack([modelo2(input_ids=(x := lote2("entreno")), labels=x).loss for _ in range(20)]).mean()
+            p_val = torch.stack([modelo2(input_ids=(x := lote2("validacion")), labels=x).loss for _ in range(20)]).mean()
+        modelo2.train()
+        print(f"Paso {paso:5d} · pérdida entreno {p_ent:.3f} · validación {p_val:.3f} · {time.time() - comienzo:4.0f} s")
+    if paso == PASOS2:
+        break
+    x = lote2("entreno")
+    perdida = modelo2(input_ids=x, labels=x).loss
+    optimizador2.zero_grad(set_to_none=True)
+    perdida.backward()
+    optimizador2.step()
+
+modelo2.eval()
+inicio = tokenizador2("En un lugar de la Mancha", return_tensors="pt").input_ids.to(dispositivo)
+salida = modelo2.generate(inicio, max_new_tokens=80, do_sample=True, temperature=0.8, top_k=50,
+                          pad_token_id=tokenizador2.eos_token_id)
+print(tokenizador2.decode(salida[0]))
+"""),
+    ("md", """
+## Convertir a GGUF
+
+Guardamos el modelo en el formato de Hugging Face y lo convertimos a **GGUF** con el *script* de llama.cpp, igual que
+en la práctica de cuantización. Le ponemos una «plantilla de chat» mínima: como el modelo no sabe conversar, lo que
+escribas en LM Studio se le pasará tal cual y él lo continuará.
+"""),
+    ("code", """
+import json, shutil, subprocess, sys, urllib.request, zipfile
+from pathlib import Path
+
+tokenizador2.chat_template = "{% for message in messages %}{{ message['content'] }}{% endfor %}"
+modelo2.save_pretrained("nano-hf")
+tokenizador2.save_pretrained("nano-hf")
+
+etiqueta = json.load(urllib.request.urlopen("https://api.github.com/repos/ggml-org/llama.cpp/releases?per_page=1"))[0]["tag_name"]
+urllib.request.urlretrieve(f"https://github.com/ggml-org/llama.cpp/archive/refs/tags/{etiqueta}.zip", "llama-src.zip")
+with zipfile.ZipFile("llama-src.zip") as z:
+    z.extractall(".")
+shutil.rmtree("llama-src", ignore_errors=True)
+Path(f"llama.cpp-{etiqueta}").rename("llama-src")
+
+ARCHIVO = f"nano-libro-{LIBRO}.gguf"
+r = subprocess.run([sys.executable, "llama-src/convert_hf_to_gguf.py", "nano-hf", "--outfile", ARCHIVO, "--outtype", "f16"],
+                   capture_output=True, text=True)
+print(r.stderr[-300:])
+print(f"{ARCHIVO}: {Path(ARCHIVO).stat().st_size / 1e6:.1f} MB")
+"""),
+    ("md", """
+## Llévatelo a LM Studio
+
+1. **Descarga el archivo GGUF.** En Colab, la celda siguiente lo descarga; si no, usa el panel de archivos de la
+   izquierda (tres puntos → Descargar). Si ejecutas el cuaderno en tu ordenador, ya lo tienes en la carpeta.
+2. **Impórtalo.** En una terminal: `lms import -c ruta/al/nano-libro-2000.gguf` (en Mac está en `~/.lmstudio/bin/lms`).
+   Aparecerá en **Library**.
+3. **Cárgalo y escríbele el principio de una frase** del libro, por ejemplo «En un lugar de la Mancha». Ponle una
+   temperatura de 0,8 y un límite de respuesta de 100 tokens. Lo continuará con su castellano de Cervantes… sin sentido.
+
+Compara la velocidad (tok/s) con la de un modelo de verdad: este es diminuto.
+"""),
+    ("code", """
+try:
+    from google.colab import files
+    files.download(ARCHIVO)
+except ImportError:
+    print("No estás en Colab: el archivo está en", Path(ARCHIVO).resolve())
+"""),
+    ("md", """
 **Para seguir:** cambia `CAPAS`, `DIM` o `PASOS` y observa cómo cambian el tiempo y la pérdida. O sustituye el
-Quijote por otro libro de Gutenberg.
+Quijote por otro libro de Gutenberg (variable `LIBRO`, al principio).
 """),
 ])
 
