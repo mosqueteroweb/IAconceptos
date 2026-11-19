@@ -5,3 +5,4 @@ _img_orig/
 .DS_Store
 __pycache__/
 .claude/
+_drive/
