@@ -1,17 +1,18 @@
 site_name: IAconceptos
 site_description: "Curso introductorio de Inteligencia Artificial — conceptos, historia, técnicas, herramientas y ética."
+site_author: MosqueteroWeb
 site_url: https://mosqueteroweb.github.io/IAconceptos/
 repo_url: https://github.com/mosqueteroweb/IAconceptos
 repo_name: mosqueteroweb/IAconceptos
 edit_uri: edit/main/docs/
-copyright: Material educativo con licencia CC BY-SA 4.0
+copyright: '© 2026 <a href="https://github.com/mosqueteroweb">MosqueteroWeb</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>'
 theme:
   name: material
   language: es
+  logo: img/logo_mosqueteroweb.png
+  favicon: img/logo_mosqueteroweb.png
   icon:
-    logo: material/brain
     repo: fontawesome/brands/github
-  favicon: img/favicon.svg
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default

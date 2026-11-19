@@ -26,4 +26,4 @@ Cada push a `main` compila la web y la publica en GitHub Pages (`.github/workflo
 
 ## Licencia
 
-Texto y diagramas propios: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es).
+Autor: **MosqueteroWeb**. Texto y diagramas propios: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.es).
