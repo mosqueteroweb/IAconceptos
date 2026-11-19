@@ -68,6 +68,8 @@ extra_css:
   - stylesheets/extra.css
 plugins:
   - search: {lang: es}
+not_in_nav: |
+  /revision-practicas/
 nav:
   - Inicio: index.md
   - "Primera parte: entender la IA":

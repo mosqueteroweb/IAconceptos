@@ -66,7 +66,7 @@ En Unsloth Studio, igual que en la [práctica del módulo 18](18-fine-tuning.md#
 
 1. *Model Type* **Text**, *Training Method* **QLoRA** y el modelo base elegido.
 2. Sube `recetas.jsonl`, formato **alpaca**, *Eval split* del 10 %.
-3. *Epochs*: **3**. Deja el resto por defecto y pulsa **Start Training**.
+3. *Epochs*: **3** y, en **Optimization**, *Gradient Accumulation*: **1** o **2** (con unos 60-150 ejemplos, el valor por defecto deja muy pocos pasos de entrenamiento). Deja el resto por defecto y pulsa **Start Training**.
 4. Vigila las dos pérdidas. Si la de validación empieza a subir, el modelo está memorizando recetas: para y entrena con menos épocas.
 
 ### Paso 3. Evalúa

@@ -85,7 +85,7 @@ Existen incluso modelos **entrenados directamente con muy pocos bits**, como Bit
 
     [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mosqueteroweb/IAconceptos/blob/main/notebooks/cuantizacion.ipynb)
 
-    El cuaderno descarga llama.cpp ya compilado, baja el modelo original, lo convierte a GGUF, lo cuantiza a tres niveles y hace la misma pregunta a cada versión. **No necesita GPU** y tarda unos 10 minutos. Al final puedes descargar el archivo `Q4_K_M` y abrirlo en LM Studio.
+    El cuaderno descarga llama.cpp ya compilado, baja el modelo original, lo convierte a GGUF, lo cuantiza a tres niveles, hace la misma pregunta a cada versión y mide su **perplejidad** con un fragmento del *Lazarillo de Tormes*. Puedes cambiar el modelo (variable `MODELO`) por Qwen3-1.7B o Qwen3-4B. **No necesita GPU** y tarda unos 10 minutos. Al final puedes descargar el archivo `Q4_K_M` y abrirlo en LM Studio.
 
 === ":material-cursor-default-click: Sin código: GGUF-my-repo"
 
@@ -113,10 +113,16 @@ Así salió el cuaderno ejecutado en un Mac mini M2 Pro, con la pregunta «Expli
   ![Gráfica de tamaño y velocidad de las cuatro versiones](img/diagramas/benchmark-cuantizacion.svg){ .diagrama width="600" }
 </figure>
 
+Y la **perplejidad** con las primeras páginas del *Lazarillo de Tormes* (cuanto más baja, mejor):
+
+| BF16 | Q8_0 | Q4_K_M | Q2_K |
+|---|---|---|---|
+| 56,42 | 56,43 | 62,35 | 885,17 |
+
 Tres lecciones:
 
 1. **Q4_K_M ocupa un tercio** y es **más rápido**; Q2_K, menos de una cuarta parte.
-2. **Q8_0 responde prácticamente igual** que el original. Q4_K_M cambia la redacción y comete una falta de ortografía (*dependir*). **Q2_K se ha roto**: con 600 millones de parámetros, 2 bits son demasiado pocos.
+2. **Q8_0 es prácticamente idéntico** al original: la perplejidad apenas cambia en la segunda cifra decimal. Q4_K_M empeora un 10 %, cambia la redacción y comete una falta de ortografía (*dependir*). **Q2_K se ha roto**: su perplejidad se multiplica por 15. Con 600 millones de parámetros, 2 bits son demasiado pocos.
 3. Y una sorpresa: el **original** se equivoca («liberando dióxido de carbono») y la versión Q4 acierta («oxígeno»). Un modelo tan pequeño es poco fiable en cualquier versión, y la cuantización solo **altera al azar** qué errores comete. Para comparar calidad de verdad hacen falta muchas preguntas, no una.
 
 ## Para ampliar

@@ -57,22 +57,29 @@ siguiente token, corregir el error millones de veces—, pero a escala de juguet
 Con GPU tarda unos 3 minutos; sin GPU, unos 15.
 
 Basado en el ejemplo [nanoGPT](https://github.com/karpathy/nanoGPT) de Andrej Karpathy. Material del curso
-[IAconceptos](https://mosqueteroweb.github.io/IAconceptos/) · MosqueteroWeb · CC BY-SA 4.0.
+[IA de cero a modelo propio](https://mosqueteroweb.github.io/IAconceptos/) · MosqueteroWeb · CC BY-SA 4.0.
 """),
     ("md", """
 ## Paso 1. Descargar el libro
 
-Descargamos el texto completo del Quijote desde el [Proyecto Gutenberg](https://www.gutenberg.org/ebooks/2000)
+Descargamos el texto completo del libro desde el [Proyecto Gutenberg](https://www.gutenberg.org/browse/languages/es)
 (dominio público) y quitamos la licencia que Gutenberg añade al principio y al final. Si el servidor principal no
 responde, el código prueba con dos copias espejo.
+
+Por defecto es el **Quijote** (número 2000). Para usar otro libro, cambia `LIBRO` por su número en Gutenberg. Algunos
+en español: 320 (*Lazarillo de Tormes*), 16625 (*Libro de Buen Amor*), 29506 (*El sombrero de tres picos*),
+49836 (*Niebla*), 17340 (*Marianela*), 58221 (*La Odisea*, traducción), 24536 (*Los cuatro jinetes del Apocalipsis*).
 """),
     ("code", """
 import urllib.request
 
+LIBRO = 2000   # número del libro en el Proyecto Gutenberg (2000 = Don Quijote)
+
+ruta = "/".join(str(LIBRO)[:-1]) + f"/{LIBRO}/{LIBRO}-0.txt"
 FUENTES = [
-    "https://www.gutenberg.org/cache/epub/2000/pg2000.txt",
-    "https://gutenberg.pglaf.org/2/0/0/2000/2000-0.txt",
-    "https://mirrors.xmission.com/gutenberg/2/0/0/2000/2000-0.txt",
+    f"https://www.gutenberg.org/cache/epub/{LIBRO}/pg{LIBRO}.txt",
+    f"https://gutenberg.pglaf.org/{ruta}",
+    f"https://mirrors.xmission.com/gutenberg/{ruta}",
 ]
 texto = None
 for url in FUENTES:
@@ -87,7 +94,7 @@ for url in FUENTES:
 
 inicio = texto.index("START OF")
 inicio = texto.index("\\n", inicio) + 1
-fin = texto.index("*** END OF")
+fin = next((texto.index(m) for m in ("*** END OF", "End of the Project Gutenberg", "End of Project Gutenberg") if m in texto), len(texto))
 texto = texto[inicio:fin].strip()
 print(f"Caracteres del libro: {len(texto):,}")
 print(texto[:400])
@@ -106,7 +113,7 @@ a_numero = {c: i for i, c in enumerate(caracteres)}
 a_caracter = {i: c for i, c in enumerate(caracteres)}
 
 def codificar(cadena):
-    return [a_numero[c] for c in cadena]
+    return [a_numero[c] for c in cadena if c in a_numero]  # los caracteres que no están en el libro se ignoran
 
 def decodificar(numeros):
     return "".join(a_caracter[n] for n in numeros)
@@ -340,24 +347,38 @@ Descargamos la última versión ya compilada de llama.cpp desde GitHub (no hay q
 conversión, que está escrito en Python.
 """),
     ("code", """
-import json, platform, subprocess, sys, tarfile, urllib.request, os
+import json, platform, shutil, subprocess, sys, tarfile, urllib.request, os, zipfile
 from pathlib import Path
 
+# Elige el paquete de llama.cpp según el sistema: Colab y Linux, Mac con chip Apple o Windows (con NVIDIA si la hay)
 sistema = platform.system()
-sufijo = "bin-ubuntu-x64.tar.gz" if sistema == "Linux" else "bin-macos-arm64.tar.gz"
+if sistema == "Linux":
+    sufijo = "bin-ubuntu-x64.tar.gz"
+elif sistema == "Darwin":
+    sufijo = "bin-macos-arm64.tar.gz"
+else:
+    sufijo = "bin-win-cuda-12.4-x64.zip" if shutil.which("nvidia-smi") else "bin-win-cpu-x64.zip"
 version = json.load(urllib.request.urlopen("https://api.github.com/repos/ggml-org/llama.cpp/releases?per_page=1"))[0]
-paquete = next(a for a in version["assets"] if a["name"].endswith(sufijo) and a["name"].startswith("llama-"))
-print("Descargando", paquete["name"])
-urllib.request.urlretrieve(paquete["browser_download_url"], "llama.tar.gz")
-with tarfile.open("llama.tar.gz") as t:
-    t.extractall("llama", filter="data")
-BIN = next(p.parent for p in Path("llama").rglob("llama-quantize"))
+etiqueta = version["tag_name"]
+paquetes = [a for a in version["assets"] if a["name"].endswith(sufijo)]
+for paquete in paquetes:   # en Windows con NVIDIA hay dos: los programas y las librerías de CUDA
+    print("Descargando", paquete["name"])
+    urllib.request.urlretrieve(paquete["browser_download_url"], paquete["name"])
+    if paquete["name"].endswith(".zip"):
+        with zipfile.ZipFile(paquete["name"]) as z:
+            z.extractall("llama")
+    else:
+        with tarfile.open(paquete["name"]) as t:
+            t.extractall("llama", filter="data")
+BIN = next(p.parent for p in Path("llama").rglob("llama-quantize*"))
 print("Programas en:", BIN)
 
-# El script de conversión de la misma versión
-etiqueta = version["tag_name"]
-subprocess.run(["git", "clone", "--depth", "1", "--branch", etiqueta,
-                "https://github.com/ggml-org/llama.cpp.git", "llama-src"], check=True, capture_output=True)
+# El script de conversión, de la misma versión (se descarga el código fuente, no hace falta git)
+urllib.request.urlretrieve(f"https://github.com/ggml-org/llama.cpp/archive/refs/tags/{etiqueta}.zip", "llama-src.zip")
+with zipfile.ZipFile("llama-src.zip") as z:
+    z.extractall(".")
+shutil.rmtree("llama-src", ignore_errors=True)
+Path(f"llama.cpp-{etiqueta}").rename("llama-src")
 subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-r", "llama-src/requirements/requirements-convert_hf_to_gguf.txt"], check=True)
 print("Listo:", etiqueta)
 """),
@@ -369,7 +390,9 @@ Bajamos el modelo tal y como lo publica su autor en Hugging Face: pesos en forma
     ("code", """
 from huggingface_hub import snapshot_download
 
-carpeta = snapshot_download("Qwen/Qwen3-0.6B", local_dir="qwen-original")
+MODELO = "Qwen/Qwen3-0.6B"   # también sirven "Qwen/Qwen3-1.7B" o "Qwen/Qwen3-4B" (más grandes y lentos)
+
+carpeta = snapshot_download(MODELO, local_dir="qwen-original")
 tamano = sum(f.stat().st_size for f in Path(carpeta).glob("*.safetensors"))
 print(f"Tamaño de los pesos originales: {tamano / 1e9:.2f} GB")
 """),
@@ -438,6 +461,27 @@ for eje in (a, b):
 plt.tight_layout(); plt.show()
 """),
     ("md", """
+## Paso 5b. Medir la calidad: la perplejidad
+
+Una sola pregunta no basta para comparar calidad. La **perplejidad** mide cuánto le «sorprende» al modelo un texto
+que no ha visto: cuanto **más baja**, mejor predice. Usamos las primeras páginas del *Lazarillo de Tormes* (dominio
+público). Tarda un par de minutos.
+"""),
+    ("code", """
+peticion = urllib.request.Request("https://gutenberg.pglaf.org/3/2/320/320-0.txt", headers={"User-Agent": "Mozilla/5.0"})
+lazarillo = urllib.request.urlopen(peticion, timeout=30).read().decode("utf-8")
+Path("lazarillo.txt").write_text(lazarillo[lazarillo.index("START OF"):][:60_000], encoding="utf-8")
+
+perplejidad = {}
+for tipo in ["BF16", "Q8_0", "Q4_K_M", "Q2_K"]:
+    archivo = "qwen-bf16.gguf" if tipo == "BF16" else f"qwen-{tipo}.gguf"
+    r = subprocess.run([str(BIN / "llama-perplexity"), "-m", archivo, "-f", "lazarillo.txt", "-c", "512"],
+                       capture_output=True, text=True)
+    valor = re.search(r"Final estimate: PPL = ([\\d.]+)", r.stdout + r.stderr)
+    perplejidad[tipo] = float(valor.group(1)) if valor else float("nan")
+    print(f"{tipo:7s} → perplejidad {perplejidad[tipo]:.2f}")
+"""),
+    ("md", """
 ## Paso 6. Llévatelo a LM Studio
 
 Descarga el archivo `qwen-Q4_K_M.gguf` (panel de archivos de la izquierda → tres puntos → Descargar). En LM Studio,
@@ -499,8 +543,10 @@ mezclado = datos["train"].shuffle(seed=0)
 
 def tokenizar(lote):
     return tokenizador(lote["sentence"], truncation=True, max_length=64)
-pocas = mezclado.select(range(1_000)).map(tokenizar, batched=True).rename_column("label", "labels")
-muchas = mezclado.select(range(30_000)).map(tokenizar, batched=True).rename_column("label", "labels")
+N_POCAS = 1_000     # frases con etiqueta humana para el primer estudiante
+N_MUCHAS = 30_000   # frases para el segundo y el tercer estudiante (máximo 67 000)
+pocas = mezclado.select(range(N_POCAS)).map(tokenizar, batched=True).rename_column("label", "labels")
+muchas = mezclado.select(range(N_MUCHAS)).map(tokenizar, batched=True).rename_column("label", "labels")
 validacion = datos["validation"].map(tokenizar, batched=True).rename_column("label", "labels")
 
 millones = lambda m: sum(p.numel() for p in m.parameters()) / 1e6
@@ -597,9 +643,30 @@ def velocidad(modelo, repeticiones=20):
 
 print(f"{'':42s}{'Acierto':>9s}{'Frases/s':>10s}")
 print(f"{'Profesor (67 M)':42s}{acierto_profesor:9.1%}{velocidad(profesor):10.0f}")
-print(f"{'Estudiante · 1 000 etiquetas humanas':42s}{acierto_pocas:9.1%}")
-print(f"{'Estudiante · 30 000 etiquetas humanas':42s}{acierto_muchas:9.1%}")
-print(f"{'Estudiante · 30 000 frases, solo profesor':42s}{acierto_destilado:9.1%}{velocidad(estudiante):10.0f}")
+print(f"{f'Estudiante · {N_POCAS:,} etiquetas humanas':42s}{acierto_pocas:9.1%}")
+print(f"{f'Estudiante · {N_MUCHAS:,} etiquetas humanas':42s}{acierto_muchas:9.1%}")
+print(f"{f'Estudiante · {N_MUCHAS:,} frases, solo profesor':42s}{acierto_destilado:9.1%}{velocidad(estudiante):10.0f}")
+"""),
+    ("md", """
+## Paso 6. Prueba tus propias frases
+
+Escribe tus frases en inglés en la lista (entre comillas y separadas por comas) y ejecuta la celda. Verás lo que
+opinan el profesor y el estudiante destilado. Prueba frases claras, irónicas y ambiguas.
+"""),
+    ("code", """
+MIS_FRASES = [
+    "I loved every minute of it.",
+    "Oh great, another three-hour movie about nothing.",
+]
+
+def opinion(modelo, frases):
+    modelo = modelo.to(dispositivo).eval()
+    with torch.no_grad():
+        entradas = tokenizador(frases, return_tensors="pt", padding=True, truncation=True, max_length=64).to(dispositivo)
+        return torch.softmax(modelo(**entradas).logits, dim=-1)[:, 1].tolist()
+
+for frase, p_prof, p_est in zip(MIS_FRASES, opinion(profesor, MIS_FRASES), opinion(estudiante, MIS_FRASES)):
+    print(f"Profesor {p_prof:6.1%} positiva · Estudiante {p_est:6.1%} positiva  ←  {frase}")
 """),
     ("md", """
 ## ¿Qué ha pasado?
