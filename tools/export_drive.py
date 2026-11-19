@@ -98,6 +98,9 @@ def convert(name: str) -> str:
         page = (base / path).resolve().relative_to(DOCS.resolve()).with_suffix("")
         return f"[{m.group(1)}]({WEB}{page.as_posix()}/" + (f"#{anchor}" if anchor else "") + ")"
     s = re.sub(r"(?<!!)\[([^\]]+)\]\(([^)\s]+)\)", link, s)
+    # tarjetas (grid cards) -> encabezado en negrita y lista normal
+    s = re.sub(r"(?m)^-   (\*\*[^\n]+\*\*)\n\n    ---\n\n", r"\1\n\n", s)
+    s = re.sub(r"(?m)^    (\d+\. \[)", r"\1", s)
     s += f"\n\n---\n\n*Versión web de este módulo: {WEB}{name}/*\n"
     return re.sub(r"\n{3,}", "\n\n", s)
 
