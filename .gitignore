@@ -1,0 +1,7 @@
+.venv/
+site/
+_originales/
+_img_orig/
+.DS_Store
+__pycache__/
+.claude/

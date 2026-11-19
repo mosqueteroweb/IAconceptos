@@ -1,0 +1,88 @@
+site_name: IAconceptos
+site_description: "Curso introductorio de Inteligencia Artificial — conceptos, historia, técnicas, herramientas y ética."
+site_url: https://mosqueteroweb.github.io/IAconceptos/
+repo_url: https://github.com/mosqueteroweb/IAconceptos
+repo_name: mosqueteroweb/IAconceptos
+edit_uri: edit/main/docs/
+copyright: Material educativo con licencia CC BY-SA 4.0
+theme:
+  name: material
+  language: es
+  icon:
+    logo: material/brain
+    repo: fontawesome/brands/github
+  favicon: img/favicon.svg
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: teal
+      toggle: {icon: material/weather-night, name: Modo oscuro}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: teal
+      toggle: {icon: material/weather-sunny, name: Modo claro}
+  features:
+    - navigation.sections
+    - navigation.footer
+    - navigation.top
+    - navigation.indexes
+    - navigation.tracking
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tooltips
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - md_in_html
+  - footnotes
+  - tables
+  - def_list
+  - toc: {permalink: true, title: En esta página}
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed: {alternate_style: true}
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.arithmatex: {generic: true}
+  - pymdownx.critic
+  - pymdownx.mark
+  - pymdownx.caret
+  - pymdownx.tilde
+  - pymdownx.keys
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+extra_css:
+  - stylesheets/extra.css
+plugins:
+  - search: {lang: es}
+nav:
+  - Inicio: index.md
+  - Fundamentos:
+      - 1. ¿Qué es la IA?: 01-que-es-la-ia.md
+      - 2. Historia: 02-historia.md
+      - 3. Tipos de IA: 03-tipos-de-ia.md
+  - Cómo aprenden las máquinas:
+      - 4. Machine Learning: 04-machine-learning.md
+      - 5. Deep Learning y redes neuronales: 05-deep-learning.md
+      - "6. Multimodalidad, la IA que ve y habla": 06-multimodalidad.md
+  - Crear con IA:
+      - 7. Herramientas para crear IA: 07-herramientas.md
+      - 8. IA generativa: 08-ia-generativa.md
+      - 9. Hardware necesario: 09-hardware.md
+      - "Práctica: montaje de un equipo para IA": practicas/montaje.md
+      - 10. Software necesario: 10-software.md
+  - Sociedad:
+      - 11. Ética y responsabilidad: 11-etica.md
+  - Glosario: glosario.md
+  - Sobre este material: acerca.md
