@@ -1,4 +1,4 @@
-# IAconceptos
+# IA de cero a modelo propio
 
 Curso de Inteligencia Artificial en español, en dos partes, publicado como web con [MkDocs Material](https://squidfunk.github.io/mkdocs-material/).
 

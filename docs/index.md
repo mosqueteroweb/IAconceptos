@@ -3,7 +3,7 @@ hide:
   - navigation
 ---
 
-# IAconceptos
+# IA de cero a modelo propio
 
 **Un curso introductorio de Inteligencia Artificial para entender qué hay detrás de ChatGPT, Gemini o Claude, sin necesidad de saber programar.**
 

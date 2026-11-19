@@ -331,7 +331,7 @@ Después compararemos tamaño, velocidad y calidad de respuesta.
 **No necesita GPU**: funciona en el entorno gratuito normal de Colab (CPU). Tarda unos 10 minutos.
 
 El modelo es [Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B) (Alibaba, licencia Apache 2.0, sin registro).
-Material del curso [IAconceptos](https://mosqueteroweb.github.io/IAconceptos/) · MosqueteroWeb · CC BY-SA 4.0.
+Material del curso [IA de cero a modelo propio](https://mosqueteroweb.github.io/IAconceptos/) · MosqueteroWeb · CC BY-SA 4.0.
 """),
     ("md", """
 ## Paso 1. Instalar llama.cpp
@@ -466,7 +466,7 @@ inglés es positiva o negativa, va a enseñar a un modelo **estudiante** 15 vece
 **Antes de empezar:** en Colab, *Entorno de ejecución → Cambiar tipo → GPU T4*. Tarda unos 10 minutos.
 
 Datos: [SST-2](https://huggingface.co/datasets/stanfordnlp/sst2), reseñas de cine en inglés etiquetadas por personas.
-Material del curso [IAconceptos](https://mosqueteroweb.github.io/IAconceptos/) · MosqueteroWeb · CC BY-SA 4.0.
+Material del curso [IA de cero a modelo propio](https://mosqueteroweb.github.io/IAconceptos/) · MosqueteroWeb · CC BY-SA 4.0.
 """),
     ("code", """
 !pip install -q transformers datasets scikit-learn accelerate
