@@ -27,6 +27,12 @@ hide:
 | Q4_K_M | 484 MB | 32 % | 227 tok/s | 3 602 tok/s | 62,21 |
 | Q2_K | 347 MB | 23 % | 207 tok/s | 3 603 tok/s | 885,30 |
 
+<figure markdown="span">
+  ![Tamaño frente a perplejidad](../img/practicas/p19-tamano-perplejidad.svg){ loading=lazy }
+  <figcaption>La gráfica del apartado 7 en el ejemplo. La perplejidad está en escala logarítmica para que se vean a la vez 56 y 885.</figcaption>
+</figure>
+
+
 Tiempos: la descarga del modelo, 24 s; la conversión a GGUF, 20 s (más unos minutos la primera vez, mientras uv descarga lo necesario); cada cuantización, unos segundos; cada perplejidad, menos de un minuto.
 
 **Lo que se aprende de la tabla:**

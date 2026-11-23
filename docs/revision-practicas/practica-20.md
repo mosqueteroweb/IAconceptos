@@ -76,6 +76,12 @@ unsloth train --model unsloth/Qwen3-0.6B --local-dataset datos_profesor.jsonl --
 
 **42 pasos en 89 s.** La pérdida bajó de 2,44 (paso 1) a 1,61 (paso 10), 1,37 (paso 20) y en torno a 1,0-1,1 al final. Lo exportamos a GGUF en **Q8_0** (639 MB) y lo importamos en LM Studio.
 
+<figure markdown="span">
+  ![Pérdida de la destilación](../img/practicas/p20-perdida.svg){ loading=lazy }
+  <figcaption>Pérdida de entrenamiento del estudiante paso a paso.</figcaption>
+</figure>
+
+
 **7. Comparación** con las 10 preguntas de prueba, en LM Studio, temperatura 0 y sin *Think*:
 
 | Modelo | Archivo | Velocidad | Respuestas en un párrafo, sin listas | Longitud media |

@@ -40,6 +40,12 @@ Con más contexto hace falta más memoria para la **caché KV** (módulo 12). En
 | 5. Poema | 0,030 s | 63,0 | 0,038 s | 91,8 |
 | **Media** | **0,035 s** | **63,4** | **0,064 s** | **92,0** |
 
+<figure markdown="span">
+  ![Gráfica del benchmark del ejemplo](../img/practicas/p14-benchmark.svg){ loading=lazy }
+  <figcaption>La gráfica del apartado 3 en el ejemplo: velocidad y tiempo hasta el primer token de cada pregunta (media de tres ejecuciones). Así debe ser la vuestra, con vuestros dos modelos.</figcaption>
+</figure>
+
+
 - La **primera** pregunta de Qwen tardó 0,42 s en dar el primer token y las siguientes, 0,02 s: la primera ejecución «calienta» el modelo. Por eso se repite tres veces.
 - Qwen es un 45 % más rápido, porque tiene menos parámetros. Pero en la traducción respondió «Tomorrow we have a History exam **at early morning**» (incorrecto: es *first thing in the morning*). Gemma dio la traducción correcta y dos alternativas. Los dos acertaron la hora del tren (12:15).
 

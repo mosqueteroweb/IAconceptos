@@ -82,6 +82,12 @@ El libro ocupa **42 186 tokens** con el tokenizador de SmolLM2 (106 533 caracter
 
 Casi 16 millones de parámetros para 42 000 tokens: el modelo **se aprende el libro de memoria** desde el paso 250.
 
+<figure markdown="span">
+  ![Pérdidas de las tres ejecuciones del ejemplo](../img/practicas/p21-perdidas.svg){ loading=lazy }
+  <figcaption>Las gráficas de `perdidas.png` de las tres ejecuciones del ejemplo, juntas. Cuando la línea naranja (validación) se separa hacia arriba de la azul (entrenamiento), el modelo está memorizando.</figcaption>
+</figure>
+
+
 **7. En LM Studio:**
 
 ```bash

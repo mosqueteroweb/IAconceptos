@@ -61,6 +61,12 @@ En el Mac, Unsloth usa **MLX** y entrena **17,4 millones de parámetros** de LoR
 
 Baja rápido al principio y después oscila en torno a 1: es normal con lotes tan pequeños.
 
+<figure markdown="span">
+  ![Pérdida del ajuste con 3 y 6 épocas](../img/practicas/p18-perdida.svg){ loading=lazy }
+  <figcaption>Pérdida de entrenamiento paso a paso con 3 épocas (el ejemplo) y con 6 (el experimento). Con 6, la pérdida sigue bajando hasta 0,36: el modelo empieza a memorizar los ejemplos.</figcaption>
+</figure>
+
+
 **5. Después.** Las mismas preguntas al modelo ajustado:
 
 | Pregunta | Respuesta (principio) | Estilo (0-2) | Correcta (0-2) |
