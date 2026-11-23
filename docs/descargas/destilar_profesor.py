@@ -21,6 +21,7 @@ import json
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -33,8 +34,12 @@ def pedir(url, modelo, mensajes, temperatura, max_tokens):
                          "max_tokens": max_tokens}).encode("utf-8")
     peticion = urllib.request.Request(f"{url}/chat/completions", data=cuerpo,
                                       headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(peticion, timeout=600) as respuesta:
-        datos = json.load(respuesta)
+    try:
+        with urllib.request.urlopen(peticion, timeout=600) as respuesta:
+            datos = json.load(respuesta)
+    except urllib.error.HTTPError as error:
+        sys.exit(f"LM Studio ha rechazado la petición ({error.code}). ¿Sigue cargado el modelo «{modelo}»? "
+                 "Cárgalo de nuevo y repite la orden: el script continúa donde lo dejó.")
     texto = datos["choices"][0]["message"]["content"] or ""
     texto = re.sub(r"<think>.*?</think>", "", texto, flags=re.S).strip()  # quita el razonamiento si viene dentro
     return texto, datos.get("usage", {})

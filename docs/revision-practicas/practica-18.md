@@ -45,15 +45,43 @@ Fíjate en tres cosas: la pregunta se escribe de tú (como la escribiría cualqu
 | ¿Qué tiempo hace hoy en Sevilla? | «Hoy, el 21 de octubre de 2024, en Sevilla, la temperatura promedio es de 13 °C a 18 °C…» | 0 | 0 (se lo inventa: no puede saberlo) |
 | Explícame qué es un agujero negro | «Un **agujero negro** es un objeto en el espacio-tiempo que tiene una curvatura extremadamente grande…» | 1 (neutro) | 2 |
 
-**4. Entrenamiento** en Unsloth Studio: *Model Type* Text → QLoRA (o LoRA en Mac) → `Qwen3-1.7B` → pestaña **Local** → subir el JSONL → *Format* **alpaca** → *Eval split* 10 % → *Epochs* 3, *Learning Rate* 2e-4, *LoRA Rank* 16, *Alpha* 32 y, en **Optimization**, **Gradient Accumulation 1** (con el valor por defecto, 8, solo habría unos 6 pasos de entrenamiento y el modelo apenas cambiaría; con 1, unos 45). **Save** para guardar la configuración en YAML y **Start Training**.
+**4. Entrenamiento.** En Unsloth Studio: *Model Type* Text → QLoRA (o LoRA en Mac) → `Qwen3-1.7B` → pestaña **Local** → subir el JSONL → *Format* **alpaca** → *Eval split* 10 % → *Epochs* 3, *Learning Rate* 2e-4, *LoRA Rank* 16, *Alpha* 32, *Batch Size* 4 y, en **Optimization**, **Gradient Accumulation 1** (con el valor por defecto, 8, solo habría unos 6 pasos y el modelo apenas cambiaría). **Save** para guardar la configuración en YAML y **Start Training**.
 
-**Qué deberíais ver en las gráficas:** la pérdida de entrenamiento empieza entre 2 y 3 y baja hasta 1 o 1,5; la de validación baja algo y se estabiliza. Si la de entrenamiento baja mucho (por debajo de 0,5) y la de validación sube, el modelo está **memorizando** los ejemplos.
+Nosotros lo entrenamos con la orden `unsloth train`, que usa el mismo motor que la interfaz de Unsloth Studio, con esos mismos ajustes:
 
-**5. Después.** Las mismas diez preguntas al modelo ajustado (pestaña **Fine-tuned** del chat de Studio) y la misma tabla. Lo esperable: estilo 2 en casi todas («Con mucho gusto. Le recomendaría…») y corrección parecida a la del modelo base, porque el ajuste enseña la **forma**, no conocimientos nuevos. La pregunta del tiempo sigue siendo una trampa: un buen resultado es «Lamento no poder consultar el tiempo actual».
+```bash
+unsloth train --model unsloth/Qwen3-1.7B --local-dataset asistente-formal.jsonl --format-type alpaca --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 1 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir asistente-formal
+```
 
-**6. Experimento.** Repetir con **una sola** cosa cambiada y comparar la pérdida de validación y las respuestas.
+En el Mac, Unsloth usa **MLX** y entrena **17,4 millones de parámetros** de LoRA (el 3,2 % del modelo). Fueron **45 pasos en 70 s**, con 3 GB de memoria como máximo. La pérdida de entrenamiento:
+
+| Paso | 1 | 5 | 10 | 15 | 20 | 30 | 40 | 45 |
+|---|---|---|---|---|---|---|---|---|
+| Pérdida | 3,31 | 2,28 | 1,89 | 1,37 | 1,06 | 1,05 | 0,66 | 0,98 |
+
+Baja rápido al principio y después oscila en torno a 1: es normal con lotes tan pequeños.
+
+**5. Después.** Las mismas preguntas al modelo ajustado:
+
+| Pregunta | Respuesta (principio) | Estilo (0-2) | Correcta (0-2) |
+|---|---|---|---|
+| ¿Me recomiendas una peli? | «Claro, pero necesito que me diga qué tipo de película **le** gustaría: acción, drama, comedia…» | 2 | 2 |
+| ¿Qué tiempo hace hoy en Sevilla? | «Lo siento, no tengo acceso a la información actual del clima… Puedo recomendarte que **consulte** un sitio web especializado…» | 1 (mezcla tú y usted) | 2 (ya no se lo inventa) |
+| Explícame qué es un agujero negro | «¡Por supuesto! Un **agujero negro** es una región del espacio-tiempo en la que la gravedad es tan intensa que ni siquiera la luz puede escapar…» | 1 | 2 |
+
+Ha aprendido el «de usted» y a reconocer lo que no sabe, aunque no siempre lo mantiene. Los conocimientos son los mismos que antes: el ajuste enseña la **forma**, no datos nuevos.
+
+**6. Experimento: 6 épocas.** Con el doble de épocas (90 pasos, 118 s), la pérdida de entrenamiento baja hasta **0,36**: el modelo ya casi se sabe los 60 ejemplos de memoria. Se nota en las respuestas:
+
+- A «¿Me das una receta de tortilla de patatas?» respondió con «500 g de patatas (mezcladas con agua, sal y **pimentón dulce**)». El pimentón no lleva tortilla: viene del ejemplo de la **paella** de los datos.
+- A «¿Qué tiempo hace hoy en Sevilla?» recomendó consultar la «Dirección General de Meteorología de España (**DGOME**)», que no existe (es la AEMET).
+
+Más épocas no es mejor: con pocos datos, el modelo empieza a mezclar y copiar los ejemplos. Con un 10 % de validación en Studio, lo veríais porque la pérdida de validación deja de bajar.
 
 **7. Exportación.** *Export* → último *checkpoint* → **GGUF** → en la terminal, `lms import -c -y --user-repo alumno/practica18 archivo.gguf` → aparece en **Library** de LM Studio.
+
+!!! warning "Exportad en Q8_0, no en Q4_K_M"
+    Exportamos el mismo modelo en las dos cuantizaciones y lo probamos en LM Studio con temperatura 0. En **Q4_K_M** había **perdido el estilo**: «¡Claro! ¿Qué tipo de película **te** gustaría ver?» y volvía a inventarse el tiempo de Sevilla («Hoy es viernes, 28 de julio de 2025…»). En **Q8_0** conservaba lo aprendido. Un ajuste ligero sobre un modelo pequeño cambia poco los pesos, y una cuantización fuerte borra ese cambio. Con modelos de 4 000 millones de parámetros o menos, exportad en **Q8_0**.
 
 ## Vuestra práctica
 
@@ -63,7 +91,7 @@ Fíjate en tres cosas: la pregunta se escribe de tú (como la escribiría cualqu
 4. **Entrenamiento** con Unsloth Studio y el modelo de vuestro tipo de equipo, con un 10 % de validación. Guardad la configuración y capturad las gráficas.
 5. **Después.** Las mismas 10 preguntas al modelo ajustado y la misma tabla.
 6. **Experimento de vuestro grupo** (en la tarjeta): una segunda ejecución con ese cambio. ¿Qué pasa con la pérdida de validación y con las respuestas? ¿Hay sobreajuste? ¿Cómo lo sabéis?
-7. **Exportación** del mejor modelo a GGUF, importado en LM Studio.
+7. **Exportación** del mejor modelo a GGUF en **Q8_0**, importado en LM Studio.
 
 ## Lo específico de cada grupo
 

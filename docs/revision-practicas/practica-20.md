@@ -27,7 +27,7 @@ En el Mac, **expulsa el profesor** de LM Studio (*Eject*) antes de entrenar al e
 
 ## Ejemplo resuelto
 
-**Tema del ejemplo:** los volcanes. Para que el ejemplo fuera rápido usamos como profesor **Gemma 4 E2B** (en vuestra práctica, el profesor es más grande: mirad la tabla de arriba). Equipo: Mac con chip M2 Pro.
+**Tema del ejemplo:** los volcanes. Para que el ejemplo fuera rápido usamos como profesor **Gemma 4 E2B** y 120 preguntas (en vuestra práctica, el profesor es más grande: mirad la tabla de arriba). Equipo: Mac con chip M2 Pro.
 
 **1. Preguntas.** Con Gemma 4 E2B cargado y el servidor en marcha:
 
@@ -63,11 +63,30 @@ El script muestra el avance y la velocidad: `[1/4] ¿Qué es un volcán y cuále
 
 Al revisarlas, una respuesta dice que el magma está compuesto por «silicatos metálicos»: es impreciso (son silicatos, que contienen metales como el hierro o el magnesio). Hay que corregirla a mano en `datos_profesor.jsonl` antes de entrenar.
 
-**4-7. Antes, destilación, después y comparación.** Son los mismos pasos que en la práctica 18, con `datos_profesor.jsonl` como datos. Lo que deberíais ver:
+Con 120 preguntas, las 110 respuestas de entrenamiento tardaron unos 12 minutos (59 tok/s de media).
 
-- El estudiante **sin entrenar** (Qwen3-0.6B) responde a veces con listas, en inglés o con errores graves.
-- El estudiante **destilado** imita el **formato** del profesor (un párrafo de 3 a 6 frases, en español, con tono de profesor) y mejora mucho en estilo. En **exactitud** mejora poco: un modelo de 600 millones de parámetros no puede guardar todo lo que sabe uno de 8 000 millones.
-- El estudiante va entre 5 y 10 veces más rápido que el profesor y ocupa unas 10 veces menos.
+!!! warning "Si el script se para con «LM Studio ha rechazado la petición»"
+    Nos pasó a la mitad: cargamos otro modelo en LM Studio y el profesor se descargó. Volved a cargar el profesor y repetid la misma orden: el script continúa donde lo dejó.
+
+**4-6. Destilación.** Entrenamos el estudiante, **Qwen3-0.6B**, con la orden `unsloth train` (el mismo motor que la interfaz de Unsloth Studio), con formato alpaca, 3 épocas y *Gradient Accumulation* 2:
+
+```bash
+unsloth train --model unsloth/Qwen3-0.6B --local-dataset datos_profesor.jsonl --format-type alpaca --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 2 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir estudiante
+```
+
+**42 pasos en 89 s.** La pérdida bajó de 2,44 (paso 1) a 1,61 (paso 10), 1,37 (paso 20) y en torno a 1,0-1,1 al final. Lo exportamos a GGUF en **Q8_0** (639 MB) y lo importamos en LM Studio.
+
+**7. Comparación** con las 10 preguntas de prueba, en LM Studio, temperatura 0 y sin *Think*:
+
+| Modelo | Archivo | Velocidad | Respuestas en un párrafo, sin listas | Longitud media |
+|---|---|---|---|---|
+| Profesor (Gemma 4 E2B) | 4,41 GB | 60 tok/s | **0 de 10** | más de 350 tokens |
+| Estudiante sin entrenar (Qwen3-0.6B) | 805 MB | 134 tok/s | **0 de 10** | 328 tokens |
+| Estudiante destilado | 639 MB | 133 tok/s | **6 de 10** | 240 tokens |
+
+- El **formato** se ha destilado: el estudiante responde en párrafos, como el profesor cuando generaba los datos. El profesor, en el chat normal, usa listas y encabezados, porque allí no recibe las instrucciones de estilo del script. El estudiante las ha aprendido sin necesitarlas.
+- El **contenido**, no. El estudiante destilado dice que el volcán escudo se forma «cuando una erupción es muy fuerte o explosiva» (es al revés: es el de las erupciones tranquilas), que en las zonas de *rift* las placas «convergen» (divergen) y habla de la «cámara magnética» (magmática). Un modelo de 600 millones de parámetros no puede guardar lo que sabe uno de 4 600 millones.
+- En nuestras 10 preguntas de prueba había **tres casi iguales** sobre el volcán escudo, porque no revisamos `prueba.txt`. En vuestra práctica, revisad también las preguntas de prueba.
 
 ## Vuestra práctica
 

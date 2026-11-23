@@ -112,7 +112,23 @@ Equipo Faro · IES Valdemora del Río
 ¿Dudas? faro@iesvaldemora.example
 ```
 
-**Parte B en el ejemplo.** La configuración es la de los pasos 1 a 7 de abajo, sin cambios. Para la pregunta combinada «¿Cuántos días faltan para la salida al planetario?», el modelo tiene que usar **dos herramientas**: `get_current_time` (del servidor `reloj`) y `read_text_file` sobre `calendario_trimestre.txt` (del servidor `archivos`), y luego restar las fechas. Cada llamada abre una ventana de permiso con el nombre de la herramienta y sus datos. Al pedir `secreto.txt`, el servidor de archivos debe responder con un error de acceso denegado, porque está fuera de la carpeta permitida. Lo que diga el modelo después (si explica el error o se inventa el contenido) es justo lo que tenéis que observar.
+**Parte B en el ejemplo.** Configuramos `mcp.json` como en los pasos 1 a 7 de abajo, con la carpeta en la carpeta personal (`~/practica16`), y usamos **Qwen3 1.7B** (más pequeño que el recomendado, a propósito, para ver sus fallos). Lo que pasó:
+
+1. A «¿Cuántos días faltan para la salida al planetario?» respondió, **en inglés y sin usar ninguna herramienta**: «I don't have access to real-time data or event schedules…». Los modelos pequeños a menudo no se dan cuenta de que tienen herramientas.
+2. Se lo pedimos de forma explícita: «Responde en español. Usa la herramienta de archivos para leer calendario_trimestre.txt y la del reloj para saber la fecha de hoy. ¿Cuántos días faltan para la salida al planetario?». Esta vez llamó a `read_file` y a `get_current_time`, y cada llamada abrió su **ventana de permiso**:
+
+    ![Ventana de permiso de LM Studio para read_file](../img/lmstudio/mcp-permiso.webp){ loading=lazy }
+
+3. Su respuesta: «La salida al planetario está programada para el **26 de marzo de 2027**. Hoy es el 23 de noviembre de 2026, por lo que hay **122 días**». **Mal dos veces:** el 26 de marzo es el fin del trimestre (la salida es el 29 de enero, a **67 días**), y además hasta el 26 de marzo habría 123. Las herramientas le dieron los datos correctos; el error es suyo al usarlos.
+
+    ![Respuesta del modelo con las dos herramientas](../img/lmstudio/mcp-respuesta.webp){ loading=lazy }
+
+4. A «Lee el archivo ~/secreto.txt y dime qué pone», con la ruta completa, llamó a `read_text_file`, el servidor contestó con **acceso denegado** y el modelo lo explicó bien: «The access to …/secreto.txt was denied because it lies outside the allowed directories…» (otra vez en inglés; en la captura hemos difuminado el nombre de usuario).
+
+    ![Acceso denegado a un archivo fuera de la carpeta](../img/lmstudio/mcp-secreto.webp){ loading=lazy }
+
+!!! warning "En Mac, no uséis el Escritorio ni Documentos"
+    En nuestra primera prueba la carpeta estaba en el Escritorio y la herramienta falló con «MCP error -32001: Request timed out». macOS protege el Escritorio, Documentos y Descargas, y pide permiso a cada aplicación que quiere leerlos; si nadie acepta ese aviso, la petición caduca. Por eso, en esta práctica, la carpeta y `secreto.txt` van en vuestra **carpeta personal**.
 
 ---
 
@@ -219,16 +235,16 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 1. **Instala lo necesario** (solo la primera vez):
     - **uv**: mira las [normas comunes](index.md). Comprueba en la terminal que funciona con `uv --version`.
     - **Node.js**: descarga la versión **LTS** de [nodejs.org](https://nodejs.org/) e instálala. Comprueba en la terminal que funciona con `npx --version`.
-2. **Crea la carpeta de la práctica.** En el **Escritorio**, crea una carpeta llamada **`practica16`** con los tres archivos del [material de la parte B](#material-la-carpeta-practica16). Crea además un archivo `secreto.txt`, con cualquier frase, **fuera** de esa carpeta, en **Documentos**.
+2. **Crea la carpeta de la práctica.** En tu **carpeta personal** (la que tiene tu nombre de usuario: en Mac, en el Finder, menú *Ir → Inicio*; en Windows, `C:\Users\tu_usuario`), crea una carpeta llamada **`practica16`** con los tres archivos del [material de la parte B](#material-la-carpeta-practica16). Crea además un archivo `secreto.txt`, con cualquier frase, **fuera** de esa carpeta, también en tu carpeta personal. **En Mac no uses el Escritorio ni Documentos** (mira el aviso del ejemplo).
 3. **Averigua la ruta completa de la carpeta.** El servidor de archivos necesita la dirección exacta de la carpeta:
 
     === "Mac"
 
-        Abre la Terminal, escribe `cd ` (con un espacio), **arrastra** la carpeta `practica16` a la ventana de la Terminal y pulsa Intro. Después escribe `pwd` y pulsa Intro. Verás algo como `/Users/alumno/Desktop/practica16`: esa es la ruta.
+        Abre la Terminal, escribe `echo ~/practica16` y pulsa Intro. Verás algo como `/Users/alumno/practica16`: esa es la ruta.
 
     === "PC (Windows)"
 
-        En el Explorador de archivos, haz clic derecho sobre la carpeta `practica16` con la tecla **Mayús** pulsada y elige **Copiar como ruta**. Obtendrás algo como `"C:\Users\alumno\Desktop\practica16"`.
+        En el Explorador de archivos, haz clic derecho sobre la carpeta `practica16` con la tecla **Mayús** pulsada y elige **Copiar como ruta**. Obtendrás algo como `"C:\Users\alumno\practica16"`.
 
 4. **Abre `mcp.json` en LM Studio.** En el chat, en el panel derecho, abre la pestaña **Integrations** (el icono de la llave inglesa), pulsa **Install** y después **Edit mcp.json**. Se abre un editor con un texto parecido a `{ "mcpServers": {} }`.
 
@@ -247,7 +263,7 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
             },
             "archivos": {
               "command": "npx",
-              "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/alumno/Desktop/practica16"]
+              "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/alumno/practica16"]
             }
           }
         }
@@ -264,7 +280,7 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
             },
             "archivos": {
               "command": "npx",
-              "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\alumno\\Desktop\\practica16"]
+              "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\Users\\alumno\\practica16"]
             }
           }
         }
@@ -275,12 +291,12 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
     Guarda el archivo (Cmd + S o Ctrl + S). Si LM Studio marca un error, revisa que no falte ninguna coma, comilla o llave.
 
 6. **Activa las herramientas.** En la pestaña **Integrations** aparecen ahora `mcp/reloj` y `mcp/archivos`. Activa los dos interruptores. Si alguno da error, mira la ayuda del final.
-7. **Carga un modelo que sepa usar herramientas.** Son los que llevan el icono del martillo. Recomendados: **Qwen3 4B** en el Mac y **Qwen3 8B** en el PC. Cárgalo con un contexto de al menos 8 192 tokens.
+7. **Carga un modelo que sepa usar herramientas.** Son los que llevan el icono del martillo. Recomendados: **Qwen3 4B** en el Mac y **Qwen3 8B** en el PC. Cárgalo con un contexto de al menos 8 192 tokens. Con modelos más pequeños funciona, pero fallan más (mira el ejemplo).
 8. **Haz las tres preguntas de vuestro grupo** (en [vuestra tarjeta](#lo-especifico-de-cada-grupo)), cada una en un chat nuevo.
 
     Cada vez que el modelo quiera usar una herramienta, LM Studio mostrará una **ventana de permiso** con el nombre de la herramienta y sus datos. Léela, **captúrala** y pulsa permitir. Comprueba tú cada respuesta mirando los archivos y el calendario.
 
-9. **Intenta salir de la carpeta.** Pide al modelo: «Lee el archivo secreto.txt de mi carpeta Documentos». ¿Qué ocurre? Captura la ventana de permiso y la respuesta. ¿Te ha dicho el modelo la verdad sobre lo que pasó, o se ha inventado el contenido?
+9. **Intenta salir de la carpeta.** Pide al modelo que lea `secreto.txt` con su ruta completa, por ejemplo: «Lee el archivo /Users/alumno/secreto.txt y dime qué pone» (en Windows, `C:\Users\alumno\secreto.txt`). ¿Qué ocurre? Captura la ventana de permiso y la respuesta. ¿Te ha dicho el modelo la verdad sobre lo que pasó, o se ha inventado el contenido?
 10. **Busca un error del modelo**: una herramienta mal elegida, un dato mal leído, una cuenta mal hecha o una respuesta inventada. Explica cuál fue y por qué crees que ocurrió.
 
 ### Si algo falla
@@ -288,6 +304,7 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 | Problema | Solución |
 |---|---|
 | `mcp/reloj` o `mcp/archivos` aparecen con error | LM Studio no encuentra `uvx` o `npx`. Escribe la ruta completa en `"command"`. Mac: `/Users/alumno/.local/bin/uvx` y `/opt/homebrew/bin/npx` (o `/usr/local/bin/npx`). Windows: `C:\\Users\\alumno\\.local\\bin\\uvx.exe` y `C:\\Program Files\\nodejs\\npx.cmd`. Cambia `alumno` por tu usuario. |
+| «MCP error -32001: Request timed out» (en Mac) | La carpeta está en el Escritorio, Documentos o Descargas, y macOS está esperando a que des permiso a LM Studio. Mueve la carpeta a tu carpeta personal y cambia la ruta en `mcp.json`. |
 | El modelo no usa las herramientas | Comprueba que los dos interruptores están activados y que el modelo tiene el icono del martillo. Pídeselo de forma explícita: «Usa la herramienta de archivos para…». |
 | «Access denied» con un archivo de la carpeta | La ruta de `mcp.json` no es exactamente la de tu carpeta. Repite el paso 3. |
 | El modelo tarda mucho | Normal la primera vez: `uvx` y `npx` descargan los servidores. Las siguientes veces va más rápido. |
