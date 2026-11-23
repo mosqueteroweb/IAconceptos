@@ -11,6 +11,9 @@
 
 **Escenario del ejemplo:** organizar la fiesta de fin de curso de 4.º de ESO. Lo resolvimos con dos asistentes: **Gemma 4 E2B** en LM Studio (local) y **Nemotron 3.5 Lightning** en la API de NVIDIA (en la nube). Los textos de las respuestas son reales; aquí solo se muestran trozos.
 
+!!! note "Vosotros podéis usar cualquier asistente"
+    En el ejemplo, el segundo asistente es Nemotron, al que accedimos a través de la API de NVIDIA, que veréis en la [práctica 15](practica-15.md). Para esta práctica no hace falta: usad los asistentes web que prefiráis (ChatGPT, Gemini, Claude, Copilot) o un modelo de LM Studio. Lo importante es comparar **dos asistentes distintos**.
+
 **1. Prompt débil.**
 
 > Organiza una fiesta de fin de curso.
