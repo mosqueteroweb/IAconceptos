@@ -40,7 +40,6 @@ hide:
 - **Capturas de pantalla completas**, en las que se vean la hora y la fecha del sistema (en Mac, la barra superior; en Windows, la barra de tareas). No recortes las capturas.
 - **Los archivos que generéis**: conjuntos de datos, configuraciones, resultados de la terminal…
 - **Cifras de vuestro equipo**: velocidades, tamaños y pérdidas que solo existen porque habéis hecho el experimento.
-- **La palabra clave de la sesión**, en las prácticas que la piden: se dice en el aula y no está publicada en ningún sitio.
 
 **Uso de IA.** Puedes usar asistentes de IA para ayudarte (al fin y al cabo, es un curso de IA), pero **decláralo**: en un apartado final, indica qué herramienta has usado, para qué y qué has corregido de lo que te dio. Las preguntas de las prácticas se refieren a **vuestros resultados**: una IA no puede contestarlas sin ellos.
 

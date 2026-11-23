@@ -28,7 +28,7 @@ hide:
 
 **3-4. Agente conectado.** Con `brew install opencode`, y dentro de la carpeta `practica15`, `opencode` → `/models`: el modelo aparecía como `lmstudio/google/gemma-4-e2b`, sin configurar nada.
 
-**5. Personalidad.** Este fue nuestro `AGENTS.md` (la palabra clave es la de la sesión del ejemplo):
+**5. Personalidad.** Este fue nuestro `AGENTS.md`:
 
 ```markdown
 # Instrucciones
@@ -38,10 +38,10 @@ Datos que debes conocer:
 - Teléfono de recepción: 912 555 310.
 - Horario: de lunes a viernes, de 7.00 a 22.00 h; sábados, de 9.00 a 20.00 h; domingos, de 9.00 a 14.00 h.
 - Baño libre: 4,20 €; bono de 10 baños: 35 €.
-Termina SIEMPRE cada respuesta con la palabra clave de la sesión: delfin-azul-00.
+Termina SIEMPRE cada respuesta con esta frase: «Para cualquier duda, llama a recepción: 912 555 310».
 ```
 
-A «¿Quién eres y a qué hora abrís el sábado?» respondió: «Abrimos los sábados de 9:00 a 20:00 h. delfin-azul-00». Cumplió el horario y la palabra clave, pero **no se presentó** y escribió «9:00» en lugar de «9.00».
+A «¿Quién eres y a qué hora abrís el sábado?» respondió: «Abrimos los sábados de 9:00 a 20:00 h. Para cualquier duda, llama a recepción: 912 555 310». Cumplió el horario y la frase final, pero **no se presentó** y escribió «9:00» en lugar de «9.00». Lo repetimos y pasó lo mismo.
 
 **6. Tarea con archivos.** Con [el `reservas.csv` del ejemplo](#el-reservascsv-del-ejemplo) y la petición exacta de la tarea 6, el agente pidió permiso para leer el CSV y para crear `informe.md`. Lo comprobamos a mano: 9 reservas confirmadas, **78 personas**, tres canceladas (Andrés Molina, Javier Soler y Elena Sanz), **empate** entre el 3 y el 6 de febrero con 30 personas, y tres grupos de 10 o más confirmados. Esta vez Gemma acertó todo. En otra prueba anterior, con la misma petición, había sumado **72** personas: el mismo modelo no siempre da el mismo resultado.
 
@@ -160,7 +160,7 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
 
     Captura la pantalla en la que se vea el agente con tu modelo local elegido.
 
-5. **Dale personalidad.** Los dos agentes leen un archivo llamado **`AGENTS.md`** de la carpeta en la que trabajan: es su *system prompt*. Crea `AGENTS.md` en `practica15` con las instrucciones del **asistente de vuestro grupo**: nombre, tono, **tres datos concretos** (teléfono, horario, precios…) y la **palabra clave de la sesión** que se dirá en clase, que el asistente debe escribir al final de cada respuesta. Vuelve a abrir el agente y pregúntale «¿Quién eres?».
+5. **Dale personalidad.** Los dos agentes leen un archivo llamado **`AGENTS.md`** de la carpeta en la que trabajan: es su *system prompt*. Crea `AGENTS.md` en `practica15` con las instrucciones del **asistente de vuestro grupo**: nombre, tono, **tres datos concretos** (teléfono, horario, precios…) y **una frase fija** con la que el asistente debe terminar cada respuesta (por ejemplo, un consejo o el teléfono). Vuelve a abrir el agente y pregúntale «¿Quién eres?».
 6. **Una tarea con archivos.** Copia en la carpeta **el `reservas.csv` de vuestra tarjeta** y pide al agente, con estas mismas palabras:
 
     > Lee reservas.csv y crea informe.md con: 1) el número de reservas confirmadas y el total de personas de esas reservas; 2) los nombres de las reservas canceladas; 3) el día con más personas confirmadas; 4) los grupos de 10 o más personas que están confirmados.
@@ -220,7 +220,7 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
     Puedes elegir otro modelo de la lista de NVIDIA, pero anota cuál y por qué.
 
 11. **La misma tarea.** Borra `informe.md` y repite las tareas 5, 6 y 7 con el modelo de NVIDIA, con las mismas palabras.
-12. **Comparación.** Haz una tabla con los dos modelos: nombre, dónde se ejecuta, tiempo que tardó la tarea 6, número de errores del informe antes y después de la tarea 7, si cumplió la personalidad de `AGENTS.md` y si dijo la palabra clave. Después, responde: ¿qué datos tuyos han salido de tu ordenador en la parte B? ¿Qué límites tiene la API gratuita? ¿Cuándo usarías cada una?
+12. **Comparación.** Haz una tabla con los dos modelos: nombre, dónde se ejecuta, tiempo que tardó la tarea 6, número de errores del informe antes y después de la tarea 7, si cumplió la personalidad de `AGENTS.md` y si terminó con la frase fija. Después, responde: ¿qué datos tuyos han salido de tu ordenador en la parte B? ¿Qué límites tiene la API gratuita? ¿Cuándo usarías cada una?
 
 !!! tip "Si no puedes usar NVIDIA"
     Otras APIs con modelos gratuitos y compatibles con OpenAI: [OpenRouter](https://openrouter.ai/) (modelos terminados en `:free`) o la API de [Google Gemini](https://aistudio.google.com/) (nivel gratuito). Los dos agentes las admiten. Indica en la entrega cuál has usado.
@@ -468,7 +468,7 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
 Tendréis que enseñar al profesor, en vuestro equipo:
 
 - El servidor local en marcha y el agente conectado a vuestro modelo.
-- El agente respondiendo con la personalidad de `AGENTS.md` y la palabra clave de la sesión.
+- El agente respondiendo con la personalidad de `AGENTS.md`, incluida la frase final.
 - La tarea de vuestro `reservas.csv` repetida en directo, con las ventanas de permiso, y vuestro recuento a mano.
 - El agente conectado a NVIDIA (sin enseñar la clave).
 
