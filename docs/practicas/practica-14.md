@@ -22,7 +22,7 @@
 
 Con más contexto hace falta más memoria para la **caché KV** (módulo 12). En Gemma 4 crece poco porque buena parte de sus capas solo miran una ventana de texto cercano. En el modelo MLX la estimación **no cambia**: LM Studio no incluye ahí el contexto, así que la cifra no es la memoria real. Es un buen ejemplo de que hay que entender lo que se mide.
 
-**3. Benchmark.** Temperatura 0, **Think** desactivado, las cinco preguntas del [material](#material-las-cinco-preguntas-del-benchmark), tres veces cada una. Medias:
+**3. Benchmark.** Temperatura 0, **Think** desactivado (es el botón **Think** de la barra donde se escribe el mensaje, junto a las herramientas; si no aparece, el modelo no razona), las cinco preguntas del [material](#material-las-cinco-preguntas-del-benchmark), tres veces cada una. Medias:
 
 | Pregunta | Gemma 4 E2B: 1.er token | Gemma 4 E2B: tok/s | Qwen3 1.7B: 1.er token | Qwen3 1.7B: tok/s |
 |---|---|---|---|---|
@@ -53,7 +53,21 @@ Con más contexto hace falta más memoria para la **caché KV** (módulo 12). En
 
 Con **Top K 1** el modelo solo puede elegir la palabra más probable: repetimos la petición y salió **exactamente el mismo texto**, igual que con temperatura 0. Con temperatura 1,6, cada vez sale un cuento distinto.
 
-**5. Documento.** Usamos unas normas inventadas de una piscina municipal, más cortas que el reglamento de la práctica. Como es un texto breve, LM Studio lo incluye entero en la conversación. Resultados:
+**5. Documento.** Usamos unas normas inventadas de una piscina municipal, más cortas que el reglamento de la práctica. Como es un texto breve, LM Studio lo incluye entero en la conversación.
+
+??? example "Las normas de la piscina del ejemplo"
+
+    ```text
+    NORMAS DE LA PISCINA MUNICIPAL CUBIERTA DE VALDEMORA DEL RÍO
+
+    1. Horario. De lunes a viernes, de 7.00 a 22.00 h. Sábados, de 9.00 a 20.00 h. Domingos y festivos, de 9.00 a 14.00 h. Cerrada del 1 al 15 de agosto por mantenimiento.
+    2. Precios. Baño libre: 4,20 €. Menores de 16 y mayores de 65: 2,60 €. Bono de 10 baños: 35 €. Los martes por la tarde, de 16.00 a 18.00 h, el baño libre es gratuito para menores de 12 años acompañados.
+    3. Calles. Hay 6 calles: la 1 y la 2 son de nado rápido, la 3 y la 4 de nado medio y la 5 y la 6 de nado lento y aquagym.
+    4. Normas. Es obligatorio el gorro de baño y ducharse antes de entrar al agua. No se permite comer en la zona de vasos. Los menores de 10 años deben estar acompañados por un adulto dentro del recinto.
+    5. Cursos. Natación infantil (de 4 a 12 años): 48 € al trimestre, dos días por semana. Inscripciones del 1 al 10 de septiembre en la recepción.
+    ```
+
+Resultados:
 
 | Pregunta | Respuesta del modelo | ¿Correcta? |
 |---|---|---|

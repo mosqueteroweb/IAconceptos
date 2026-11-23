@@ -29,6 +29,13 @@ El proyecto completo dura varias semanas; el ejemplo muestra cómo empezar bien,
 
 Dos de los veinte casos, con un texto sobre la mitosis y otro sobre el río Ebro:
 
+??? example "Los dos textos del ejemplo"
+
+    **Mitosis:** «La mitosis es un tipo de división celular en la que una célula madre da lugar a dos células hijas con el mismo número de cromosomas. Tiene cuatro fases: profase, metafase, anafase y telofase.»
+
+    **Río Ebro:** «El río Ebro nace en Fontibre (Cantabria) y desemboca en el mar Mediterráneo, formando un delta en Tarragona. Es el río más caudaloso de España.»
+
+
 | Criterio | Mitosis | Ebro |
 |---|---|---|
 | 1. Tres preguntas con 4 opciones | Sí | Sí |

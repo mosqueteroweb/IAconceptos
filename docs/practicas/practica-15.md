@@ -140,7 +140,7 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
 
     === "OpenCode"
 
-        OpenCode **detecta solo** LM Studio y Ollama si están en marcha. Crea una carpeta `practica15`, entra en ella con la terminal (`cd`) y escribe `opencode`. Dentro, escribe `/models` y elige tu modelo, que aparecerá como `lmstudio/…` u `ollama/…`.
+        OpenCode **detecta solo** LM Studio y Ollama si están en marcha. Crea una carpeta `practica15`, entra en ella con la terminal (`cd`), escribe `git init` (así OpenCode la reconoce como proyecto aunque esté dentro de otra carpeta con Git, y además puede deshacer sus cambios) y después `opencode`. Dentro, escribe `/models` y elige tu modelo, que aparecerá como `lmstudio/…` u `ollama/…`.
 
     === "Hermes Agent"
 
@@ -216,7 +216,7 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
 12. **Comparación.** Haz una tabla con los dos modelos: nombre, dónde se ejecuta, tiempo que tardó la tarea 6, número de errores del informe antes y después de la tarea 7, si cumplió la personalidad de `AGENTS.md` y si terminó con la frase fija. Después, responde: ¿qué datos tuyos han salido de tu ordenador en la parte B? ¿Qué límites tiene la API gratuita? ¿Cuándo usarías cada una?
 
 !!! tip "Si no puedes usar NVIDIA"
-    Otras APIs con modelos gratuitos y compatibles con OpenAI: [OpenRouter](https://openrouter.ai/) (modelos terminados en `:free`) o la API de [Google Gemini](https://aistudio.google.com/) (nivel gratuito). Los dos agentes las admiten. Indica en la entrega cuál has usado.
+    Otras APIs con modelos gratuitos y compatibles con OpenAI: [OpenRouter](https://openrouter.ai/) (modelos terminados en `:free`) o la API de [Google Gemini](https://aistudio.google.com/) (nivel gratuito). Los dos agentes las admiten. Con **OpenCode** hay otra opción sin crear ninguna cuenta: trae modelos gratuitos en la nube, como `opencode/nemotron-3.5-lightning-free` o `opencode/deepseek-v4.1-flash-free` (búscalos con `/models`). Indica en la entrega cuál has usado.
 
 **Opcional (+1 punto):** repite la parte A con el **otro** servidor local (LM Studio si usaste Ollama, o al revés) o con el **otro** agente, y compara.
 

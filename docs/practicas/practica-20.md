@@ -67,7 +67,7 @@ Con 120 preguntas, las 110 respuestas de entrenamiento tardaron unos 12 minutos 
 unsloth train --model unsloth/Qwen3-0.6B --local-dataset datos_profesor.jsonl --format-type alpaca --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 2 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir estudiante
 ```
 
-**42 pasos en 89 s.** La pérdida bajó de 2,44 (paso 1) a 1,61 (paso 10), 1,37 (paso 20) y en torno a 1,0-1,1 al final. Lo exportamos a GGUF en **Q8_0** (639 MB) y lo importamos en LM Studio.
+**42 pasos en 89 s.** La pérdida bajó de 2,44 (paso 1) a 1,61 (paso 10), 1,37 (paso 20) y en torno a 1,0-1,1 al final. Lo exportamos a GGUF en **Q8_0** (639 MB) con `unsloth export estudiante exportado -f gguf -q q8_0` y lo importamos en LM Studio.
 
 <figure markdown="span">
   ![Pérdida de la destilación](../img/practicas/p20-perdida.svg){ loading=lazy }
@@ -110,7 +110,7 @@ Haced lo mismo que en el ejemplo con **el tema y el estilo de vuestro grupo** (e
 
 4. **Antes.** Haz las 10 preguntas de prueba al **profesor** y al **estudiante** sin entrenar, en LM Studio, con **Think** desactivado. Guarda las respuestas y su velocidad.
 5. **Destilación.** Ajusta el estudiante con **Unsloth Studio** usando tu archivo `datos_profesor.jsonl` (formato Alpaca, 10 % de validación, **Gradient Accumulation 2**). Captura las gráficas de pérdida y guarda la configuración.
-6. **Después.** Exporta el estudiante a GGUF, impórtalo en LM Studio (`lms import -c -y --user-repo alumno/practica20 archivo.gguf`) y hazle las 10 preguntas de prueba.
+6. **Después.** Exporta el estudiante a GGUF en **Q8_0** (en Studio, *Export*; desde la terminal, `unsloth export estudiante exportado -f gguf -q q8_0`, que indica al final dónde ha guardado el archivo), impórtalo en LM Studio (`lms import -c -y --user-repo alumno/practica20 archivo.gguf`) y hazle las 10 preguntas de prueba.
 7. **Comparación.** Haz una tabla con los tres modelos: tamaño del archivo, memoria al cargarlo, tokens por segundo y una puntuación de 0 a 2 de cada respuesta (corrección y estilo). ¿Cuánto se acerca el estudiante al profesor? ¿En qué falla?
 
 ## Lo específico de cada grupo

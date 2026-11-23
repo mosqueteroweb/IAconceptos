@@ -100,7 +100,7 @@ Se crea la carpeta `llama.cpp-master`.
 Bajamos el modelo tal y como lo publica su autor en Hugging Face, a 16 bits:
 
 ```bash
-uvx hf download Qwen/Qwen3-0.6B --local-dir modelo-original
+uvx --from huggingface-hub hf download Qwen/Qwen3-0.6B --local-dir modelo-original
 ```
 
 Anota el tamaño de los archivos `.safetensors` de la carpeta `modelo-original`.
@@ -190,6 +190,9 @@ Haced una tabla con todas las versiones (tamaño, velocidad al escribir y perple
 2. Escribe **una pregunta tuya** sobre una asignatura que estudies. Hacedla a todas las versiones con **temperatura 0** y **Think** desactivado. Comparad las respuestas y la velocidad que indica LM Studio con la de `llama-bench`.
 
 ### 9. Los modelos de LM Studio de vuestro grupo
+
+!!! tip "Descargadlos antes de clase"
+    Dos versiones de un modelo de 8 000 millones de parámetros ocupan unos 9-10 GB. Con la red del aula, la descarga puede durar más que la sesión: dejadla en marcha antes.
 
 En LM Studio, descargad el modelo de vuestra tarjeta en las dos cuantizaciones indicadas. Mide la velocidad (tres preguntas, tres veces cada una) y anota la memoria estimada al cargarlo.
 

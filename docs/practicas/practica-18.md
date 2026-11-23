@@ -46,6 +46,8 @@ Nosotros lo entrenamos con la orden `unsloth train`, que usa el mismo motor que 
 unsloth train --model unsloth/Qwen3-1.7B --local-dataset asistente-formal.jsonl --format-type alpaca --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 1 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir asistente-formal
 ```
 
+La orden `unsloth train` **no tiene opción de validación**: si queréis ver la pérdida de validación, usad la interfaz de Studio, con su *Eval split*.
+
 En el Mac, Unsloth usa **MLX** y entrena **17,4 millones de parámetros** de LoRA (el 3,2 % del modelo). Fueron **45 pasos en 70 s**, con 3 GB de memoria como máximo. La pérdida de entrenamiento:
 
 | Paso | 1 | 5 | 10 | 15 | 20 | 30 | 40 | 45 |
@@ -77,7 +79,13 @@ Ha aprendido el «de usted» y a reconocer lo que no sabe, aunque no siempre lo 
 
 Más épocas no es mejor: con pocos datos, el modelo empieza a mezclar y copiar los ejemplos. Con un 10 % de validación en Studio, lo veríais porque la pérdida de validación deja de bajar.
 
-**7. Exportación.** *Export* → último *checkpoint* → **GGUF** → en la terminal, `lms import -c -y --user-repo alumno/practica18 archivo.gguf` → aparece en **Library** de LM Studio.
+**7. Exportación.** En Studio: *Export* → último *checkpoint* → **GGUF** en **Q8_0**. Desde la terminal (si entrenasteis con `unsloth train`):
+
+```bash
+unsloth export asistente-formal exportado -f gguf -q q8_0
+```
+
+Al terminar, la orden indica dónde ha guardado el archivo (línea «Saved to…»; en Mac suele ser `~/.unsloth/studio/exports/exportado`). Después, `lms import -c -y --user-repo alumno/practica18` seguido de la ruta de ese archivo `.gguf` → aparece en **Library** de LM Studio.
 
 !!! warning "Exportad en Q8_0, no en Q4_K_M"
     Exportamos el mismo modelo en las dos cuantizaciones y lo probamos en LM Studio con temperatura 0. En **Q4_K_M** había **perdido el estilo**: «¡Claro! ¿Qué tipo de película **te** gustaría ver?» y volvía a inventarse el tiempo de Sevilla («Hoy es viernes, 28 de julio de 2025…»). En **Q8_0** conservaba lo aprendido. Un ajuste ligero sobre un modelo pequeño cambia poco los pesos, y una cuantización fuerte borra ese cambio. Con modelos de 4 000 millones de parámetros o menos, exportad en **Q8_0**.

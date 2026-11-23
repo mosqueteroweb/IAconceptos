@@ -31,6 +31,43 @@ Ahora la respuesta tenía las tres partes pedidas: un horario de 17.00 a 20.00 h
 
 **3. Meta-prompt.** Le pedimos: «Quiero que me ayudes a organizar la fiesta de fin de curso de mi instituto. Antes de nada, hazme todas las preguntas que necesites (como máximo 8). Después, cuando te conteste, escribe tú el mejor prompt posible para conseguirlo». Hizo 8 preguntas (presupuesto, asistentes, ambiente, fecha…). Al contestarlas, escribió un prompt de cuatro secciones que **añadía algo que se nos había olvidado**: la entrega de diplomas.
 
+??? example "Nuestras respuestas a sus 8 preguntas y el prompt que escribió"
+
+    **Nuestras respuestas:**
+
+    > 1) 4.º de ESO, 60 alumnos y 4 tutores. 2) Viernes 18 de junio de 2027, de 17.00 a 20.00 h. 3) En el patio del IES Valdemora del Río; si llueve, el gimnasio. 4) Presupuesto máximo 300 €, lo pone la AMPA. 5) Sin alcohol; música hasta las 19.45 h. 6) Queremos una entrega de diplomas, música y comida. 7) Formato: tablas de horario y presupuesto y lista de tareas. 8) Lo organiza el alumnado con ayuda de los tutores.
+
+    **El prompt que escribió** (es el que ejecutamos después en Gemma y en Nemotron):
+
+    ```text
+        Actúa como un organizador de eventos experto en gestión de presupuestos escolares y planificación de fiestas temáticas. Basándote en la siguiente información, genera un plan de acción completo, detallado y organizado, incluyendo tablas claras de presupuesto, horarios y una lista de tareas (checklist) para organizar la Fiesta de Fin de Curso del 4.º de ESO.
+
+        Datos Clave:
+        1. Asistentes: 60 alumnos y 4 tutores (Total: 64 personas).
+        2. Fecha y Hora: Viernes, 18 de junio de 2027, de 17:00 a 20:00 h.
+        3. Lugar Propuesto: Patio del IES Valdemora del Río (con plan B en el gimnasio si llueve).
+        4. Presupuesto Máximo: 300 € (A cargo de la AMPA).
+        5. Restricciones Importantes: No se permitirá el alcohol. La música debe finalizar a las 19:45 h.
+        6. Elementos Requeridos: Entrega de diplomas, música y comida.
+        7. Organización: El alumnado organizará la fiesta con la ayuda de los tutores.
+
+        Output Solicitado (Formato Estricto):
+
+        Genera el plan estructurado en las siguientes secciones:
+
+        Sección 1: Distribución del Presupuesto Estimado (Máximo 300 €)
+        *   Crea una tabla desglosando los posibles gastos principales (Alquiler/Permisos, Comida, Decoración, Música, Diplomas). Asigna un coste estimado a cada rubro.
+
+        Sección 2: Tabla de Horario Detallado (Cronograma)
+        *   Crea un horario minuto a minuto desde las 17:00 h hasta las 20:00 h, especificando cuándo deben ocurrir las actividades clave (llegada, comida, entrega de diplomas, música).
+
+        Sección 3: Lista de Tareas y Responsabilidades (Checklist)
+        *   Crea una lista exhaustiva de tareas divididas por responsabilidades (Alumnado, Tutores/AMPA), incluyendo plazos sugeridos (ej. 4 semanas antes) para asegurar la organización fluida.
+
+        Sección 4: Sugerencias Creativas (Ambientación y Menú)
+        *   Ofrece ideas específicas y económicas para la decoración, el menú (enfocado en ser festivo y sin alcohol), y opciones de música adecuadas para el ambiente escolar.
+    ```
+
 !!! warning "Un fallo nuestro"
     La primera vez pegamos **toda** su respuesta, con el «¡Muchas gracias por la información!» incluido, y el modelo contestó «¡Me parece un prompt excelente! Por favor, procede a ejecutarlo». Hay que copiar **solo el prompt**.
 
@@ -61,7 +98,7 @@ Haced lo mismo que en el ejemplo con el **escenario de vuestro grupo**:
 2. **Prompt estructurado.** Reescribidlo con R-T-F, C-O-T o P-A-S, con **datos reales vuestros**, un formato concreto y al menos **dos restricciones**, una de ellas la que indica vuestra tarjeta.
 3. **Meta-prompt.** Pedid al asistente que os haga preguntas y escriba él el mejor prompt. Contestad y ejecutad **solo el prompt** que os proponga.
 4. **Otro asistente.** Ejecutad vuestro mejor prompt en un asistente distinto.
-5. **Rúbrica.** Cuatro criterios vuestros y la tabla de puntuaciones de las cinco respuestas.
+5. **Rúbrica.** Cuatro criterios vuestros y la tabla de puntuaciones de las **cuatro respuestas** (prompt débil, prompt estructurado, prompt del meta-prompt y ese mismo prompt en el otro asistente), como en el ejemplo.
 6. **Verificación.** Tres afirmaciones concretas comprobadas, **al menos dos en una fuente externa fiable** (indicad el enlace).
 7. **La comprobación de vuestro grupo.** Haced la comprobación especial que indica vuestra tarjeta.
 
@@ -122,8 +159,8 @@ Tendréis que enseñar al profesor:
 
 ## Entregables
 
-- Los cinco prompts.
-- Las cinco respuestas como enlace compartido o captura completa.
+- Los cuatro prompts: el débil, el estructurado, vuestra petición de meta-prompt y el prompt que os escribió el asistente.
+- Las cuatro respuestas evaluadas, como enlace compartido o captura completa.
 - La tabla de puntuaciones con vuestros criterios.
 - La verificación con sus fuentes y la comprobación de vuestro grupo.
 - Una conclusión (máximo 150 palabras) apoyada en **vuestra** tabla.

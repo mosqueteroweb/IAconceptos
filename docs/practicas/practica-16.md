@@ -298,6 +298,7 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 |---|---|
 | `mcp/reloj` o `mcp/archivos` aparecen con error | LM Studio no encuentra `uvx` o `npx`. Escribe la ruta completa en `"command"`. Mac: `/Users/alumno/.local/bin/uvx` y `/opt/homebrew/bin/npx` (o `/usr/local/bin/npx`). Windows: `C:\\Users\\alumno\\.local\\bin\\uvx.exe` y `C:\\Program Files\\nodejs\\npx.cmd`. Cambia `alumno` por tu usuario. |
 | «MCP error -32001: Request timed out» (en Mac) | La carpeta está en el Escritorio, Documentos o Descargas, y macOS está esperando a que des permiso a LM Studio. Mueve la carpeta a tu carpeta personal y cambia la ruta en `mcp.json`. |
+| El modelo usa la herramienta y después responde **vacío** | Suele pasar con Qwen3: se gasta todos los tokens «pensando». Desactiva **Think** o sube *Limit Response Length* en *Model Parameters*. |
 | El modelo no usa las herramientas | Comprueba que los dos interruptores están activados y que el modelo tiene el icono del martillo. Pídeselo de forma explícita: «Usa la herramienta de archivos para…». |
 | «Access denied» con un archivo de la carpeta | La ruta de `mcp.json` no es exactamente la de tu carpeta. Repite el paso 3. |
 | El modelo tarda mucho | Normal la primera vez: `uvx` y `npx` descargan los servidores. Las siguientes veces va más rápido. |
