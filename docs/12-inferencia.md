@@ -128,7 +128,7 @@ Medir el TTFT y los tok/s permite comparar modelos, cuantizaciones y ordenadores
 | **En tu ordenador** (LM Studio, Ollama) | Privacidad total, sin conexión, gratis. | Modelos más pequeños; depende de tu RAM y GPU. Ver [módulo 14](14-ia-local.md). |
 | **GPU alquilada** (Colab, RunPod, Vast.ai, Lambda…) | Potencia de un servidor por horas, para pruebas o entrenamiento. | Configuración técnica; se paga por hora aunque no la uses. |
 
-Para practicar sin gastar, **[Google Colab](https://colab.research.google.com/?hl=es)** ofrece GPU gratuitas (con límites de tiempo) y es lo que usan las prácticas de este curso. [Kaggle](https://www.kaggle.com/docs/notebooks) da unas 30 horas semanales de GPU gratis. Para proyectos serios, los servicios de alquiler cobran por hora según la GPU: desde menos de 1 € la hora una GPU de consumo hasta varios euros una de centro de datos.
+Para practicar sin gastar, **[Google Colab](https://colab.research.google.com/?hl=es)** ofrece GPU gratuitas (con límites de tiempo): es lo que usan los cuadernos de los módulos 19 a 21 para quien no tenga un ordenador potente. Las [prácticas evaluables](practicas/segunda-parte.md) se hacen en los equipos del aula. [Kaggle](https://www.kaggle.com/docs/notebooks) da unas 30 horas semanales de GPU gratis. Para proyectos serios, los servicios de alquiler cobran por hora según la GPU: desde menos de 1 € la hora una GPU de consumo hasta varios euros una de centro de datos.
 
 ## Para ampliar
 

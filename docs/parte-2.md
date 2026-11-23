@@ -44,7 +44,10 @@ En la primera parte viste qué es la IA, cómo aprenden las máquinas y qué hac
 
 ## Cómo están hechas las prácticas
 
-Casi todos los módulos tienen una práctica. Siempre que existe, se ofrece en dos versiones:
+Hay dos tipos de prácticas:
+
+- **Las prácticas evaluables**, en la sección [Prácticas](practicas/segunda-parte.md) del menú. Se hacen en grupo, en los equipos del aula (Mac mini M4 o PC con NVIDIA RTX 5060 Ti), con LM Studio, la terminal y Unsloth Studio, y el profesor las valida en clase.
+- **Las prácticas de cada módulo**, más cortas, para entender el tema o repasarlo en casa. Siempre que existen, se ofrecen en dos versiones:
 
 === ":material-cursor-default-click: Sin código"
 
@@ -52,7 +55,7 @@ Casi todos los módulos tienen una práctica. Siempre que existe, se ofrece en d
 
 === ":material-google: Con Google Colab"
 
-    Un **cuaderno de Google Colab** preparado para este curso: se abre en el navegador, usa una GPU gratuita de Google y se ejecuta celda a celda con el botón ▶. Cada paso está explicado en lenguaje llano. No hay que escribir código, solo leerlo si te apetece.
+    Un **cuaderno de Google Colab** preparado para este curso: se abre en el navegador, usa una GPU gratuita de Google y se ejecuta celda a celda con el botón ▶. Cada paso está explicado en lenguaje llano. No hay que escribir código, solo leerlo si te apetece. Es la opción para practicar **sin un ordenador potente**, por ejemplo en casa.
 
 !!! info "Cuadernos comprobados"
     Los cuadernos de [cuantización](19-cuantizacion.md#practica), [destilación](20-destilacion.md#practica) y [pre-entrenamiento](21-pre-entrenamiento.md#practica) se han ejecutado completos antes de publicarlos, y los resultados que aparecen en cada módulo son los obtenidos. Las prácticas de *fine-tuning* usan Unsloth Studio, que necesita una GPU de NVIDIA o un Mac con chip Apple; si no tienes ninguna, Unsloth ofrece una versión de Studio que funciona dentro de Colab.
