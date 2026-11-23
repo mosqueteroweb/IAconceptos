@@ -82,10 +82,11 @@ El modelo de la primera parte tiene una arquitectura casera y un tokenizador inv
 uv run nanomodelo.py llama --libro 320 --comienzo "Pues sepa Vuestra Merced"
 ```
 
-Tarda unos 5-10 minutos. Anota del `resumen.txt` de la carpeta `resultados-320-llama`:
+Tarda unos 10-15 minutos. Anota del `resumen.txt` de la carpeta `resultados-320-llama`:
 
 - Cuántos **tokens** ocupa el libro con este tokenizador, frente a los **caracteres** de la primera parte. ¿Cuántos caracteres hay de media en cada token?
 - Cuántos **parámetros** tiene el modelo y cuántos son de la tabla de *embeddings*. ¿Por qué el modelo es ahora unas cinco veces más grande, si tiene las mismas capas?
+- Su gráfica de pérdidas: compárala con la de la primera parte. ¿Qué le pasa a la pérdida de validación? Relaciónalo con el número de parámetros y el de tokens del libro.
 
 ### 7. Ábrelo en LM Studio
 
