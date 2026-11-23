@@ -1,20 +1,13 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 21. Tu nano-modelo
 
-**Módulo:** [21. Pre-entrenamiento](../21-pre-entrenamiento.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [21. Pre-entrenamiento](../21-pre-entrenamiento.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
 
 **Objetivo:** pre-entrenar un modelo desde cero en vuestro ordenador con un libro, observar cómo aprende, relacionar el tamaño del modelo y de los datos con el resultado, y abrir vuestro propio modelo en LM Studio.
 
-**Qué vais a usar:** el script [nanomodelo.py](../descargas/nanomodelo.py), que hace lo mismo que el cuaderno del módulo 21 pero desde la terminal, y **uv** (mirad las [normas comunes](index.md)). La primera vez, uv descarga PyTorch (unos 1-3 GB), así que tarda un rato. Entrena con la GPU del Mac o con la tarjeta NVIDIA del PC.
+**Qué vais a usar:** el script [nanomodelo.py](../descargas/nanomodelo.py), que hace lo mismo que el cuaderno del módulo 21 pero desde la terminal, y **uv** (mirad las [normas comunes](segunda-parte.md)). La primera vez, uv descarga PyTorch (unos 1-3 GB), así que tarda un rato. Entrena con la GPU del Mac o con la tarjeta NVIDIA del PC.
 
 ## Ejemplo resuelto
 

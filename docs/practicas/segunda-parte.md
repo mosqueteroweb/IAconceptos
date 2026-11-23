@@ -1,14 +1,6 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
+# Prácticas de la segunda parte
 
-# Prácticas de la segunda parte (borrador para revisión)
-
-!!! warning "Página de revisión"
-    Estas páginas no están enlazadas desde la web del curso. Contienen los enunciados de las prácticas de los módulos 13 a 22 (salvo la de agentes), pendientes de revisión antes de publicarlos.
+Estas son las prácticas evaluables de los módulos 13 a 22. Antes de empezar cualquiera, lee las [normas comunes](#normas-comunes-a-todas-las-practicas): son las mismas para todas.
 
 ## Las prácticas
 

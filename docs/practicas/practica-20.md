@@ -1,20 +1,13 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 20. Destila tu propio modelo
 
-**Módulo:** [20. Destilación](../20-destilacion.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [20. Destilación](../20-destilacion.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
 
 **Objetivo:** destilar de verdad un modelo de lenguaje, como hizo DeepSeek con R1: un modelo **profesor** grande, en LM Studio, responde a cientos de preguntas, y con esas respuestas se ajusta un modelo **estudiante** mucho más pequeño. Después compararás a los tres (profesor, estudiante antes y estudiante después) en LM Studio.
 
-**Material:** el script [destilar_profesor.py](../descargas/destilar_profesor.py), que se ejecuta con una sola orden (necesitas **uv**, mira las [normas comunes](index.md)).
+**Material:** el script [destilar_profesor.py](../descargas/destilar_profesor.py), que se ejecuta con una sola orden (necesitas **uv**, mira las [normas comunes](segunda-parte.md)).
 
 ## Qué modelos usar
 

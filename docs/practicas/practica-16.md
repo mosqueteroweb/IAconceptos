@@ -1,13 +1,6 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 16. Habilidades y conectores
 
-**Módulo:** [16. Habilidades y conectores (MCP)](../16-habilidades-mcp.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [16. Habilidades y conectores (MCP)](../16-habilidades-mcp.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
@@ -233,7 +226,7 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 ### Pasos
 
 1. **Instala lo necesario** (solo la primera vez):
-    - **uv**: mira las [normas comunes](index.md). Comprueba en la terminal que funciona con `uv --version`.
+    - **uv**: mira las [normas comunes](segunda-parte.md). Comprueba en la terminal que funciona con `uv --version`.
     - **Node.js**: descarga la versión **LTS** de [nodejs.org](https://nodejs.org/) e instálala. Comprueba en la terminal que funciona con `npx --version`.
 2. **Crea la carpeta de la práctica.** En tu **carpeta personal** (la que tiene tu nombre de usuario: en Mac, en el Finder, menú *Ir → Inicio*; en Windows, `C:\Users\tu_usuario`), crea una carpeta llamada **`practica16`** con los tres archivos del [material de la parte B](#material-la-carpeta-practica16). Crea además un archivo `secreto.txt`, con cualquier frase, **fuera** de esa carpeta, también en tu carpeta personal. **En Mac no uses el Escritorio ni Documentos** (mira el aviso del ejemplo).
 3. **Averigua la ruta completa de la carpeta.** El servidor de archivos necesita la dirección exacta de la carpeta:

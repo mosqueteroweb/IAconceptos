@@ -1,13 +1,6 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 18. Un modelo con estilo propio
 
-**Módulo:** [18. Fine-tuning](../18-fine-tuning.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [18. Fine-tuning](../18-fine-tuning.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).

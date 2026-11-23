@@ -1,13 +1,6 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 13. El laboratorio de prompts
 
-**Módulo:** [13. Aplicaciones e ingeniería de prompts](../13-apps-prompts.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [13. Aplicaciones e ingeniería de prompts](../13-apps-prompts.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).

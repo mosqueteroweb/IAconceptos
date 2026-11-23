@@ -1,20 +1,13 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 19. Cuantizar y medir
 
-**Módulo:** [19. Cuantización](../19-cuantizacion.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [19. Cuantización](../19-cuantizacion.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
 
 **Objetivo:** cuantizar un modelo tú mismo, en tu ordenador y con la terminal, con las mismas herramientas que usan por dentro LM Studio y Ollama, y medir con datos (tamaño, velocidad y perplejidad) qué se gana y qué se pierde.
 
-**Qué vas a usar:** [llama.cpp](https://github.com/ggml-org/llama.cpp) (los programas `llama-quantize`, `llama-bench` y `llama-perplexity`), **uv** (mira las [normas comunes](index.md)) y LM Studio. Unos 5 GB libres de disco.
+**Qué vas a usar:** [llama.cpp](https://github.com/ggml-org/llama.cpp) (los programas `llama-quantize`, `llama-bench` y `llama-perplexity`), **uv** (mira las [normas comunes](segunda-parte.md)) y LM Studio. Unos 5 GB libres de disco.
 
 ## Ejemplo resuelto
 

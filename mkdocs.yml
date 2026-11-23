@@ -68,8 +68,6 @@ extra_css:
   - stylesheets/extra.css
 plugins:
   - search: {lang: es}
-not_in_nav: |
-  /revision-practicas/
 nav:
   - Inicio: index.md
   - "Primera parte: entender la IA":
@@ -106,5 +104,16 @@ nav:
       - Crear modelos:
           - 21. Pre-entrenamiento: 21-pre-entrenamiento.md
           - 22. Crea tu propio modelo: 22-crear-llm.md
+      - Prácticas:
+          - Normas y lista de prácticas: practicas/segunda-parte.md
+          - "13. El laboratorio de prompts": practicas/practica-13.md
+          - "14. Tu laboratorio de IA local": practicas/practica-14.md
+          - "15. Tu agente, tus APIs": practicas/practica-15.md
+          - "16. Habilidades y conectores": practicas/practica-16.md
+          - "18. Un modelo con estilo propio": practicas/practica-18.md
+          - "19. Cuantizar y medir": practicas/practica-19.md
+          - "20. Destila tu propio modelo": practicas/practica-20.md
+          - "21. Tu nano-modelo": practicas/practica-21.md
+          - "22. Proyecto final": practicas/practica-22.md
   - Glosario: glosario.md
   - Sobre este material: acerca.md

@@ -1,13 +1,6 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 14. Tu laboratorio de IA local
 
-**Módulo:** [14. IA en tu ordenador: LM Studio y Ollama](../14-ia-local.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [14. IA en tu ordenador: LM Studio y Ollama](../14-ia-local.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).

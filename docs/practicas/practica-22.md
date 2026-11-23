@@ -1,13 +1,6 @@
----
-search:
-  exclude: true
-hide:
-  - navigation
----
-
 # Práctica 22. Proyecto final: vuestro propio modelo
 
-**Módulo:** [22. Crea tu propio modelo](../22-crear-llm.md) · [Normas comunes de las prácticas](index.md)
+**Módulo:** [22. Crea tu propio modelo](../22-crear-llm.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro modelo funcionando **antes** de que subáis el trabajo. Un trabajo subido sin haberlo validado antes en clase no se evalúa. La validación es la demostración de la fase 8.
