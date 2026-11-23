@@ -9,27 +9,131 @@ hide:
 
 **Módulo:** [14. IA en tu ordenador: LM Studio y Ollama](../14-ia-local.md) · [Normas comunes de las prácticas](index.md)
 
-**Objetivo:** instalar y configurar LM Studio, medir el rendimiento real de tu equipo y comprobar cómo influyen los ajustes de carga, los de muestreo y el uso de documentos.
+!!! danger "Validación obligatoria en clase"
+    El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
 
-## Tu variante (pareja de modelos que vas a comparar)
+**Objetivo:** medir el rendimiento real de vuestro equipo con LM Studio y comprobar cómo influyen los ajustes de carga, los de muestreo y el uso de documentos.
 
-| N.º | Modelo A | Modelo B |
+## Ejemplo resuelto
+
+**Pareja del ejemplo:** **Gemma 4 E2B** en Q4_K_M (formato GGUF) frente a **Qwen3 1.7B** en 8 bits (formato MLX, solo para Mac). Equipo: Mac con chip M2 Pro.
+
+**1. Hardware.** En el engranaje de abajo a la izquierda → **Hardware** se ven el chip, la memoria total y la que puede usar la GPU. Captúralo.
+
+**2. Memoria estimada al cargar.** Con **Manually choose model load parameters** activado, cambiamos *Context Length* y anotamos *Estimated Memory Usage*:
+
+| Modelo | Contexto 4 096 | Contexto 32 768 |
 |---|---|---|
-| 1 | Gemma 4 E2B en Q4_K_M | Gemma 4 E2B en Q8_0 |
-| 2 | Qwen3 4B en Q4_K_M | Qwen3 4B en Q8_0 |
-| 3 | Gemma 4 E2B en Q4_K_M | Gemma 4 E4B en Q4_K_M |
-| 4 | Qwen3 1.7B en Q4_K_M | Qwen3 4B en Q4_K_M |
-| 5 | Gemma 4 E4B en Q4_K_M | Qwen3 4B en Q4_K_M |
-| 6 | Qwen3 4B en Q4_K_M | Qwen3 8B en Q4_K_M |
+| Gemma 4 E2B Q4_K_M | 4,32 GB | 4,86 GB |
+| Qwen3 1.7B MLX 8 bits | 2,40 GB | 2,40 GB |
 
-## Tareas
+Con más contexto hace falta más memoria para la **caché KV** (módulo 12). En Gemma 4 crece poco porque buena parte de sus capas solo miran una ventana de texto cercano. En el modelo MLX la estimación **no cambia**: LM Studio no incluye ahí el contexto, así que la cifra no es la memoria real. Es un buen ejemplo de que hay que entender lo que se mide.
 
-1. **Tu equipo.** Captura la pantalla **Ajustes → Hardware** de LM Studio y anota la memoria total y la utilizable como VRAM.
-2. **Carga.** Descarga los dos modelos de tu variante. Para cada uno, abre los ajustes de carga manuales y anota la **memoria estimada** con un contexto de 4 096 tokens y con uno de 32 768. ¿Cuánto crece? ¿Por qué?
-3. **Benchmark.** Con temperatura 0, haz a cada modelo las **cinco preguntas del benchmark** (están más abajo), **tres veces cada una**. Antes, desactiva el botón **Think** si tu modelo lo tiene. Anota en una hoja de cálculo el tiempo hasta el primer token y los tokens por segundo de cada ejecución, y calcula las medias. Haz una gráfica con las medias.
-4. **Muestreo.** Con el modelo que prefieras, pide «el principio de un cuento sobre [el objeto que te diga el profesor]» con temperatura 0,2, 1 y 1,6, y después con temperatura 1 y Top K 1. Copia las cuatro respuestas y describe las diferencias.
-5. **Documentos.** Guarda el **reglamento del planetario** (más abajo) en un archivo de texto, adjúntalo al chat y responde con el modelo a las cinco preguntas que lo acompañan. Haz además **una pregunta cuya respuesta no esté en el documento**. ¿Qué hace el modelo? ¿Se lo inventa? Comprueba tú cada respuesta en el reglamento.
-6. **Preset.** Crea un *preset* con un *System Prompt* para un uso tuyo real (tutor de una asignatura, corrector de tus redacciones…) y guárdalo.
+**3. Benchmark.** Temperatura 0, **Think** desactivado, las cinco preguntas del [material](#material-las-cinco-preguntas-del-benchmark), tres veces cada una. Medias:
+
+| Pregunta | Gemma 4 E2B: 1.er token | Gemma 4 E2B: tok/s | Qwen3 1.7B: 1.er token | Qwen3 1.7B: tok/s |
+|---|---|---|---|---|
+| 1. Fotosíntesis | 0,037 s | 63,1 | 0,155 s | 90,6 |
+| 2. Cinco consejos | 0,030 s | 63,7 | 0,037 s | 89,1 |
+| 3. Traducción | 0,033 s | 63,6 | 0,037 s | 99,5 |
+| 4. Tren | 0,043 s | 63,4 | 0,050 s | 89,0 |
+| 5. Poema | 0,030 s | 63,0 | 0,038 s | 91,8 |
+| **Media** | **0,035 s** | **63,4** | **0,064 s** | **92,0** |
+
+- La **primera** pregunta de Qwen tardó 0,42 s en dar el primer token y las siguientes, 0,02 s: la primera ejecución «calienta» el modelo. Por eso se repite tres veces.
+- Qwen es un 45 % más rápido, porque tiene menos parámetros. Pero en la traducción respondió «Tomorrow we have a History exam **at early morning**» (incorrecto: es *first thing in the morning*). Gemma dio la traducción correcta y dos alternativas. Los dos acertaron la hora del tren (12:15).
+
+**4. Muestreo** (Gemma 4 E2B, «Escribe el principio de un cuento sobre una brújula»):
+
+| Ajuste | Cómo empezó |
+|---|---|
+| Temperatura 0,2 | «El viejo reloj de bolsillo, con su mecanismo de latón…» |
+| Temperatura 1 | «El viejo Latón, con sus agujas temblorosas y su carcasa desgastada…» |
+| Temperatura 1,6 | «El viejo cazador, con manos curtidas por el sol…» |
+| Temperatura 1 + Top K 1 | «El viejo Casimiro no era solo un objeto de latón y vidrio…» |
+
+Con **Top K 1** el modelo solo puede elegir la palabra más probable: repetimos la petición y salió **exactamente el mismo texto**, igual que con temperatura 0. Con temperatura 1,6, cada vez sale un cuento distinto.
+
+**5. Documento.** Usamos unas normas inventadas de una piscina municipal, más cortas que el reglamento de la práctica. Como es un texto breve, LM Studio lo incluye entero en la conversación. Resultados:
+
+| Pregunta | Respuesta del modelo | ¿Correcta? |
+|---|---|---|
+| ¿Cuánto cuesta el bono de 10 baños y cuánto se ahorra frente a 10 baños libres? | «El bono de 10 baños cuesta 35 €.» | **A medias:** no calculó el ahorro (42 − 35 = 7 €). |
+| ¿Puede ir un niño de 9 años solo? | «Los menores de 10 años deben estar acompañados por un adulto.» | Sí. |
+| ¿Qué calle debo usar para hacer aquagym? | «La calle 6 es para aquagym.» | **A medias:** son la 5 y la 6. |
+| ¿Tiene taquillas con candado? (no está en el documento) | «El documento no menciona si la piscina tiene servicio de taquillas.» | Sí: no se lo inventó. |
+
+**6. Preset.** *Model Parameters → System Prompt*: «Eres un tutor de Física y Química de 4.º de ESO. Explica con ejemplos de la vida diaria y termina siempre con una pregunta para comprobar que lo he entendido». Después, **Save Preset As…** → «Tutor FyQ».
+
+**Conclusión del ejemplo:** para tareas rápidas y cortas, Qwen3 1.7B (92 tok/s); para traducir o redactar, Gemma 4 E2B, más lenta (63 tok/s) pero más fiable.
+
+## Vuestra práctica
+
+Haced lo mismo con **la pareja de modelos de vuestro grupo**:
+
+1. **Hardware.** Captura de **Ajustes → Hardware** de vuestro equipo.
+2. **Carga.** La memoria estimada de vuestros dos modelos con 4 096 y 32 768 tokens de contexto, y la explicación.
+3. **Benchmark.** Las cinco preguntas del [material](#material-las-cinco-preguntas-del-benchmark), tres veces cada una, con temperatura 0 y **Think** desactivado. Hoja de cálculo con todas las mediciones, las medias y una gráfica.
+4. **Muestreo.** El principio de un cuento sobre **el objeto de vuestro grupo**, con temperatura 0,2, 1 y 1,6, y con temperatura 1 y Top K 1.
+5. **Documento.** Guardad el [reglamento del planetario](#material-el-reglamento-del-planetario) en un archivo de texto, adjuntadlo al chat y haced **las tres preguntas de vuestro grupo** y **una pregunta que no esté en el documento**. Comprobad cada respuesta en el reglamento.
+6. **Preset.** Un *preset* con un *System Prompt* para un uso vuestro real.
+7. **El experimento de vuestro grupo.** El que indica vuestra tarjeta.
+
+## Lo específico de cada grupo
+
+??? abstract "Grupo 1"
+    - **Modelos:** Gemma 4 E2B en Q4_K_M y en Q8_0.
+    - **Objeto del cuento:** un paraguas roto.
+    - **Preguntas sobre el reglamento:** (a) ¿Cuánto pagan dos adultos y dos niños de 10 años un sábado? (b) ¿A qué hora empieza la última sesión de un jueves? (c) ¿Cuántos turnos de telescopio solar caben en un sábado?
+    - **Experimento:** al cargar, pon *GPU Offload* a la mitad de las capas. ¿Cuántos tok/s pierdes?
+
+??? abstract "Grupo 2"
+    - **Modelos:** Qwen3 4B en Q4_K_M y en Q8_0.
+    - **Objeto del cuento:** una llave oxidada.
+    - **Preguntas sobre el reglamento:** (a) ¿Cuánto paga un grupo de 30 alumnos con 3 profesores? (b) ¿Abre el planetario el 24 de junio? (c) Si veo las dos sesiones de la mañana seguidas, ¿a qué hora salgo de la segunda?
+    - **Experimento:** pega el reglamento entero en el chat y pregunta algo. ¿Cuánto tarda el primer token, comparado con una pregunta corta?
+
+??? abstract "Grupo 3"
+    - **Modelos:** Gemma 4 E2B y Gemma 4 E4B, los dos en Q4_K_M.
+    - **Objeto del cuento:** un reloj que va hacia atrás.
+    - **Preguntas sobre el reglamento:** (a) ¿Puede entrar un niño de 7 años solo a la cúpula? (b) ¿Puedo entrar si llego 5 minutos tarde a la sesión? (c) ¿Cuántas personas, como máximo, pueden ver las sesiones de un viernes?
+    - **Experimento:** la pregunta 4 del benchmark con **Think** activado y desactivado. Compara el tiempo total y los tokens generados.
+
+??? abstract "Grupo 4"
+    - **Modelos:** Qwen3 1.7B y Qwen3 4B, los dos en Q4_K_M.
+    - **Objeto del cuento:** una farola que habla.
+    - **Preguntas sobre el reglamento:** (a) ¿Cuánto paga una familia de cinco el primer miércoles de mes? (b) ¿Qué horario tiene un martes de julio? (c) ¿Qué pasa con un objeto perdido al cabo de un mes?
+    - **Experimento:** el cuento con **Top P** 0,5 y 1, a temperatura 1. ¿Qué cambia?
+
+??? abstract "Grupo 5"
+    - **Modelos:** Gemma 4 E4B y Qwen3 4B, los dos en Q4_K_M.
+    - **Objeto del cuento:** un mapa en blanco.
+    - **Preguntas sobre el reglamento:** (a) ¿Tiene tarifa de grupo una clase de 14 alumnos? (b) ¿Qué ocurre si un grupo llega 12 minutos tarde? (c) ¿Cuántas plazas hay para sillas de ruedas?
+    - **Experimento:** la pregunta 2 del benchmark con *Repeat Penalty* 1 y 1,5. ¿Cambia la lista?
+
+??? abstract "Grupo 6"
+    - **Modelos:** Qwen3 4B y Qwen3 8B, los dos en Q4_K_M.
+    - **Objeto del cuento:** una maleta sin dueño.
+    - **Preguntas sobre el reglamento:** (a) ¿Cuánto se ahorran seis personas con tarifa reducida frente a la general? (b) ¿Qué día de la semana está siempre cerrado? (c) ¿Cuál es la última sesión de un domingo?
+    - **Experimento:** limita la respuesta a 50 tokens (*Limit Response Length*) y repite las preguntas 1 y 5. ¿Qué pasa con las respuestas?
+
+??? abstract "Grupo 7"
+    - **Modelos:** Qwen3 0.6B y Qwen3 1.7B, los dos en Q8_0.
+    - **Objeto del cuento:** una semilla dorada.
+    - **Preguntas sobre el reglamento:** (a) ¿Cuánto paga un grupo de 25 alumnos con 2 profesores? (b) ¿Qué filtro tiene el telescopio solar? (c) ¿Cómo se reserva una visita de grupo?
+    - **Experimento:** pon como *System Prompt* «Responde siempre en inglés» y haz las preguntas 1 y 3. ¿Lo cumple siempre?
+
+??? abstract "Grupo 8"
+    - **Modelos:** Qwen3 8B en Q3_K_M y en Q4_K_M.
+    - **Objeto del cuento:** un espejo empañado.
+    - **Preguntas sobre el reglamento:** (a) ¿Puede ir un grupo escolar el 1 de enero? (b) ¿Cuánto pagan una persona de 70 años y su nieto de 12? (c) ¿A qué hora termina la sesión «El cielo de los íberos»?
+    - **Experimento:** activa *Structured Output* con un esquema JSON que tenga los campos `respuesta` (texto) y `seguro` (verdadero o falso), y haz las tres preguntas del reglamento. ¿Cumple el esquema?
+
+??? abstract "Grupo 9"
+    - **Modelos:** Qwen3 0.6B en Q4_K_M y en Q8_0.
+    - **Objeto del cuento:** una bicicleta sin frenos.
+    - **Preguntas sobre el reglamento:** (a) ¿Cuánto paga un grupo de 48 alumnos con 5 profesores? (b) ¿Qué hay que hacer con el móvil en la cúpula? (c) ¿Qué sesión tiene lengua de signos?
+    - **Experimento:** a temperatura 1, pide dos veces el cuento con una semilla (*Seed*) fija de 42 y otras dos sin semilla. ¿Qué observas?
 
 ## Material: las cinco preguntas del benchmark
 
@@ -77,20 +181,19 @@ Artículo 8. Objetos perdidos. Se guardan en la taquilla durante 30 días. Pasad
 al Ayuntamiento.
 ```
 
-**Las cinco preguntas sobre el reglamento:**
+## Validación en clase
 
-1. ¿Cuánto pagaría un grupo de 24 alumnos con 3 profesores?
-2. ¿Qué sesión es solo los fines de semana y a qué hora?
-3. ¿Con cuántos días de antelación hay que reservar para un grupo?
-4. ¿Qué día de junio cierra el planetario y por qué?
-5. ¿Qué sesión tiene interpretación en lengua de signos?
+Tendréis que enseñar al profesor, en vuestro equipo:
+
+- Uno de vuestros modelos cargado con el contexto que os diga, y la memoria estimada.
+- Una pregunta del benchmark en directo, con la velocidad que marca LM Studio.
+- El reglamento adjunto en el chat y una de vuestras preguntas respondida.
+- El resultado de vuestro experimento.
 
 ## Entregables
 
-- Capturas completas de los apartados 1, 2, 5 y 6.
+- Capturas completas de los apartados 1, 2, 5, 6 y 7.
 - La hoja de cálculo con las mediciones y la gráfica.
-- Las respuestas del apartado 4.
-- Las respuestas del apartado 5, con tu comprobación de cada una (¿acertó el modelo?).
-- Un análisis (máximo 250 palabras) que responda, **con tus cifras**: ¿qué modelo elegirías para tu equipo y para qué tarea? ¿Compensa la diferencia de calidad la diferencia de velocidad?
-
-**Defensa posible:** el profesor te pedirá que cargues uno de tus modelos con un contexto concreto y expliques en directo por qué cambia la memoria estimada, o que compares tus cifras con las de un compañero que haya usado el otro tipo de equipo del aula.
+- Los cuatro cuentos del apartado 4 y vuestra explicación.
+- Las respuestas del apartado 5 con vuestra comprobación de cada una.
+- Un análisis (máximo 250 palabras): ¿qué modelo elegiríais para vuestro equipo y para qué tarea, **con vuestras cifras**?

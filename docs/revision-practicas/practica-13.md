@@ -9,36 +9,125 @@ hide:
 
 **Módulo:** [13. Aplicaciones e ingeniería de prompts](../13-apps-prompts.md) · [Normas comunes de las prácticas](index.md)
 
-**Objetivo:** demostrar con tus propias pruebas cómo mejora una respuesta al mejorar el prompt, y aprender a verificar lo que dice una IA.
+!!! danger "Validación obligatoria en clase"
+    El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
 
-## Tu variante (escenario)
+**Objetivo:** demostrar con vuestras pruebas cómo mejora una respuesta al mejorar el prompt, y aprender a comprobar lo que dice una IA.
 
-| N.º | Escenario |
-|---|---|
-| 1 | Preparar un examen de Historia de 2.º de Bachillerato sobre un tema que elijas. |
-| 2 | Plan de entrenamiento de 8 semanas para correr 10 km, para alguien que nunca ha corrido. |
-| 3 | Menú semanal para una familia de cuatro con una persona celíaca y presupuesto ajustado. |
-| 4 | Guion de un vídeo de 60 segundos para promocionar las jornadas de puertas abiertas del centro. |
-| 5 | Comparativa de tres móviles de menos de 300 € para una persona mayor. |
-| 6 | Carta de reclamación por un vuelo cancelado. |
-| 7 | Plan de estudio para preparar el B2 de inglés en tres meses. |
-| 8 | Organizar una excursión de un día para un grupo de 25 alumnos. |
+## Ejemplo resuelto
 
-## Tareas
+**Escenario del ejemplo:** organizar la fiesta de fin de curso de 4.º de ESO. Lo resolvimos con dos asistentes: **Gemma 4 E2B** en LM Studio (local) y **Nemotron 3.5 Lightning** en la API de NVIDIA (en la nube). Los textos de las respuestas son reales; aquí solo se muestran trozos.
 
-1. **Prompt débil.** Escribe un prompt de una sola línea para tu escenario. Ejecútalo en un asistente (ChatGPT, Gemini, Claude o Copilot) y guarda la respuesta.
-2. **Prompt estructurado.** Reescríbelo con una de las estructuras del módulo (R-T-F, C-O-T o P-A-S). Debe incluir **contexto real tuyo** (tu centro, tu ciudad, tus restricciones de verdad), un **formato** concreto y al menos **una restricción**. Ejecútalo en el mismo asistente.
-3. **Meta-prompt.** Pide al asistente que te haga las preguntas que necesite y que después escriba él el mejor prompt para tu escenario. Contesta a sus preguntas y ejecuta el prompt que te proponga.
-4. **Dos asistentes.** Ejecuta tu mejor prompt en **otro asistente distinto** (uno de ellos puede ser un modelo local de LM Studio).
-5. **Tu rúbrica.** Define **cuatro criterios** para juzgar las respuestas de tu escenario (por ejemplo, «adaptado a mi presupuesto», «cifras verificables»…) y puntúa de 1 a 5 las cinco respuestas obtenidas en una tabla.
-6. **Verificación.** Elige **tres afirmaciones concretas** de las respuestas (un dato, una cifra, un nombre, una norma) y compruébalas en una fuente fiable. Indica la fuente y si la IA acertó.
+**1. Prompt débil.**
+
+> Organiza una fiesta de fin de curso.
+
+La respuesta fue una guía genérica de 3 400 caracteres: «Fase 1: Planificación Inicial», ideas de temas («noche de gala, fiesta retro…»)… Nada que sirva para **nuestro** instituto: no sabe cuántos somos, ni cuándo, ni con qué dinero.
+
+**2. Prompt estructurado (R-T-F con restricciones).**
+
+> **Rol:** actúa como coordinador de actividades de un instituto público.
+> **Tarea:** organiza la fiesta de fin de curso de 4.º de ESO del IES Valdemora del Río (60 alumnos, 4 tutores) para el viernes 18 de junio de 2027, de 17.00 a 20.00 h, en el patio del centro.
+> **Formato:** una tabla con el horario minuto a minuto, otra con el presupuesto por partidas y una lista de tareas con responsable (alumnado, tutores o AMPA).
+> **Restricciones:** presupuesto máximo de 300 €; nada de alcohol; la música debe acabar a las 19.45 h por las normas del ayuntamiento; tiene que haber una alternativa si llueve.
+
+Ahora la respuesta tenía las tres partes pedidas: un horario de 17.00 a 20.00 h con «Música y cierre musical» hasta las 19.45 h, un presupuesto de cinco partidas que suma exactamente 300 € y un plan para la lluvia («se trasladará al Salón de Actividades»).
+
+**3. Meta-prompt.** Le pedimos: «Quiero que me ayudes a organizar la fiesta de fin de curso de mi instituto. Antes de nada, hazme todas las preguntas que necesites (como máximo 8). Después, cuando te conteste, escribe tú el mejor prompt posible para conseguirlo». Hizo 8 preguntas (presupuesto, asistentes, ambiente, fecha…). Al contestarlas, escribió un prompt de cuatro secciones que **añadía algo que se nos había olvidado**: la entrega de diplomas.
+
+!!! warning "Un fallo nuestro"
+    La primera vez pegamos **toda** su respuesta, con el «¡Muchas gracias por la información!» incluido, y el modelo contestó «¡Me parece un prompt excelente! Por favor, procede a ejecutarlo». Hay que copiar **solo el prompt**.
+
+**4. Otro asistente.** El mismo meta-prompt en Nemotron (NVIDIA) dio un plan más detallado: precio por persona de la comida (1,85 €), horario de 17.00 a 17.10 para la recepción, etc.
+
+**5. Rúbrica.** Nuestros cuatro criterios, puntuados de 1 a 5:
+
+| Respuesta | Adaptada a nuestros datos | Cumple las restricciones | Formato pedido | Cifras coherentes | Total |
+|---|---|---|---|---|---|
+| Prompt débil (Gemma) | 1 | 1 | 1 | — (no hay cifras) | 3 |
+| Estructurado (Gemma) | 4 | 5 | 5 | 5 | 19 |
+| Meta-prompt (Gemma) | 5 | 5 | 5 | 5 | 20 |
+| Meta-prompt (Nemotron) | 5 | 5 | 5 | 3 | 18 |
+
+**6. Verificación.** Comprobamos tres datos de las respuestas:
+
+1. **El presupuesto de Gemma (meta-prompt):** 30 + 120 + 50 + 40 + 35 + 25 = 300 €. **Correcto.**
+2. **El presupuesto de Nemotron:** 0 + 118 + 45 + 35 + 75 + 22 = 295 €, y 64 × 1,85 € = 118,40 €. **Correcto.**
+3. **Los diplomas de Nemotron:** «64 diplomas entregados en bloque (~30 seg cada uno)», en un hueco de 15 minutos. **Mal dos veces:** los diplomas son para los 60 alumnos, no para los tutores, y 64 × 30 s son 32 minutos, no 15.
+
+**Conclusión del ejemplo:** lo que más mejoró el resultado fueron los **datos concretos y las restricciones** (de 3 a 19 puntos). El meta-prompt añadió algo que habíamos olvidado. El modelo más grande escribió más, pero no se equivocó menos en las cuentas: siempre hay que comprobarlas.
+
+## Vuestra práctica
+
+Haced lo mismo que en el ejemplo con el **escenario de vuestro grupo**:
+
+1. **Prompt débil.** Un prompt de una sola línea. Ejecutadlo en un asistente (ChatGPT, Gemini, Claude, Copilot o un modelo de LM Studio) y guardad la respuesta.
+2. **Prompt estructurado.** Reescribidlo con R-T-F, C-O-T o P-A-S, con **datos reales vuestros**, un formato concreto y al menos **dos restricciones**, una de ellas la que indica vuestra tarjeta.
+3. **Meta-prompt.** Pedid al asistente que os haga preguntas y escriba él el mejor prompt. Contestad y ejecutad **solo el prompt** que os proponga.
+4. **Otro asistente.** Ejecutad vuestro mejor prompt en un asistente distinto.
+5. **Rúbrica.** Cuatro criterios vuestros y la tabla de puntuaciones de las cinco respuestas.
+6. **Verificación.** Tres afirmaciones concretas comprobadas, **al menos dos en una fuente externa fiable** (indicad el enlace).
+7. **La comprobación de vuestro grupo.** Haced la comprobación especial que indica vuestra tarjeta.
+
+## Lo específico de cada grupo
+
+??? abstract "Grupo 1"
+    - **Escenario:** preparar un examen de Historia de 2.º de Bachillerato sobre un tema que elijáis.
+    - **Restricción obligatoria:** el examen debe durar 90 minutos y tener exactamente tres partes.
+    - **Comprobación del grupo:** verificad **cinco fechas o nombres** del examen en vuestro libro de texto o en una enciclopedia, con la página o el enlace.
+
+??? abstract "Grupo 2"
+    - **Escenario:** plan de entrenamiento de 8 semanas para correr 10 km, para alguien que nunca ha corrido.
+    - **Restricción obligatoria:** solo tres días por semana y ninguna sesión de más de 45 minutos.
+    - **Comprobación del grupo:** pedid después al asistente que adapte el plan a alguien con una lesión de rodilla y buscad en una fuente sanitaria fiable si sus recomendaciones son prudentes.
+
+??? abstract "Grupo 3"
+    - **Escenario:** menú semanal para una familia de cuatro con una persona celíaca y presupuesto ajustado.
+    - **Restricción obligatoria:** máximo 110 € a la semana.
+    - **Comprobación del grupo:** elegid **tres productos** del menú y comprobad en la web de la Federación de Asociaciones de Celíacos de España (FACE) o en el etiquetado real si son aptos.
+
+??? abstract "Grupo 4"
+    - **Escenario:** guion de un vídeo de 60 segundos para promocionar las jornadas de puertas abiertas del centro.
+    - **Restricción obligatoria:** que lo puedan grabar dos alumnos con un móvil, sin música con derechos de autor.
+    - **Comprobación del grupo:** leed el guion en voz alta con un cronómetro. ¿Dura de verdad 60 segundos? Anotad el tiempo.
+
+??? abstract "Grupo 5"
+    - **Escenario:** comparativa de tres móviles de menos de 300 € para una persona mayor.
+    - **Restricción obligatoria:** pantalla de 6,5 pulgadas o más y a la venta hoy en España.
+    - **Comprobación del grupo:** buscad el **precio actual** de los tres móviles en dos tiendas reales y comparadlo con lo que dijo la IA.
+
+??? abstract "Grupo 6"
+    - **Escenario:** carta de reclamación por un vuelo cancelado.
+    - **Restricción obligatoria:** un vuelo de Madrid a Roma cancelado con dos días de aviso.
+    - **Comprobación del grupo:** buscad en el Reglamento (CE) 261/2004 o en la web de la Agencia Estatal de Seguridad Aérea (AESA) la **compensación** que corresponde a esa distancia y comparadla con la de la carta.
+
+??? abstract "Grupo 7"
+    - **Escenario:** plan de estudio para preparar el B2 de inglés en tres meses.
+    - **Restricción obligatoria:** cinco horas a la semana como máximo.
+    - **Comprobación del grupo:** comprobad en la web oficial de Cambridge English o de una Escuela Oficial de Idiomas **qué partes tiene el examen B2** y si el plan las cubre todas.
+
+??? abstract "Grupo 8"
+    - **Escenario:** organizar una excursión de un día para un grupo de 25 alumnos.
+    - **Restricción obligatoria:** salida y vuelta desde vuestro centro, en transporte público.
+    - **Comprobación del grupo:** comprobad en la web real de la compañía de transporte los **horarios y precios** que propuso la IA.
+
+??? abstract "Grupo 9"
+    - **Escenario:** plan para montar un huerto escolar en un patio de 20 m².
+    - **Restricción obligatoria:** presupuesto de 150 € y que se pueda cosechar antes de junio.
+    - **Comprobación del grupo:** comprobad en un calendario de siembra de una fuente fiable (un vivero, una cooperativa o el ministerio de agricultura) si las fechas de siembra propuestas valen para vuestra zona.
+
+## Validación en clase
+
+Tendréis que enseñar al profesor:
+
+- Las conversaciones abiertas en el asistente, con el prompt débil, el estructurado y el meta-prompt.
+- Una de las verificaciones, con la fuente abierta en el navegador.
+- El profesor ejecutará uno de vuestros prompts en otro asistente y le explicaréis para qué sirve cada parte.
 
 ## Entregables
 
 - Los cinco prompts.
-- Las cinco respuestas como **enlace compartido** de la conversación o **captura completa**.
-- La tabla de puntuaciones con tus criterios.
-- La verificación con sus fuentes.
-- Una conclusión (máximo 150 palabras) sobre qué parte del prompt mejoró más el resultado, apoyada en **tu** tabla.
-
-**Defensa posible:** el profesor ejecutará en clase uno de tus prompts en un asistente que tú no hayas usado y te pedirá que expliques para qué sirve cada parte del prompt.
+- Las cinco respuestas como enlace compartido o captura completa.
+- La tabla de puntuaciones con vuestros criterios.
+- La verificación con sus fuentes y la comprobación de vuestro grupo.
+- Una conclusión (máximo 150 palabras) apoyada en **vuestra** tabla.

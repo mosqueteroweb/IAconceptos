@@ -52,6 +52,7 @@ from pathlib import Path
 def descargar_libro(libro):
     ruta = "/".join(str(libro)[:-1]) + f"/{libro}/{libro}-0.txt"
     fuentes = [f"https://www.gutenberg.org/cache/epub/{libro}/pg{libro}.txt",
+               f"https://gutenberg.pglaf.org/cache/epub/{libro}/pg{libro}.txt",   # copias espejo, por si la principal falla
                f"https://gutenberg.pglaf.org/{ruta}",
                f"https://mirrors.xmission.com/gutenberg/{ruta}"]
     copia = Path(f"libro-{libro}.txt")
@@ -71,6 +72,7 @@ def descargar_libro(libro):
         if texto is None:
             sys.exit("No se ha podido descargar el libro. Comprueba el número y la conexión.")
         copia.write_text(texto, encoding="utf-8")   # la próxima vez no se descarga
+    texto = texto.replace("\r\n", "\n")   # algunas copias usan saltos de línea de Windows
     inicio = texto.index("\n", texto.index("START OF")) + 1
     fin = next((texto.index(m) for m in ("*** END OF", "End of the Project Gutenberg", "End of Project Gutenberg")
                 if m in texto), len(texto))

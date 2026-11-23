@@ -9,20 +9,110 @@ hide:
 
 **Módulo:** [16. Habilidades y conectores (MCP)](../16-habilidades-mcp.md) · [Normas comunes de las prácticas](index.md)
 
+!!! danger "Validación obligatoria en clase"
+    El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
+
 **Objetivo:** en la **parte A** escribirás una **habilidad**, un archivo de instrucciones que cambia de verdad cómo escribe un modelo. En la **parte B** darás **herramientas** a un modelo local de LM Studio con MCP: podrá mirar la hora y leer archivos de una carpeta, y comprobarás que **no puede** salir de ella.
 
 **Cuánto dura:** unas dos sesiones (una por parte).
 
-## Tu variante (el documento que la habilidad debe redactar)
+## Ejemplo resuelto
 
-| N.º | Documento |
-|---|---|
-| 1 | Convocatoria de una reunión de departamento. |
-| 2 | Nota informativa a las familias. |
-| 3 | Texto para el cartel de un evento del centro. |
-| 4 | Acta breve de una reunión. |
-| 5 | Correo de bienvenida a alumnado nuevo. |
-| 6 | Noticia para la web del centro. |
+**Documento del ejemplo:** una invitación a una exposición de trabajos del alumnado. Modelo: **Gemma 4 E2B** en LM Studio, con la habilidad pegada como *System Prompt*. Equipo: Mac con chip M2 Pro.
+
+**Petición de prueba** (la misma en las tres pruebas):
+
+> Redacta una invitación a la exposición de maquetas de Tecnología de 3.º de ESO: será el miércoles 14 de abril de 2027, de 16:30 a 19:00, en el gimnasio, y los alumnos explicarán sus proyectos a quien venga.
+
+**Sin habilidad**, el modelo dio **tres versiones** («Formal y completa», «Entusiasta», «Breve»), 300 palabras en total, con emojis, «¡Invitación a la Exposición…!», «Estimados padres, madres y comunidad educativa», horas «16:30» y una firma «[Nombre del Centro Educativo]». No cumplió **ninguna** de las 10 reglas.
+
+**La habilidad, versión 1:**
+
+??? example "SKILL.md del ejemplo (versión 1)"
+
+    ```markdown
+    ---
+    name: invitacion-exposicion-iesv
+    description: Redacta invitaciones a exposiciones y muestras de trabajos del alumnado del IES Valdemora del Río siguiendo la guía de estilo del Equipo Faro. Úsala siempre que pidan invitar a una exposición, muestra o feria del centro.
+    ---
+
+    # Invitación a una exposición (guía del Equipo Faro)
+
+    ## Instrucciones
+    1. Título en MAYÚSCULAS precedido de la etiqueta [IESV]. Ejemplo: «[IESV] EXPOSICIÓN DE FOTOGRAFÍA».
+    2. Saludo exacto, en una línea propia: «Hola, comunidad Valdemora:». Nunca «Estimados», «Queridas familias» ni otro saludo.
+    3. Fechas con el día de la semana y el mes en números romanos: «jueves, 12-III-2026». Meses: enero I, febrero II, marzo III, abril IV, mayo V, junio VI, julio VII, agosto VIII, septiembre IX, octubre X, noviembre XI, diciembre XII.
+    4. Horas en formato de 24 horas, con punto y «h»: «17.30 h». Nunca «17:30» ni «5 de la tarde».
+    5. El cuerpo tiene exactamente tres apartados. Cada uno empieza con el símbolo ◆ seguido de un título de una o dos palabras en negrita.
+    6. Máximo 120 palabras sin contar el título ni la firma.
+    7. Ningún signo de exclamación (ni ¡ ni !).
+    8. Lenguaje inclusivo con sustantivos colectivos: «el alumnado», «el profesorado», «las familias». Nunca barras (os/as), arrobas ni la letra «e» (alumnes).
+    9. Firma exacta: «Equipo Faro · IES Valdemora del Río».
+    10. Última línea exacta: «¿Dudas? faro@iesvaldemora.example».
+
+    ## Ejemplo
+    [IESV] EXPOSICIÓN DE FOTOGRAFÍA
+    Hola, comunidad Valdemora:
+    ◆ **Qué** El alumnado de 1.º de Bachillerato presenta sus fotografías sobre el barrio.
+    ◆ **Cuándo** Del lunes, 8-III-2027 al viernes, 12-III-2027, de 10.00 h a 14.00 h, en la biblioteca.
+    ◆ **Quién** La entrada es libre para las familias y el profesorado.
+    Equipo Faro · IES Valdemora del Río
+    ¿Dudas? faro@iesvaldemora.example
+
+    ## Antes de responder, comprueba
+    - [ ] [IESV] y título en mayúsculas
+    - [ ] Saludo exacto
+    - [ ] Fechas con mes en romanos
+    - [ ] Horas «00.00 h»
+    - [ ] Tres apartados con ◆ y título en negrita
+    - [ ] 120 palabras o menos
+    - [ ] Ningún signo de exclamación
+    - [ ] Colectivos, sin barras ni «e»
+    - [ ] Firma exacta
+    - [ ] Última línea exacta
+    ```
+
+**Con la habilidad (versión 1):**
+
+```text
+[IESV] EXPOSICIÓN DE MAQUETAS
+Hola, comunidad Valdemora:
+◆ **Qué** El alumnado de 3.º de ESO muestra sus maquetas de Tecnología.
+◆ **Cuándo** El miércoles, 14-IV-2027, de 16.30 h a 19.00 h, en el gimnasio.
+◆ **Cómo** Los alumnos explicarán sus proyectos a quien asista.
+Equipo Faro · IES Valdemora del Río
+¿Dudas? faro@iesvaldemora.example
+```
+
+**Comprobación punto por punto:**
+
+| Regla | Sin habilidad | Versión 1 | Versión 2 |
+|---|---|---|---|
+| 1. Título con [IESV] en mayúsculas | No | Sí | Sí |
+| 2. Saludo exacto | No | Sí | Sí |
+| 3. Fecha con mes en romanos | No | Sí (14-IV-2027) | Sí |
+| 4. Horas «16.30 h» | No | Sí | Sí |
+| 5. Tres apartados con ◆ y negrita | No | Sí | Sí |
+| 6. Máximo 120 palabras | No (unas 300) | Sí (unas 55) | Sí |
+| 7. Sin exclamaciones | No | Sí | Sí |
+| 8. Colectivos | No | **No** («Los alumnos explicarán…») | Sí |
+| 9. Firma exacta | No | Sí | Sí |
+| 10. Última línea | No | Sí | Sí |
+| **Total** | **0/10** | **9/10** | **10/10** |
+
+**La mejora (versión 2).** Falló la regla 8 en el tercer apartado, porque la petición decía «los alumnos». Añadimos a la regla 8: «Prohibido escribir "los alumnos", "los profesores", "los padres" o "los estudiantes": cámbialos siempre por "el alumnado", "el profesorado" o "las familias", también en los apartados», y lo mismo en la lista de comprobación. Resultado:
+
+```text
+[IESV] EXPOSICIÓN DE MAQUETAS
+Hola, comunidad Valdemora:
+◆ **Qué** El alumnado de 3.º de ESO presenta sus maquetas de Tecnología.
+◆ **Cuándo** El miércoles, 14-IV-2027, de 16.30 h a 19.00 h, en el gimnasio.
+◆ **Cómo** El alumnado explicará sus proyectos a quien asista.
+Equipo Faro · IES Valdemora del Río
+¿Dudas? faro@iesvaldemora.example
+```
+
+**Parte B en el ejemplo.** La configuración es la de los pasos 1 a 7 de abajo, sin cambios. Para la pregunta combinada «¿Cuántos días faltan para la salida al planetario?», el modelo tiene que usar **dos herramientas**: `get_current_time` (del servidor `reloj`) y `read_text_file` sobre `calendario_trimestre.txt` (del servidor `archivos`), y luego restar las fechas. Cada llamada abre una ventana de permiso con el nombre de la herramienta y sus datos. Al pedir `secreto.txt`, el servidor de archivos debe responder con un error de acceso denegado, porque está fuera de la carpeta permitida. Lo que diga el modelo después (si explica el error o se inventa el contenido) es justo lo que tenéis que observar.
 
 ---
 
@@ -55,7 +145,7 @@ description: [Qué documento redacta, para quién y cuándo debe usarse.]
 2. [...]
 
 ## Ejemplo
-[Un documento completo de tu variante que cumpla TODAS las reglas]
+[Un documento completo del tipo de vuestro grupo que cumpla TODAS las reglas]
 
 ## Antes de entregar, comprueba
 - [ ] [Regla 1]
@@ -64,12 +154,12 @@ description: [Qué documento redacta, para quién y cuándo debe usarse.]
 
 ### Pasos
 
-1. **Lee la guía de estilo** del IES Valdemora del Río, que está [más abajo](#material-la-guia-de-estilo). Tiene 10 reglas, algunas muy raras a propósito: ningún modelo las sigue por casualidad.
+1. **Lee la guía de estilo** del IES Valdemora del Río, que está [más abajo](#material-la-guia-de-estilo). Tiene 10 reglas, algunas muy raras a propósito. Vuestra habilidad tiene que cumplir además **la regla 11 de vuestro grupo** (en [vuestra tarjeta](#lo-especifico-de-cada-grupo)), y redactar **el documento de vuestro grupo**.
 2. **Crea la carpeta y el archivo.** Crea una carpeta con el nombre de tu habilidad (por ejemplo `nota-familias-iesv`). Dentro, crea un archivo de texto llamado `SKILL.md`: en Mac, con TextEdit (*Formato → Convertir a texto normal*) o VS Code; en Windows, con el Bloc de notas o VS Code. Al guardar, comprueba que se llama `SKILL.md` y no `SKILL.md.txt`.
 3. **Escribe la habilidad** con el esqueleto de arriba:
-    - Una instrucción por cada una de las 10 reglas. Explícalas para que no haya dudas (por ejemplo, para la regla 3, escribe la lista de los meses en números romanos).
+    - Una instrucción por cada una de las 11 reglas (las 10 de la guía y la de vuestro grupo). Explícalas para que no haya dudas (por ejemplo, para la regla 3, escribe la lista de los meses en números romanos).
     - **Un ejemplo completo** de tu documento que cumpla todas las reglas. Es la parte que más ayuda al modelo.
-    - Una **lista de comprobación** final con las 10 reglas.
+    - Una **lista de comprobación** final con las 11 reglas.
 4. **Prepara la prueba.** Inventa los datos de tu documento (fecha, hora, lugar, motivo…) y escribe **una sola petición** con esos datos, por ejemplo: «Redacta una nota a las familias: el viernes 29 de enero de 2027 el alumnado de 2.º B va al planetario a las 11.30, cuesta 2,75 € y hay que traer la autorización firmada». Usarás **la misma petición** en todas las pruebas.
 5. **Prueba sin habilidad.** Abre un chat nuevo en un asistente y pega tu petición. Guarda la respuesta.
 6. **Prueba con habilidad.** Elige **una** de estas formas:
@@ -186,10 +276,7 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 
 6. **Activa las herramientas.** En la pestaña **Integrations** aparecen ahora `mcp/reloj` y `mcp/archivos`. Activa los dos interruptores. Si alguno da error, mira la ayuda del final.
 7. **Carga un modelo que sepa usar herramientas.** Son los que llevan el icono del martillo. Recomendados: **Qwen3 4B** en el Mac y **Qwen3 8B** en el PC. Cárgalo con un contexto de al menos 8 192 tokens.
-8. **Haz tres preguntas que necesiten las herramientas**, cada una en un chat nuevo:
-    1. Una que solo necesite el reloj (por ejemplo, «¿Qué día de la semana es hoy?»).
-    2. Una que solo necesite los archivos (por ejemplo, «¿Qué puestos del aula tienen problemas y cuáles son?»).
-    3. Una que **combine las dos** (por ejemplo, «¿Cuántos días faltan para la salida al planetario?»).
+8. **Haz las tres preguntas de vuestro grupo** (en [vuestra tarjeta](#lo-especifico-de-cada-grupo)), cada una en un chat nuevo.
 
     Cada vez que el modelo quiera usar una herramienta, LM Studio mostrará una **ventana de permiso** con el nombre de la herramienta y sus datos. Léela, **captúrala** y pulsa permitir. Comprueba tú cada respuesta mirando los archivos y el calendario.
 
@@ -206,6 +293,80 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 | El modelo tarda mucho | Normal la primera vez: `uvx` y `npx` descargan los servidores. Las siguientes veces va más rápido. |
 
 ---
+
+## Lo específico de cada grupo
+
+??? abstract "Grupo 1"
+    - **Documento de la habilidad:** Convocatoria de una reunión de departamento.
+    - **Regla 11 (solo vuestro grupo):** Incluye siempre una línea «Orden del día:» con exactamente tres puntos numerados.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Qué día de la semana es hoy?
+        2. ¿Cuántos equipos del aula están operativos?
+        3. ¿Cuántos días faltan para la entrega del trabajo de Historia del Arte?
+
+??? abstract "Grupo 2"
+    - **Documento de la habilidad:** Nota informativa a las familias.
+    - **Regla 11 (solo vuestro grupo):** Indica siempre, en negrita, la fecha límite para responder o entregar algo.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Qué hora es ahora en Madrid?
+        2. ¿Qué incidencia tiene el puesto 5?
+        3. ¿Cuántas semanas faltan para la jornada de puertas abiertas?
+
+??? abstract "Grupo 3"
+    - **Documento de la habilidad:** Texto para el cartel de un evento del centro.
+    - **Regla 11 (solo vuestro grupo):** El cartel tiene como máximo 40 palabras en total (esta regla sustituye a la 6).
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Qué fecha es hoy?
+        2. ¿Cuánta memoria suman todos los PC del aula?
+        3. ¿Cuántos días han pasado desde la incidencia del 9 de diciembre de 2026?
+
+??? abstract "Grupo 4"
+    - **Documento de la habilidad:** Acta breve de una reunión.
+    - **Regla 11 (solo vuestro grupo):** La lista de asistentes va en orden alfabético por el primer apellido.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿En qué mes estamos?
+        2. ¿Qué puestos son Mac y no están operativos?
+        3. ¿Cuántos días faltan para el fin del trimestre?
+
+??? abstract "Grupo 5"
+    - **Documento de la habilidad:** Correo de bienvenida al alumnado nuevo.
+    - **Regla 11 (solo vuestro grupo):** Incluye siempre el enlace https://iesvaldemora.example/bienvenida en el segundo apartado.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Qué día de la semana será el 26 de marzo de 2027?
+        2. ¿Cuántos puestos hay en el aula en total?
+        3. ¿Faltan más o menos de 30 días para la salida al planetario?
+
+??? abstract "Grupo 6"
+    - **Documento de la habilidad:** Noticia para la web del centro.
+    - **Regla 11 (solo vuestro grupo):** La primera frase del cuerpo tiene como máximo 20 palabras y dice qué pasó, quién y cuándo.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Qué hora es?
+        2. Haz una lista con todos los archivos de la carpeta y lo que contiene cada uno.
+        3. ¿Cuántos días duran los exámenes de evaluación?
+
+??? abstract "Grupo 7"
+    - **Documento de la habilidad:** Aviso de un cambio de horario.
+    - **Regla 11 (solo vuestro grupo):** El horario antiguo se escribe tachado (~~así~~) y el nuevo, en negrita.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Es hoy fin de semana?
+        2. ¿Cuál es la incidencia más reciente y qué recomienda?
+        3. ¿Cuántos días pasaron entre la primera y la última incidencia?
+
+??? abstract "Grupo 8"
+    - **Documento de la habilidad:** Felicitación de fin de trimestre.
+    - **Regla 11 (solo vuestro grupo):** El cuerpo termina con una cita breve de un autor español, entre comillas latinas «» y con su nombre.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Qué día es hoy?
+        2. ¿Cuántos Mac y cuántos PC hay en el aula?
+        3. ¿Cuál es la próxima actividad del calendario a partir de hoy?
+
+??? abstract "Grupo 9"
+    - **Documento de la habilidad:** Recordatorio para entregar la documentación de la matrícula.
+    - **Regla 11 (solo vuestro grupo):** Los documentos que hay que entregar van en una lista con casillas ☐.
+    - **Preguntas para el modelo con herramientas:**
+        1. ¿Qué hora es en Madrid?
+        2. ¿Cuánta memoria tiene el puesto 7 y qué problema tiene?
+        3. ¿Cuántos días hay entre el inicio de las clases y la salida al planetario?
 
 ## Material: la guía de estilo
 
@@ -261,6 +422,15 @@ puesto,equipo,memoria_gb,estado
 - 15-12-2026: la red va lenta al descargar modelos por la tarde. Descargar por la mañana.
 ```
 
+## Validación en clase
+
+Tendréis que enseñar al profesor, en vuestro equipo:
+
+- La habilidad funcionando: vuestra petición con y sin ella, y la tabla de comprobación.
+- LM Studio con `mcp/reloj` y `mcp/archivos` activados.
+- Una de vuestras preguntas en directo, con su ventana de permiso.
+- El intento de leer `secreto.txt`.
+
 ## Entregables
 
 **Parte A:**
@@ -279,4 +449,3 @@ puesto,equipo,memoria_gb,estado
 - El error que encontraste (apartado 10).
 - Una reflexión (máximo 200 palabras): ¿qué riesgos tendría dar al modelo acceso a tu carpeta personal entera o a tu correo? ¿Para qué sirve la ventana de permiso?
 
-**Defensa posible:** el profesor añadirá una regla nueva a la guía de estilo y tendrás que incorporarla a tu habilidad y probarla en directo, o te pedirá que limites el servidor de archivos a otra carpeta.
