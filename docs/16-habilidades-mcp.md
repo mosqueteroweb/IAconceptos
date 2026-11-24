@@ -104,6 +104,8 @@ Se combinan: el conector da las manos y la habilidad enseña a usarlas bien.
 
 ## Práctica
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 16](practicas/practica-16.md).
+
 === ":material-cursor-default-click: Sin código: conectores en tu asistente"
 
     1. En Claude, ChatGPT o Gemini, busca el apartado de **conectores** o **aplicaciones** en la configuración.
@@ -136,6 +138,9 @@ Se combinan: el conector da las manos y la habilidad enseña a usarlas bien.
     6. Desactiva el servidor y repite la pregunta. ¿Qué responde ahora el modelo?
 
     En el [directorio de servidores MCP](https://github.com/modelcontextprotocol/servers) hay muchos más: acceso a archivos, búsqueda web, bases de datos, GitHub… Algunos tienen un botón **Add to LM Studio** que hace todo el paso 3 por ti.
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 16: Habilidades y conectores](practicas/practica-16.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 

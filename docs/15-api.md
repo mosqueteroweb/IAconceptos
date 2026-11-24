@@ -34,6 +34,8 @@ Para probar una API sin programar se usan **clientes HTTP** como **[Postman](htt
 
 ## 2. Práctica: tu propia API en LM Studio
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 15](practicas/practica-15.md).
+
 La forma más sencilla de empezar es con un modelo **en tu ordenador**: no hace falta cuenta, ni clave, ni tarjeta, y no cuesta nada.
 
 1. En [LM Studio](14-ia-local.md), carga un modelo pequeño (por ejemplo, Gemma 4 E2B).
@@ -161,6 +163,9 @@ Los proveedores también ofrecen **librerías oficiales** (SDK) para JavaScript,
 
 !!! example "Actividad"
     En Postman, crea una colección con tres peticiones a tu LM Studio: listar modelos, una pregunta con instrucciones de sistema y una conversación de tres turnos con historial. Después cambia la temperatura a 0 y a 1,5 en la misma pregunta. Si tienes clave de Gemini, repite la segunda petición contra Google usando su endpoint compatible con OpenAI.
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 15: Tu agente, tus APIs](practicas/practica-15.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 

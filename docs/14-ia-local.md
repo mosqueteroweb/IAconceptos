@@ -237,6 +237,9 @@ Su **biblioteca** ([ollama.com/library](https://ollama.com/library)) ofrece los 
 
 Por debajo, ambos usan **[llama.cpp](https://github.com/ggml-org/llama.cpp)**, el motor de código abierto que hizo posible la IA local. Otras alternativas: **Jan** (código abierto, parecido a LM Studio), **GPT4All** o, en el móvil, **Google AI Edge Gallery**.
 
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 14: Tu laboratorio de IA local](practicas/practica-14.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
+
 ## Para ampliar
 
 <div class="recursos" markdown>

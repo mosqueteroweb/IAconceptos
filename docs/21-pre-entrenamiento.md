@@ -84,6 +84,8 @@ Se vigila la pérdida con textos que el modelo nunca ve durante el entrenamiento
 
 ## Práctica
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 21](practicas/practica-21.md).
+
 **Objetivo:** pre-entrenar **desde cero** un nano-modelo de lenguaje de unos 3 millones de parámetros con el texto completo de *Don Quijote de la Mancha*. Su único universo será el castellano de Cervantes. Construirás el tokenizador, la arquitectura y el bucle de entrenamiento: los mismos pasos que un LLM gigante.
 
 [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mosqueteroweb/IAconceptos/blob/main/notebooks/nanomodelo-quijote.ipynb)
@@ -126,6 +128,9 @@ No tiene sentido, pero ha aprendido **sola**, sin que nadie se lo explique, la o
 
 !!! info "¿Y en LM Studio?"
     Este nano-modelo usa una arquitectura casera, así que no se puede abrir en LM Studio: esas aplicaciones solo cargan arquitecturas conocidas (Llama, Qwen, Gemma…). Para llegar hasta ahí habría que construirlo con una arquitectura estándar de Hugging Face, como hacen los recursos del [módulo 22](22-crear-llm.md#para-ampliar).
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 21: Tu nano-modelo](practicas/practica-21.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 

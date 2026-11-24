@@ -79,6 +79,8 @@ Existen incluso modelos **entrenados directamente con muy pocos bits**, como Bit
 
 ## Práctica
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 19](practicas/practica-19.md).
+
 **Objetivo:** cuantizar un modelo pequeño ([Qwen3-0.6B](https://huggingface.co/Qwen/Qwen3-0.6B), de Alibaba, con licencia Apache 2.0) a 8, 4 y 2 bits, y comparar tamaño, velocidad y respuestas.
 
 === ":material-google: Con Google Colab"
@@ -124,6 +126,9 @@ Tres lecciones:
 1. **Q4_K_M ocupa un tercio** y es **más rápido**; Q2_K, menos de una cuarta parte.
 2. **Q8_0 es prácticamente idéntico** al original: la perplejidad apenas cambia en la segunda cifra decimal. Q4_K_M empeora un 10 %, cambia la redacción y comete una falta de ortografía (*dependir*). **Q2_K se ha roto**: su perplejidad se multiplica por 15. Con 600 millones de parámetros, 2 bits son demasiado pocos.
 3. Y una sorpresa: el **original** se equivoca («liberando dióxido de carbono») y la versión Q4 acierta («oxígeno»). Un modelo tan pequeño es poco fiable en cualquier versión, y la cuantización solo **altera al azar** qué errores comete. Para comparar calidad de verdad hacen falta muchas preguntas, no una.
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 19: Cuantizar y medir](practicas/practica-19.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 

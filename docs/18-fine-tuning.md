@@ -108,6 +108,8 @@ Lo descrito hasta ahora es **ajuste supervisado** (*SFT*, *Supervised Fine-Tunin
 
 ## Práctica
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 18](practicas/practica-18.md).
+
 **Objetivo:** ajustar un modelo pequeño para que responda **siempre de usted**, con un tono formal y cortés, aunque le hables de tú y de forma coloquial.
 
 **Datos:** [asistente-formal.jsonl](descargas/asistente-formal.jsonl) (60 ejemplos en formato de chat, preparados para este curso). Ábrelo con un editor de texto para ver cómo son.
@@ -143,6 +145,9 @@ Lo descrito hasta ahora es **ajuste supervisado** (*SFT*, *Supervised Fine-Tunin
 
 !!! info "Para quien programa"
     El *fine-tuning* también se hace con código: [Unsloth](https://github.com/unslothai/unsloth) (la librería sobre la que se construye Studio), [Axolotl](https://github.com/axolotl-ai-cloud/axolotl) (configuración en archivos YAML) o TRL de Hugging Face. Son las herramientas que se usan en empresas y en investigación.
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 18: Un modelo con estilo propio](practicas/practica-18.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 

@@ -142,6 +142,9 @@ Hay muchas «fórmulas» con siglas. Todas dicen lo mismo con otro orden; elige 
 !!! example "Actividad"
     Elige una tarea real de tu trabajo o tus estudios. Escribe primero un prompt de una línea y guarda la respuesta. Después reescríbelo con la estructura R-T-F, añade un ejemplo y una restricción, y compara. Por último, pídele a la IA que mejore tu prompt y prueba su versión. ¿Cuál ha funcionado mejor?
 
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 13: El laboratorio de prompts](practicas/practica-13.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
+
 ## Para ampliar
 
 <div class="recursos" markdown>

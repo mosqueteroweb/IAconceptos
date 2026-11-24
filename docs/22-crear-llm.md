@@ -48,6 +48,8 @@ Es exactamente como mejoran los grandes modelos comerciales, a otra escala.
 
 ## 3. Proyecto final: Chef-bot
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 22](practicas/practica-22.md).
+
 **Objetivo:** un asistente llamado **Chef-bot** que, con la lista de ingredientes que tienes en la nevera, propone **una receta sencilla en español**, con nombre, pasos breves y tiempo de preparación. No es un chat general: es un especialista.
 
 **Componentes:**
@@ -119,6 +121,9 @@ Si te pica la curiosidad y sabes (o quieres aprender) programar, hay recursos ex
 - **El libro de Sebastian Raschka** *Build a Large Language Model (From Scratch)* y su repositorio, que incluye implementaciones completas de modelos reales como OLMo 3, Qwen3 o Gemma 3, en un solo cuaderno.
 - **RustGPT**: un LLM escrito en Rust **sin ninguna librería** de IA, ni siquiera PyTorch. Ideal para ver que no hay magia: solo multiplicaciones de matrices.
 - **tiny_llm**: otro LLM mínimo y didáctico para estudiar su código.
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 22: Proyecto final: vuestro propio modelo](practicas/practica-22.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 

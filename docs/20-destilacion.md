@@ -62,6 +62,8 @@ El estudiante **rara vez iguala al profesor en todo**. Suele acercarse mucho en 
 
 ## Práctica
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 20](practicas/practica-20.md).
+
 **Objetivo:** un profesor (DistilBERT, 67 millones de parámetros) ya entrenado para clasificar reseñas de cine en inglés como positivas o negativas enseña a un estudiante (BERT-tiny, 4,4 millones de parámetros) que todavía no sabe nada. ¿Puede el profesor sustituir el trabajo de las personas que etiquetan datos?
 
 [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/mosqueteroweb/IAconceptos/blob/main/notebooks/destilacion.ipynb)
@@ -102,6 +104,9 @@ Medido en un Mac mini M2 Pro. En Colab las cifras serán parecidas, aunque varí
 
 !!! question "Para experimentar"
     Cambia la `TEMPERATURA` del cuaderno a 1, 4 y 8 y vuelve a ejecutar los pasos 3 a 5. ¿Con cuál aprende mejor el estudiante? ¿Por qué crees que una temperatura demasiado alta puede empeorar el resultado?
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 20: Destila tu propio modelo](practicas/practica-20.md)**. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 
