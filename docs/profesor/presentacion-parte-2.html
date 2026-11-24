@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso: parte 2</title>
+<meta name="robots" content="noindex">
+<style>
+:root {
+  --fondo: #f7f7f5; --papel: #ffffff; --texto: #1c1d21; --suave: #5f6370; --linea: #e3e3df;
+  --p1: #2f6fdf; --p1-claro: #e8f0fd; --p2: #7a4fd6; --p2-claro: #f0eafc; --ok: #1f9d55; --ok-claro: #e5f6ec;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #15161a; --papel: #1e2026; --texto: #ececef; --suave: #a3a7b3; --linea: #30333b;
+    --p1: #7aa7ff; --p1-claro: #1c2a45; --p2: #b494ff; --p2-claro: #2a2142; --ok: #4cc785; --ok-claro: #17301f;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--fondo); color: var(--texto);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+a { color: inherit; }
+
+:root { --c: var(--p2); --cc: var(--p2-claro); }
+html, body { height: 100%; overflow: hidden; }
+.pase { height: 100%; display: flex; align-items: center; justify-content: center; padding: 12px; }
+.diapo { display: none; width: min(100%, calc((100vh - 70px) * 16 / 9)); aspect-ratio: 16 / 9;
+  background: var(--papel); border: 1px solid var(--linea); border-radius: 18px; container-type: inline-size;
+  box-shadow: 0 6px 30px rgba(0,0,0,.08); overflow: hidden; }
+.diapo.activa { display: block; }
+.lienzo { height: 100%; padding: 4.5cqw 5cqw; display: flex; flex-direction: column; border-top: 1.1cqw solid var(--c); }
+.etq { color: var(--c); font-weight: 700; font-size: 1.5cqw; text-transform: uppercase; letter-spacing: .08em; margin: 0; }
+h1 { font-size: 4.4cqw; margin: 1cqw 0 2.5cqw; line-height: 1.1; }
+.indice { columns: 2; column-gap: 4cqw; margin: 0; padding: 0; list-style: none; font-size: 1.9cqw; }
+.indice li { break-inside: avoid; margin-bottom: 1cqw; }
+.indice a { text-decoration: none; }
+.indice b { display: inline-block; min-width: 3.2cqw; color: var(--c); }
+header { display: flex; align-items: center; gap: 1.8cqw; }
+.num { flex: none; width: 6cqw; height: 6cqw; border-radius: 1.4cqw; background: var(--c); color: #fff;
+  font-weight: 800; font-size: 3.2cqw; display: flex; align-items: center; justify-content: center; }
+h2 { font-size: 3.2cqw; margin: 0; line-height: 1.1; }
+.pract { margin-left: auto; flex: none; font-size: 1.4cqw; font-weight: 600; color: var(--c); background: var(--cc);
+  padding: .6cqw 1.2cqw; border-radius: 99px; }
+.idea { font-size: 2.05cqw; color: var(--suave); font-style: italic; margin: 1.6cqw 0 2.2cqw; padding-left: 1.4cqw;
+  border-left: .5cqw solid var(--c); }
+ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.3cqw 3cqw; align-content: start; flex: 1; }
+ul.dos { grid-template-columns: 1fr 1fr; }
+ul li { display: flex; align-items: center; gap: 1.4cqw; font-size: 2.05cqw; font-weight: 600; line-height: 1.2;
+  background: var(--cc); border-radius: 1.2cqw; padding: 1.1cqw 1.4cqw; }
+ul.una li { font-size: 2.4cqw; }
+ul .ico { font-size: 2.6cqw; flex: none; }
+.act { margin: 1.6cqw 0 0; font-size: 1.6cqw; color: var(--suave); }
+.mando { position: fixed; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; align-items: center;
+  gap: 10px; font-size: .9rem; color: var(--suave); }
+.mando button, .mando a { font: inherit; background: var(--papel); color: var(--texto); border: 1px solid var(--linea);
+  border-radius: 9px; padding: 5px 12px; cursor: pointer; text-decoration: none; }
+@media print {
+  html, body { height: auto; overflow: visible; }
+  .pase { display: block; padding: 0; }
+  .diapo { display: block; width: 100%; page-break-after: always; box-shadow: none; margin: 0 0 8px; }
+  .mando { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="pase">
+
+<section class="diapo portada" id="inicio">
+  <div class="lienzo">
+    <p class="etq">IA de cero a modelo propio · repaso del profesor</p>
+    <h1>Segunda parte: usar y crear modelos</h1>
+    <ol class="indice"><li><a href="#m12"><b>12</b> Inferencia: cómo responde un modelo</a></li><li><a href="#m13"><b>13</b> Aplicaciones e ingeniería de prompts</a></li><li><a href="#m14"><b>14</b> IA en tu ordenador: LM Studio y Ollama</a></li><li><a href="#m15"><b>15</b> Usar modelos desde tus programas: la API</a></li><li><a href="#m16"><b>16</b> Habilidades y conectores (MCP)</a></li><li><a href="#m17"><b>17</b> Agentes y orquestadores</a></li><li><a href="#m18"><b>18</b> Fine-tuning: especializar un modelo</a></li><li><a href="#m19"><b>19</b> Cuantización: modelos más ligeros</a></li><li><a href="#m20"><b>20</b> Destilación: un profesor grande para un estudiante pequeño</a></li><li><a href="#m21"><b>21</b> Pre-entrenamiento: el nacimiento de un modelo</a></li><li><a href="#m22"><b>22</b> Crea tu propio modelo</a></li></ol>
+  </div>
+</section>
+<section class="diapo" id="m12">
+  <div class="lienzo">
+    <header><span class="num">12</span><h2>Inferencia: cómo responde un modelo</h2></header>
+    <p class="idea">Usar un modelo no lo cambia: genera token a token, y el muestreo decide cuánto se arriesga.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🔁</span><span>Entrenar frente a usar</span></li><li><span class="ico" aria-hidden="true">🧩</span><span>Tokens</span></li><li><span class="ico" aria-hidden="true">📍</span><span>Embeddings</span></li><li><span class="ico" aria-hidden="true">🧠</span><span>Parámetros</span></li><li><span class="ico" aria-hidden="true">🎲</span><span>El muestreo</span></li><li><span class="ico" aria-hidden="true">⏱️</span><span>Dos fases: prefill y decodificación</span></li><li><span class="ico" aria-hidden="true">📈</span><span>Benchmarking</span></li><li><span class="ico" aria-hidden="true">🗺️</span><span>Dónde se hace la inferencia</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Benchmark propio: un modelo en dos cuantizaciones, cinco preguntas, TTFT y tok/s en una hoja.</p>
+  </div>
+</section>
+<section class="diapo" id="m13">
+  <div class="lienzo">
+    <header><span class="num">13</span><h2>Aplicaciones e ingeniería de prompts</h2><span class="pract">Práctica evaluable 13</span></header>
+    <p class="idea">Un buen prompt da rol, tarea, contexto, ejemplos, formato y límites; y siempre se verifica el resultado.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🚪</span><span>Tres formas de usar un modelo</span></li><li><span class="ico" aria-hidden="true">🗺️</span><span>El mapa de aplicaciones</span></li><li><span class="ico" aria-hidden="true">🔓</span><span>Abierto no siempre es libre</span></li><li><span class="ico" aria-hidden="true">🧱</span><span>Las seis piezas de un prompt</span></li><li><span class="ico" aria-hidden="true">🔤</span><span>Fórmulas: R-T-F, C-O-T, P-A-S</span></li><li><span class="ico" aria-hidden="true">↔️</span><span>Antes y después</span></li><li><span class="ico" aria-hidden="true">🛠️</span><span>Técnicas</span></li><li><span class="ico" aria-hidden="true">🚫</span><span>Errores frecuentes</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Reescribir un prompt real con R-T-F, un ejemplo y una restricción, y comparar.</p>
+  </div>
+</section>
+<section class="diapo" id="m14">
+  <div class="lienzo">
+    <header><span class="num">14</span><h2>IA en tu ordenador: LM Studio y Ollama</h2><span class="pract">Práctica evaluable 14</span></header>
+    <p class="idea">Un modelo en tu equipo da privacidad y control; lo que manda es la memoria.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🏠</span><span>Por qué en local</span></li><li><span class="ico" aria-hidden="true">🧮</span><span>Qué ordenador hace falta</span></li><li><span class="ico" aria-hidden="true">🧭</span><span>La interfaz de LM Studio</span></li><li><span class="ico" aria-hidden="true">⬇️</span><span>Descargar y cargar</span></li><li><span class="ico" aria-hidden="true">⚙️</span><span>Ajustes de carga</span></li><li><span class="ico" aria-hidden="true">🎛️</span><span>Ajustes de la conversación</span></li><li><span class="ico" aria-hidden="true">📄</span><span>Documentos y RAG</span></li><li><span class="ico" aria-hidden="true">🖥️</span><span>El servidor local y lms</span></li><li><span class="ico" aria-hidden="true">🦙</span><span>Ollama</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Probar Temperature 0,2, 1 y 1,6 y Top K 1 con un cuento, y guardar un preset.</p>
+  </div>
+</section>
+<section class="diapo" id="m15">
+  <div class="lienzo">
+    <header><span class="num">15</span><h2>Usar modelos desde tus programas: la API</h2><span class="pract">Práctica evaluable 17</span></header>
+    <p class="idea">Con la API, un programa habla con el modelo; la API no recuerda nada y se paga por tokens.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🔌</span><span>Qué es una API</span></li><li><span class="ico" aria-hidden="true">📨</span><span>Las cuatro partes de una petición</span></li><li><span class="ico" aria-hidden="true">⌨️</span><span>curl contra LM Studio</span></li><li><span class="ico" aria-hidden="true">👥</span><span>Roles: system, user, assistant</span></li><li><span class="ico" aria-hidden="true">🧠</span><span>La API no tiene memoria</span></li><li><span class="ico" aria-hidden="true">🤖</span><span>De la API al agente</span></li><li><span class="ico" aria-hidden="true">🔑</span><span>OpenAI y Gemini</span></li><li><span class="ico" aria-hidden="true">💶</span><span>Precios y buenas prácticas</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Con curl: listar modelos, una pregunta con system prompt y una conversación de tres turnos; temperatura 0 y 1,5.</p>
+  </div>
+</section>
+<section class="diapo" id="m16">
+  <div class="lienzo">
+    <header><span class="num">16</span><h2>Habilidades y conectores (MCP)</h2><span class="pract">Práctica evaluable 16</span></header>
+    <p class="idea">Las habilidades enseñan cómo hacer una tarea; los conectores dan acceso a datos y acciones.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🧠</span><span>Un cerebro sin manos</span></li><li><span class="ico" aria-hidden="true">✋</span><span>El modelo nunca ejecuta nada</span></li><li><span class="ico" aria-hidden="true">📁</span><span>Una habilidad es una carpeta con SKILL.md</span></li><li><span class="ico" aria-hidden="true">📥</span><span>Carga progresiva</span></li><li><span class="ico" aria-hidden="true">🔌</span><span>MCP: el enchufe universal</span></li><li><span class="ico" aria-hidden="true">🛡️</span><span>Permisos y seguridad</span></li><li><span class="ico" aria-hidden="true">🤝</span><span>Habilidad frente a conector</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Servidor MCP del reloj en LM Studio: preguntar la hora en Tokio con y sin el servidor.</p>
+  </div>
+</section>
+<section class="diapo" id="m17">
+  <div class="lienzo">
+    <header><span class="num">17</span><h2>Agentes y orquestadores</h2><span class="pract">Práctica evaluable 17</span></header>
+    <p class="idea">Un agente es un modelo en bucle con herramientas: más autonomía exige más control.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🔄</span><span>Del chat al agente</span></li><li><span class="ico" aria-hidden="true">⏳</span><span>Cada vez más autonomía</span></li><li><span class="ico" aria-hidden="true">🎼</span><span>Agente y orquestador</span></li><li><span class="ico" aria-hidden="true">💻</span><span>Agentes de programación</span></li><li><span class="ico" aria-hidden="true">📲</span><span>Agentes personales y en la nube</span></li><li><span class="ico" aria-hidden="true">🧰</span><span>Construir agentes</span></li><li><span class="ico" aria-hidden="true">⚠️</span><span>Riesgos y cómo limitarlos</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Modo agente en un chat (con verificación de dos resultados) o un Pomodoro con OpenCode; debate sobre qué delegar.</p>
+  </div>
+</section>
+<section class="diapo" id="m18">
+  <div class="lienzo">
+    <header><span class="num">18</span><h2>Fine-tuning: especializar un modelo</h2><span class="pract">Práctica evaluable 18</span></header>
+    <p class="idea">El fine-tuning graba en los pesos un estilo o un formato; para datos nuevos es mejor RAG.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🎓</span><span>Qué es</span></li><li><span class="ico" aria-hidden="true">🎯</span><span>Para qué sirve</span></li><li><span class="ico" aria-hidden="true">🤔</span><span>¿Prompt, RAG o fine-tuning?</span></li><li><span class="ico" aria-hidden="true">🥘</span><span>Los ingredientes</span></li><li><span class="ico" aria-hidden="true">💬</span><span>Datos en formato de chat</span></li><li><span class="ico" aria-hidden="true">📓</span><span>LoRA y QLoRA</span></li><li><span class="ico" aria-hidden="true">⚠️</span><span>Riesgos</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Asistente que siempre trata de usted (asistente-formal.jsonl) con Unsloth Studio o Colab; probar con 10 épocas.</p>
+  </div>
+</section>
+<section class="diapo" id="m19">
+  <div class="lienzo">
+    <header><span class="num">19</span><h2>Cuantización: modelos más ligeros</h2><span class="pract">Práctica evaluable 19</span></header>
+    <p class="idea">Cuantizar es guardar los pesos con menos bits: cabe y va más rápido, a costa de algo de calidad.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">📉</span><span>Qué es</span></li><li><span class="ico" aria-hidden="true">🎁</span><span>Para qué sirve</span></li><li><span class="ico" aria-hidden="true">🧱</span><span>Cómo funciona</span></li><li><span class="ico" aria-hidden="true">🔤</span><span>La sopa de letras</span></li><li><span class="ico" aria-hidden="true">💾</span><span>Cuál descargar</span></li><li><span class="ico" aria-hidden="true">📏</span><span>El precio: la perplejidad</span></li><li><span class="ico" aria-hidden="true">🧪</span><span>La prueba del curso</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Cuantizar Qwen3-0.6B a 8, 4 y 2 bits (Colab o GGUF-my-repo) y comparar tamaño, velocidad y respuestas.</p>
+  </div>
+</section>
+<section class="diapo" id="m20">
+  <div class="lienzo">
+    <header><span class="num">20</span><h2>Destilación: un profesor grande para un estudiante pequeño</h2><span class="pract">Práctica evaluable 20</span></header>
+    <p class="idea">Un modelo grande enseña a uno pequeño: el estudiante hereda gran parte de su capacidad, y también sus errores.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">👩‍🍳</span><span>Profesor y estudiante</span></li><li><span class="ico" aria-hidden="true">🌗</span><span>El conocimiento oscuro</span></li><li><span class="ico" aria-hidden="true">🎁</span><span>Para qué sirve</span></li><li><span class="ico" aria-hidden="true">🔀</span><span>Destilar frente a cuantizar</span></li><li><span class="ico" aria-hidden="true">⚙️</span><span>Cómo funciona</span></li><li><span class="ico" aria-hidden="true">🧬</span><span>En los LLM</span></li><li><span class="ico" aria-hidden="true">⚖️</span><span>El precio y la ética</span></li><li><span class="ico" aria-hidden="true">📊</span><span>La prueba del curso</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Cuaderno de Colab: DistilBERT enseña a BERT-tiny a clasificar reseñas (unos 10 minutos).</p>
+  </div>
+</section>
+<section class="diapo" id="m21">
+  <div class="lienzo">
+    <header><span class="num">21</span><h2>Pre-entrenamiento: el nacimiento de un modelo</h2><span class="pract">Práctica evaluable 21</span></header>
+    <p class="idea">Pre-entrenar es leer billones de tokens prediciendo el siguiente: así nace un modelo base, que aún no sigue instrucciones.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">📚</span><span>Leer todo internet</span></li><li><span class="ico" aria-hidden="true">🥘</span><span>Los ingredientes</span></li><li><span class="ico" aria-hidden="true">✂️</span><span>El tokenizador</span></li><li><span class="ico" aria-hidden="true">👀</span><span>El Transformer</span></li><li><span class="ico" aria-hidden="true">🔁</span><span>El bucle de entrenamiento</span></li><li><span class="ico" aria-hidden="true">🛤️</span><span>El camino completo</span></li><li><span class="ico" aria-hidden="true">🏰</span><span>La prueba del Quijote</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Cuaderno de Colab (basado en nanoGPT): pre-entrenar desde cero con el Quijote en unos 3 minutos.</p>
+  </div>
+</section>
+<section class="diapo" id="m22">
+  <div class="lienzo">
+    <header><span class="num">22</span><h2>Crea tu propio modelo</h2><span class="pract">Práctica evaluable 22</span></header>
+    <p class="idea">Crear tu modelo es elegir un buen modelo abierto y especializarlo, con un objetivo claro y datos buenos.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🏎️</span><span>Qué significa «crear» un LLM</span></li><li><span class="ico" aria-hidden="true">🎯</span><span>Fase 1: el objetivo</span></li><li><span class="ico" aria-hidden="true">⚙️</span><span>Fase 2: los componentes</span></li><li><span class="ico" aria-hidden="true">🔨</span><span>Fase 3: la creación</span></li><li><span class="ico" aria-hidden="true">🔁</span><span>Fase 4: iterar</span></li><li><span class="ico" aria-hidden="true">👨‍🍳</span><span>El ejemplo: Chef-bot</span></li><li><span class="ico" aria-hidden="true">🛠️</span><span>¿Y desde cero de verdad?</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Chef-bot con recetas.jsonl en Unsloth Studio y LM Studio, con preset propio.</p>
+  </div>
+</section>
+</div>
+<nav class="mando">
+  <button type="button" id="ant" aria-label="Anterior">←</button>
+  <span id="cuenta"></span>
+  <button type="button" id="sig" aria-label="Siguiente">→</button>
+  <a href="chuleta.html" id="achuleta">Chuleta</a>
+  <a href="index.html">Inicio</a>
+</nav>
+<script>
+(function () {
+  var d = Array.prototype.slice.call(document.querySelectorAll(".diapo"));
+  var i = 0;
+  function ir(k, sinHash) {
+    i = Math.max(0, Math.min(d.length - 1, k));
+    d.forEach(function (x, j) { x.classList.toggle("activa", j === i); });
+    document.getElementById("cuenta").textContent = (i + 1) + " / " + d.length;
+    document.getElementById("achuleta").href = "chuleta.html" + (d[i].id.charAt(0) === "m" ? "#" + d[i].id : "");
+    if (!sinHash) history.replaceState(null, "", "#" + d[i].id);
+  }
+  function desdeHash() {
+    var h = location.hash.slice(1);
+    var k = d.findIndex(function (x) { return x.id === h; });
+    ir(k < 0 ? 0 : k, true);
+  }
+  document.getElementById("ant").onclick = function () { ir(i - 1); };
+  document.getElementById("sig").onclick = function () { ir(i + 1); };
+  document.addEventListener("keydown", function (ev) {
+    if (["ArrowRight", "PageDown", " "].indexOf(ev.key) >= 0) { ev.preventDefault(); ir(i + 1); }
+    if (["ArrowLeft", "PageUp"].indexOf(ev.key) >= 0) { ev.preventDefault(); ir(i - 1); }
+    if (ev.key === "Home") ir(0);
+    if (ev.key === "End") ir(d.length - 1);
+  });
+  var x0 = null;
+  document.addEventListener("touchstart", function (ev) { x0 = ev.touches[0].clientX; }, { passive: true });
+  document.addEventListener("touchend", function (ev) {
+    if (x0 === null) return;
+    var dx = ev.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) ir(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+  window.addEventListener("hashchange", desdeHash);
+  desdeHash();
+})();
+</script>
+</body>
+</html>

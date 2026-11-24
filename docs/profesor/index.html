@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso del profesor</title>
+<meta name="robots" content="noindex">
+<style>
+:root {
+  --fondo: #f7f7f5; --papel: #ffffff; --texto: #1c1d21; --suave: #5f6370; --linea: #e3e3df;
+  --p1: #2f6fdf; --p1-claro: #e8f0fd; --p2: #7a4fd6; --p2-claro: #f0eafc; --ok: #1f9d55; --ok-claro: #e5f6ec;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #15161a; --papel: #1e2026; --texto: #ececef; --suave: #a3a7b3; --linea: #30333b;
+    --p1: #7aa7ff; --p1-claro: #1c2a45; --p2: #b494ff; --p2-claro: #2a2142; --ok: #4cc785; --ok-claro: #17301f;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--fondo); color: var(--texto);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+a { color: inherit; }
+
+main { max-width: 760px; margin: 0 auto; padding: 32px 16px 48px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+p.sub { color: var(--suave); margin: 0 0 24px; }
+.tarjeta { display: block; text-decoration: none; background: var(--papel); border: 1px solid var(--linea);
+  border-left: 6px solid var(--c); border-radius: 14px; padding: 16px 18px; margin-bottom: 12px; }
+.tarjeta:hover { background: var(--cc); }
+.tarjeta strong { display: block; font-size: 1.15rem; margin: 2px 0; }
+.tarjeta span { color: var(--suave); font-size: .92rem; }
+.tarjeta .etq { color: var(--c); font-weight: 600; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
+footer { color: var(--suave); font-size: .85rem; margin-top: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Repaso del profesor</h1>
+  <p class="sub">Los puntos clave de cada módulo del curso «IA de cero a modelo propio», para comprobar que no se queda nada importante sin explicar.</p>
+  <a class="tarjeta" href="chuleta.html" style="--c:var(--ok);--cc:var(--ok-claro)">
+    <span class="etq">Chuleta con casillas</span>
+    <strong>Los 22 módulos, punto a punto</strong>
+    <span>Marca cada punto al explicarlo. Las marcas se guardan en este navegador; bórralas al cambiar de grupo.</span>
+  </a>
+  
+      <a class="tarjeta" href="presentacion-parte-1.html" style="--c:var(--p1);--cc:var(--p1-claro)">
+        <span class="etq">Presentación</span>
+        <strong>Primera parte: entender la IA</strong>
+        <span>Módulos 1 a 11 · una diapositiva por módulo</span>
+      </a>
+      <a class="tarjeta" href="presentacion-parte-2.html" style="--c:var(--p2);--cc:var(--p2-claro)">
+        <span class="etq">Presentación</span>
+        <strong>Segunda parte: usar y crear modelos</strong>
+        <span>Módulos 12 a 22 · una diapositiva por módulo</span>
+      </a>
+  <footer>Volver al <a href="../">curso</a>.</footer>
+</main>
+</body>
+</html>

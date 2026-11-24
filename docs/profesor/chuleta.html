@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chuleta de repaso</title>
+<meta name="robots" content="noindex">
+<style>
+:root {
+  --fondo: #f7f7f5; --papel: #ffffff; --texto: #1c1d21; --suave: #5f6370; --linea: #e3e3df;
+  --p1: #2f6fdf; --p1-claro: #e8f0fd; --p2: #7a4fd6; --p2-claro: #f0eafc; --ok: #1f9d55; --ok-claro: #e5f6ec;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #15161a; --papel: #1e2026; --texto: #ececef; --suave: #a3a7b3; --linea: #30333b;
+    --p1: #7aa7ff; --p1-claro: #1c2a45; --p2: #b494ff; --p2-claro: #2a2142; --ok: #4cc785; --ok-claro: #17301f;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--fondo); color: var(--texto);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+a { color: inherit; }
+
+.barra { position: sticky; top: 0; z-index: 5; background: var(--fondo); border-bottom: 1px solid var(--linea);
+  padding: 8px 16px; }
+.barra .cab { display: flex; align-items: center; gap: 12px; max-width: 860px; margin: 0 auto 6px; }
+.barra .cab a { font-weight: 700; text-decoration: none; }
+.barra .cab span { color: var(--suave); font-size: .85rem; margin-left: auto; }
+.fila { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; max-width: 860px; margin: 0 auto 4px; }
+.parte { font-size: .75rem; font-weight: 700; width: 52px; }
+.chip { min-width: 36px; height: 32px; padding: 0 6px; border-radius: 9px; border: 1px solid var(--linea);
+  background: var(--papel); text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+  gap: 3px; font-weight: 600; font-size: .9rem; }
+.chip small { font-weight: 500; color: var(--suave); font-size: .7rem; }
+.chip.algo { border-color: var(--c); }
+.chip.hecho { background: var(--ok); border-color: var(--ok); color: #fff; }
+.chip.hecho small { color: #fff; }
+main { max-width: 860px; margin: 0 auto; padding: 8px 16px 64px; }
+.titulo-parte { font-size: 1.05rem; margin: 28px 0 10px; text-transform: uppercase; letter-spacing: .03em; }
+.modulo { background: var(--papel); border: 1px solid var(--linea); border-top: 5px solid var(--c);
+  border-radius: 14px; padding: 14px 16px 10px; margin-bottom: 18px; scroll-margin-top: 110px; }
+.modulo header { display: flex; gap: 12px; align-items: flex-start; }
+.num { flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--cc); color: var(--c);
+  font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+h3 { margin: 0; font-size: 1.12rem; line-height: 1.25; }
+.idea { margin: 4px 0 0; color: var(--suave); font-style: italic; }
+ul { list-style: none; padding: 0; margin: 12px 0 4px; }
+li label { display: flex; gap: 10px; align-items: flex-start; padding: 8px 6px; border-radius: 10px; cursor: pointer; }
+li label:hover { background: var(--fondo); }
+li input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--ok); cursor: pointer; }
+.ico { flex: none; width: 26px; text-align: center; font-size: 1.15rem; }
+.txt b { display: block; font-weight: 600; }
+.det { display: block; color: var(--suave); font-size: .88rem; }
+li input:checked ~ .txt b { text-decoration: line-through; text-decoration-color: var(--ok); text-decoration-thickness: 2px; }
+li input:checked ~ .txt, li input:checked ~ .ico { opacity: .55; }
+.act { margin: 6px 0 8px; padding: 8px 10px; background: var(--cc); border-radius: 10px; font-size: .9rem; }
+.pie { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .85rem; color: var(--suave);
+  border-top: 1px solid var(--linea); padding-top: 8px; margin-top: 6px; }
+.pie .prog { font-weight: 700; color: var(--c); margin-right: 4px; }
+.pie .prog.hecho { color: var(--ok); }
+.borrar { margin-left: auto; font: inherit; color: var(--suave); background: none; border: 1px solid var(--linea);
+  border-radius: 8px; padding: 4px 10px; cursor: pointer; }
+.borrar:hover { color: var(--texto); border-color: var(--suave); }
+@media (max-width: 620px) {
+  .det { font-size: .84rem; } .modulo { padding: 12px 12px 8px; scroll-margin-top: 104px; }
+  .barra { padding: 6px 10px; }
+  .barra .cab { margin-bottom: 4px; } .barra .cab span { display: none; }
+  .fila { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-bottom: 3px; }
+  .fila::-webkit-scrollbar { display: none; }
+  .parte { width: auto; flex: none; margin-right: 2px; }
+  .chip { flex: none; min-width: 32px; height: 28px; font-size: .85rem; }
+}
+</style>
+</head>
+<body>
+<div class="barra">
+  <div class="cab"><a href="index.html">Repaso del profesor</a><span>Marca cada punto al explicarlo</span></div>
+  <div class="fila"><span class="parte" style="color:var(--p1)">Parte 1</span><a class="chip" href="#m1" data-m="1" style="--c:var(--p1)">1<small></small></a><a class="chip" href="#m2" data-m="2" style="--c:var(--p1)">2<small></small></a><a class="chip" href="#m3" data-m="3" style="--c:var(--p1)">3<small></small></a><a class="chip" href="#m4" data-m="4" style="--c:var(--p1)">4<small></small></a><a class="chip" href="#m5" data-m="5" style="--c:var(--p1)">5<small></small></a><a class="chip" href="#m6" data-m="6" style="--c:var(--p1)">6<small></small></a><a class="chip" href="#m7" data-m="7" style="--c:var(--p1)">7<small></small></a><a class="chip" href="#m8" data-m="8" style="--c:var(--p1)">8<small></small></a><a class="chip" href="#m9" data-m="9" style="--c:var(--p1)">9<small></small></a><a class="chip" href="#m10" data-m="10" style="--c:var(--p1)">10<small></small></a><a class="chip" href="#m11" data-m="11" style="--c:var(--p1)">11<small></small></a></div><div class="fila"><span class="parte" style="color:var(--p2)">Parte 2</span><a class="chip" href="#m12" data-m="12" style="--c:var(--p2)">12<small></small></a><a class="chip" href="#m13" data-m="13" style="--c:var(--p2)">13<small></small></a><a class="chip" href="#m14" data-m="14" style="--c:var(--p2)">14<small></small></a><a class="chip" href="#m15" data-m="15" style="--c:var(--p2)">15<small></small></a><a class="chip" href="#m16" data-m="16" style="--c:var(--p2)">16<small></small></a><a class="chip" href="#m17" data-m="17" style="--c:var(--p2)">17<small></small></a><a class="chip" href="#m18" data-m="18" style="--c:var(--p2)">18<small></small></a><a class="chip" href="#m19" data-m="19" style="--c:var(--p2)">19<small></small></a><a class="chip" href="#m20" data-m="20" style="--c:var(--p2)">20<small></small></a><a class="chip" href="#m21" data-m="21" style="--c:var(--p2)">21<small></small></a><a class="chip" href="#m22" data-m="22" style="--c:var(--p2)">22<small></small></a></div>
+</div>
+<main>
+<h2 class="titulo-parte" style="color:var(--p1)">Primera parte: entender la IA</h2>
+<section class="modulo" id="m1" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">1</span>
+    <div>
+      <h3>¡Hola, IA! Desmitificando el futuro</h3>
+      <p class="idea">La IA no es magia ni conciencia: es estadística y computación a gran escala.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m1p0"><span class="ico" aria-hidden="true">🎯</span><span class="txt"><b>Qué es la IA</b><span class="det">Sistemas que hacen tareas que pedían inteligencia humana. La ley europea: un sistema que «infiere» resultados.</span></span></label></li><li><label><input type="checkbox" data-id="m1p1"><span class="ico" aria-hidden="true">🧩</span><span class="txt"><b>IA débil o estrecha frente a modelos de propósito general</b><span class="det">Cada sistema clásico hace una tarea; ChatGPT o Gemini hacen muchas, pero no son una IA general.</span></span></label></li><li><label><input type="checkbox" data-id="m1p2"><span class="ico" aria-hidden="true">⚖️</span><span class="txt"><b>Humana frente a artificial</b><span class="det">Pocos ejemplos frente a millones, transferencia, sentido común, 20 W frente a megavatios, sin experiencia subjetiva.</span></span></label></li><li><label><input type="checkbox" data-id="m1p3"><span class="ico" aria-hidden="true">👻</span><span class="txt"><b>Alucinaciones</b><span class="det">Genera lo más probable, no lo comprobado. Ejemplo: los enlaces inventados de la primera versión del curso.</span></span></label></li><li><label><input type="checkbox" data-id="m1p4"><span class="ico" aria-hidden="true">📱</span><span class="txt"><b>La IA que ya usamos</b><span class="det">Recomendaciones, asistentes de voz, mapas, spam, cámara del móvil, fraude con tarjeta.</span></span></label></li><li><label><input type="checkbox" data-id="m1p5"><span class="ico" aria-hidden="true">⛈️</span><span class="txt"><b>¿Por qué ahora? La tormenta perfecta</b><span class="det">Datos (ImageNet) + GPU (CUDA, 2007) + algoritmos (Transformer, 2017) + inversión.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Teachable Machine: entrenar dos gestos con la cámara y tratar de engañarla.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m1"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/01-que-es-la-ia/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m1">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m1">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m2" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">2</span>
+    <div>
+      <h3>Un breve viaje en el tiempo</h3>
+      <p class="idea">La IA avanza a saltos: euforia, inviernos y renacimiento cuando coinciden datos, hardware y algoritmos.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m2p0"><span class="ico" aria-hidden="true">🧠</span><span class="txt"><b>Turing (1950) y su test</b><span class="det">«¿Pueden pensar las máquinas?» → juego de la imitación. En 2025, GPT-4.5 fue elegido «humano» el 73 % de las veces.</span></span></label></li><li><label><input type="checkbox" data-id="m2p1"><span class="ico" aria-hidden="true">🎓</span><span class="txt"><b>Dartmouth (1956)</b><span class="det">Nace el término «Inteligencia Artificial» (McCarthy, Minsky, Shannon, Rochester).</span></span></label></li><li><label><input type="checkbox" data-id="m2p2"><span class="ico" aria-hidden="true">🏆</span><span class="txt"><b>Los hitos</b><span class="det">ELIZA 1966 · Deep Blue 1997 (fuerza bruta) · Watson 2011 · AlphaGo 2016 · AlphaFold 2020 · ChatGPT 2022.</span></span></label></li><li><label><input type="checkbox" data-id="m2p3"><span class="ico" aria-hidden="true">❄️</span><span class="txt"><b>Los dos inviernos</b><span class="det">1974-1980 y 1987-1993: promesas incumplidas y sistemas expertos frágiles. Lección: desconfiar del exceso de expectativas.</span></span></label></li><li><label><input type="checkbox" data-id="m2p4"><span class="ico" aria-hidden="true">🔄</span><span class="txt"><b>Cambio de paradigma</b><span class="det">De escribir reglas a aprender de ejemplos (Machine Learning y Deep Learning).</span></span></label></li><li><label><input type="checkbox" data-id="m2p5"><span class="ico" aria-hidden="true">🖼️</span><span class="txt"><b>AlexNet (2012)</b><span class="det">Gana ImageNet con 15,3 % de error frente a 26,2 %: despega el Deep Learning.</span></span></label></li><li><label><input type="checkbox" data-id="m2p6"><span class="ico" aria-hidden="true">🏅</span><span class="txt"><b>Reconocimientos</b><span class="det">Premio Turing 2018 (Hinton, LeCun, Bengio) y Nobel 2024 (Hinton y Hopfield; Hassabis y Jumper).</span></span></label></li></ul>
+  
+  <div class="pie">
+    <span class="prog" data-prog="m2"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/02-historia/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m2">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m2">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m3" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">3</span>
+    <div>
+      <h3>Los grandes tipos de IA</h3>
+      <p class="idea">Hoy hay IA estrecha y modelos de propósito general; la IA general (AGI) todavía no existe.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m3p0"><span class="ico" aria-hidden="true">🎯</span><span class="txt"><b>ANI, IA débil o estrecha</b><span class="det">«Débil» significa especializada, no poco potente: AlphaGo no recomienda películas.</span></span></label></li><li><label><input type="checkbox" data-id="m3p1"><span class="ico" aria-hidden="true">🧰</span><span class="txt"><b>Modelos de propósito general</b><span class="det">ChatGPT, Gemini, Claude: muchas tareas, pero sin aprendizaje continuo, con alucinaciones y sin cuerpo.</span></span></label></li><li><label><input type="checkbox" data-id="m3p2"><span class="ico" aria-hidden="true">🌐</span><span class="txt"><b>AGI y ASI</b><span class="det">AGI: flexibilidad humana, no existe ni hay consenso para medirla. ASI: hipotética, debate de seguridad.</span></span></label></li><li><label><input type="checkbox" data-id="m3p3"><span class="ico" aria-hidden="true">📜</span><span class="txt"><b>IA simbólica (GOFAI)</b><span class="det">Reglas «si… entonces…» escritas por expertos (MYCIN). Frágil y cara, pero explicable.</span></span></label></li><li><label><input type="checkbox" data-id="m3p4"><span class="ico" aria-hidden="true">📊</span><span class="txt"><b>Machine Learning</b><span class="det">La máquina infiere las reglas a partir de datos: ejemplo de gatos y perros.</span></span></label></li><li><label><input type="checkbox" data-id="m3p5"><span class="ico" aria-hidden="true">🧠</span><span class="txt"><b>Deep Learning</b><span class="det">Subcategoría del ML con redes de muchas capas: aprende sola qué mirar, pero necesita muchos datos y es una caja negra.</span></span></label></li></ul>
+  
+  <div class="pie">
+    <span class="prog" data-prog="m3"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/03-tipos-de-ia/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m3">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m3">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m4" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">4</span>
+    <div>
+      <h3>Machine Learning: el motor del cambio</h3>
+      <p class="idea">En vez de programar reglas, se le dan ejemplos a la máquina y ella descubre los patrones.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m4p0"><span class="ico" aria-hidden="true">🔁</span><span class="txt"><b>Programar frente a aprender</b><span class="det">Datos → entrenar → modelo (parámetros) → predecir. Ejemplo del filtro de spam.</span></span></label></li><li><label><input type="checkbox" data-id="m4p1"><span class="ico" aria-hidden="true">🏷️</span><span class="txt"><b>Supervisado: clasificación y regresión</b><span class="det">Con etiquetas. Clasificar = categoría (spam o no); regresión = número (precio de una vivienda).</span></span></label></li><li><label><input type="checkbox" data-id="m4p2"><span class="ico" aria-hidden="true">🧺</span><span class="txt"><b>No supervisado: clustering</b><span class="det">Sin etiquetas, encuentra grupos (K-means): segmentar clientes, detectar anomalías.</span></span></label></li><li><label><input type="checkbox" data-id="m4p3"><span class="ico" aria-hidden="true">🎮</span><span class="txt"><b>Por refuerzo</b><span class="det">Ensayo y error con recompensas: AlphaGo, robots y el RLHF de los chatbots.</span></span></label></li><li><label><input type="checkbox" data-id="m4p4"><span class="ico" aria-hidden="true">🧩</span><span class="txt"><b>Autosupervisado</b><span class="det">Los datos se etiquetan solos (adivinar la palabra que falta): así se entrenan los LLM.</span></span></label></li><li><label><input type="checkbox" data-id="m4p5"><span class="ico" aria-hidden="true">📏</span><span class="txt"><b>Entrenamiento y prueba (80/20)</b><span class="det">Lo que importa es acertar con datos nuevos, como un examen con preguntas no vistas.</span></span></label></li><li><label><input type="checkbox" data-id="m4p6"><span class="ico" aria-hidden="true">⚠️</span><span class="txt"><b>Sobreajuste y métricas</b><span class="det">Memorizar en vez de aprender. Un 99 % de acierto puede no servir (fraude): sensibilidad y precisión.</span></span></label></li></ul>
+  
+  <div class="pie">
+    <span class="prog" data-prog="m4"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/04-machine-learning/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m4">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m4">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m5" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">5</span>
+    <div>
+      <h3>Deep Learning y las redes neuronales</h3>
+      <p class="idea">Una red neuronal aprende ajustando millones de pesos para equivocarse cada vez menos.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m5p0"><span class="ico" aria-hidden="true">⚙️</span><span class="txt"><b>La neurona artificial</b><span class="det">Entradas × pesos + sesgo → función de activación (ReLU, sigmoide) → salida.</span></span></label></li><li><label><input type="checkbox" data-id="m5p1"><span class="ico" aria-hidden="true">🏗️</span><span class="txt"><b>Capas: entrada, ocultas y salida</b><span class="det">Las capas ocultas aprenden patrones cada vez más abstractos; la salida da la probabilidad (softmax).</span></span></label></li><li><label><input type="checkbox" data-id="m5p2"><span class="ico" aria-hidden="true">🔢</span><span class="txt"><b>Parámetros</b><span class="det">Una red de dígitos tiene unos 100 000; GPT-3, 175 000 millones; las mayores, más de un billón.</span></span></label></li><li><label><input type="checkbox" data-id="m5p3"><span class="ico" aria-hidden="true">🔄</span><span class="txt"><b>El ciclo de entrenamiento</b><span class="det">Predicción → función de pérdida → retropropagación (1986) → descenso del gradiente. Lotes y épocas.</span></span></label></li><li><label><input type="checkbox" data-id="m5p4"><span class="ico" aria-hidden="true">⛰️</span><span class="txt"><b>La metáfora de la montaña en la niebla</b><span class="det">Bajar al valle tanteando la pendiente; el tamaño del paso es la tasa de aprendizaje.</span></span></label></li><li><label><input type="checkbox" data-id="m5p5"><span class="ico" aria-hidden="true">👁️</span><span class="txt"><b>Aplicaciones: imagen y lenguaje</b><span class="det">CNN para visión (clasificar, detectar, segmentar); RNN → Transformer para el lenguaje.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> TensorFlow Playground: resolver la espiral añadiendo capas, ReLU y entradas sin(X).</p>
+  <div class="pie">
+    <span class="prog" data-prog="m5"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/05-deep-learning/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m5">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m5">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m6" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">6</span>
+    <div>
+      <h3>Multimodalidad: la IA que ve y habla</h3>
+      <p class="idea">Hoy un mismo modelo lee, mira, escucha y habla porque todo se convierte en vectores.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m6p0"><span class="ico" aria-hidden="true">🖼️</span><span class="txt"><b>Una imagen son números</b><span class="det">Cada píxel, tres valores RGB: una foto de 12 Mpx son 36 millones de números.</span></span></label></li><li><label><input type="checkbox" data-id="m6p1"><span class="ico" aria-hidden="true">🩺</span><span class="txt"><b>Visión por computador</b><span class="det">Reconocimiento facial (huella numérica), diagnóstico como segunda opinión, coches autónomos.</span></span></label></li><li><label><input type="checkbox" data-id="m6p2"><span class="ico" aria-hidden="true">🔤</span><span class="txt"><b>Tokens y embeddings</b><span class="det">El texto se trocea en tokens y cada uno se convierte en un vector: significados parecidos, vectores cercanos.</span></span></label></li><li><label><input type="checkbox" data-id="m6p3"><span class="ico" aria-hidden="true">💬</span><span class="txt"><b>Aplicaciones del PLN</b><span class="det">Traducción, chatbots (intención y entidades), análisis de opiniones, búsqueda semántica.</span></span></label></li><li><label><input type="checkbox" data-id="m6p4"><span class="ico" aria-hidden="true">🎙️</span><span class="txt"><b>La voz</b><span class="det">ASR, de voz a texto (Whisper); TTS, de texto a voz, con riesgo de clonación de voces.</span></span></label></li><li><label><input type="checkbox" data-id="m6p5"><span class="ico" aria-hidden="true">🔗</span><span class="txt"><b>Modelos multimodales</b><span class="det">Todo al mismo «idioma» de vectores (CLIP, 2021). Foto de un problema, una factura, una conversación por voz.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Fotografiar un objeto, preguntar a un asistente qué es y comprobarlo en otra fuente.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m6"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/06-multimodalidad/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m6">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m6">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m7" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">7</span>
+    <div>
+      <h3>Las herramientas del oficio</h3>
+      <p class="idea">Python y sus librerías son el idioma de la IA, y la nube permite entrenar sin tener GPU.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m7p0"><span class="ico" aria-hidden="true">🐍</span><span class="txt"><b>Por qué Python</b><span class="det">Sencillo, enorme ecosistema, gran comunidad. Es lento, pero lo pesado lo hacen C, C++ y CUDA en la GPU.</span></span></label></li><li><label><input type="checkbox" data-id="m7p1"><span class="ico" aria-hidden="true">📚</span><span class="txt"><b>Las librerías clave</b><span class="det">NumPy (calculadora), Pandas (hoja de cálculo), Scikit-learn (ML clásico), PyTorch y TensorFlow (redes), Hugging Face (modelos).</span></span></label></li><li><label><input type="checkbox" data-id="m7p2"><span class="ico" aria-hidden="true">🧹</span><span class="txt"><b>Preparar los datos</b><span class="det">Hasta el 80 % del trabajo: limpiar, rellenar huecos, transformar (Pandas).</span></span></label></li><li><label><input type="checkbox" data-id="m7p3"><span class="ico" aria-hidden="true">☁️</span><span class="txt"><b>La nube y Google Colab</b><span class="det">Cuadernos en el navegador con GPU gratuita limitada; los archivos se borran al cerrar la sesión.</span></span></label></li><li><label><input type="checkbox" data-id="m7p4"><span class="ico" aria-hidden="true">🔀</span><span class="txt"><b>Alternativas a Colab</b><span class="det">Kaggle (datos y competiciones), SageMaker Studio Lab (almacenamiento persistente), Deepnote (equipos).</span></span></label></li><li><label><input type="checkbox" data-id="m7p5"><span class="ico" aria-hidden="true">💻</span><span class="txt"><b>Sin código y en local</b><span class="det">Teachable Machine, TensorFlow Playground, Hugging Face Spaces; LM Studio y Ollama en tu ordenador.</span></span></label></li></ul>
+  
+  <div class="pie">
+    <span class="prog" data-prog="m7"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/07-herramientas/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m7">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m7">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m8" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">8</span>
+    <div>
+      <h3>La revolución de la IA generativa</h3>
+      <p class="idea">Un LLM predice el siguiente token; con eso, y un buen ajuste, se convierte en un asistente.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m8p0"><span class="ico" aria-hidden="true">✨</span><span class="txt"><b>De analizar a crear</b><span class="det">La IA generativa aprende la distribución de los datos y crea combinaciones nuevas.</span></span></label></li><li><label><input type="checkbox" data-id="m8p1"><span class="ico" aria-hidden="true">🔮</span><span class="txt"><b>LLM: predecir el siguiente token</b><span class="det">Entrenado con billones de textos; es un autocompletado muy sofisticado.</span></span></label></li><li><label><input type="checkbox" data-id="m8p2"><span class="ico" aria-hidden="true">👀</span><span class="txt"><b>La atención del Transformer</b><span class="det">Para cada palabra decide en qué otras fijarse, aunque estén lejos (2017).</span></span></label></li><li><label><input type="checkbox" data-id="m8p3"><span class="ico" aria-hidden="true">🧑‍🏫</span><span class="txt"><b>De modelo a asistente</b><span class="det">Preentrenamiento → ajuste con instrucciones → refuerzo con preferencias humanas (RLHF).</span></span></label></li><li><label><input type="checkbox" data-id="m8p4"><span class="ico" aria-hidden="true">🆕</span><span class="txt"><b>Razonamiento, herramientas y agentes</b><span class="det">Modelos de razonamiento, búsqueda y herramientas, agentes, ventanas de contexto enormes.</span></span></label></li><li><label><input type="checkbox" data-id="m8p5"><span class="ico" aria-hidden="true">👻</span><span class="txt"><b>Alucinaciones</b><span class="det">Lo más probable no es lo comprobado: verificar siempre.</span></span></label></li><li><label><input type="checkbox" data-id="m8p6"><span class="ico" aria-hidden="true">🌫️</span><span class="txt"><b>Difusión para imágenes</b><span class="det">Se aprende a quitar ruido; al generar se parte de ruido puro guiado por el prompt (20-50 pasos).</span></span></label></li><li><label><input type="checkbox" data-id="m8p7"><span class="ico" aria-hidden="true">✍️</span><span class="txt"><b>Pedirle bien las cosas</b><span class="det">Contexto, formato concreto, ejemplos, iterar, verificar y no compartir datos personales.</span></span></label></li></ul>
+  
+  <div class="pie">
+    <span class="prog" data-prog="m8"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/08-ia-generativa/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m8">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m8">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m9" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">9</span>
+    <div>
+      <h3>Hardware necesario</h3>
+      <p class="idea">Crear, ajustar y usar un modelo piden hardware de escalas muy distintas: de un clúster a tu portátil.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m9p0"><span class="ico" aria-hidden="true">📏</span><span class="txt"><b>Tres escalas</b><span class="det">Entrenar desde cero: miles de GPU y cientos de millones de euros. Ajustar: 1-8 GPU. Usar: tu ordenador.</span></span></label></li><li><label><input type="checkbox" data-id="m9p1"><span class="ico" aria-hidden="true">🟩</span><span class="txt"><b>Las GPU de centro de datos</b><span class="det">Tensor Cores para multiplicar matrices, memoria HBM ultrarrápida y formatos de pocos bits (FP8, FP4).</span></span></label></li><li><label><input type="checkbox" data-id="m9p2"><span class="ico" aria-hidden="true">🔌</span><span class="txt"><b>La interconexión</b><span class="det">NVLink dentro del servidor, InfiniBand entre servidores: si una GPU espera, todo se para.</span></span></label></li><li><label><input type="checkbox" data-id="m9p3"><span class="ico" aria-hidden="true">🗄️</span><span class="txt"><b>El almacenamiento</b><span class="det">Petabytes de datos en sistemas de archivos paralelos sobre SSD NVMe; checkpoints por si algo falla.</span></span></label></li><li><label><input type="checkbox" data-id="m9p4"><span class="ico" aria-hidden="true">🧑‍💻</span><span class="txt"><b>Lo realista: fine-tuning</b><span class="det">Partir de un modelo abierto. LoRA y QLoRA entrenan menos del 1 % de los parámetros.</span></span></label></li><li><label><input type="checkbox" data-id="m9p5"><span class="ico" aria-hidden="true">⚠️</span><span class="txt"><b>Dos GPU no son una con el doble de memoria</b><span class="det">Las tarjetas de consumo no tienen NVLink: reparten capas por PCIe, más lento.</span></span></label></li><li><label><input type="checkbox" data-id="m9p6"><span class="ico" aria-hidden="true">🧮</span><span class="txt"><b>Cuánta memoria necesita un modelo</b><span class="det">Parámetros × bytes por parámetro + 10-20 %. 8B: 16 GB a 16 bits, unos 5 GB a 4 bits. Más el contexto.</span></span></label></li><li><label><input type="checkbox" data-id="m9p7"><span class="ico" aria-hidden="true">🍎</span><span class="txt"><b>Memoria unificada</b><span class="det">Mac y algunos PC comparten la RAM con la GPU: caben modelos grandes, aunque generan más despacio.</span></span></label></li></ul>
+  
+  <div class="pie">
+    <span class="prog" data-prog="m9"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/09-hardware/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m9">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m9">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m10" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">10</span>
+    <div>
+      <h3>Software necesario: la pila para crear un LLM</h3>
+      <p class="idea">Entrenar un LLM exige una pila de cinco capas; ajustarlo o usarlo, solo unas pocas piezas.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m10p0"><span class="ico" aria-hidden="true">🏛️</span><span class="txt"><b>La pirámide de cinco capas</b><span class="det">Código del modelo → librerías de alto nivel → entrenamiento distribuido → framework → drivers.</span></span></label></li><li><label><input type="checkbox" data-id="m10p1"><span class="ico" aria-hidden="true">🤗</span><span class="txt"><b>Capa 4: librerías de alto nivel</b><span class="det">Hugging Face Transformers y su Hub; PEFT y TRL (LoRA, RLHF); Unsloth y Axolotl para ajustar en una GPU.</span></span></label></li><li><label><input type="checkbox" data-id="m10p2"><span class="ico" aria-hidden="true">🕸️</span><span class="txt"><b>Capa 3: entrenamiento distribuido</b><span class="det">FSDP, DeepSpeed, Megatron: reparten modelo y datos entre miles de GPU.</span></span></label></li><li><label><input type="checkbox" data-id="m10p3"><span class="ico" aria-hidden="true">🔥</span><span class="txt"><b>Capa 2: el framework</b><span class="det">PyTorch (líder) y JAX (Gemini). La clave es el autograd: calcula los gradientes solo.</span></span></label></li><li><label><input type="checkbox" data-id="m10p4"><span class="ico" aria-hidden="true">🟢</span><span class="txt"><b>Capa 1: drivers</b><span class="det">CUDA, cuDNN, NCCL: una de las razones del dominio de NVIDIA. Alternativas: ROCm (AMD) y Metal/MLX (Mac).</span></span></label></li><li><label><input type="checkbox" data-id="m10p5"><span class="ico" aria-hidden="true">📊</span><span class="txt"><b>Datos, trabajos y experimentos</b><span class="det">Spark para limpiar, Slurm para repartir trabajos, W&amp;B o MLflow para seguir los entrenamientos, vLLM para servir.</span></span></label></li><li><label><input type="checkbox" data-id="m10p6"><span class="ico" aria-hidden="true">✅</span><span class="txt"><b>Lo que basta en la práctica</b><span class="det">Ajustar: Python + CUDA + PyTorch + Hugging Face o Unsloth. Usar: LM Studio u Ollama (llama.cpp, GGUF).</span></span></label></li></ul>
+  
+  <div class="pie">
+    <span class="prog" data-prog="m10"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/10-software/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m10">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m10">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m11" style="--c:var(--p1);--cc:var(--p1-claro)">
+  <header>
+    <span class="num">11</span>
+    <div>
+      <h3>Ética y responsabilidad en la era de la IA</h3>
+      <p class="idea">La IA hereda nuestros sesgos y plantea riesgos reales; la ley europea los regula según su nivel de riesgo.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m11p0"><span class="ico" aria-hidden="true">⚖️</span><span class="txt"><b>Sesgos algorítmicos</b><span class="det">Amazon y los currículos de mujeres; Gender Shades (35 % de error con mujeres de piel oscura). Parecen objetivos y no lo son.</span></span></label></li><li><label><input type="checkbox" data-id="m11p1"><span class="ico" aria-hidden="true">🔒</span><span class="txt"><b>Privacidad</b><span class="det">Reidentificación, conversaciones que entrenan modelos, inferencias sobre salud o ideología. El RGPD da derechos.</span></span></label></li><li><label><input type="checkbox" data-id="m11p2"><span class="ico" aria-hidden="true">🏫</span><span class="txt"><b>Buenas prácticas en el aula</b><span class="det">Sin datos personales en chatbots, desactivar el entrenamiento con tus conversaciones, herramientas validadas por el centro.</span></span></label></li><li><label><input type="checkbox" data-id="m11p3"><span class="ico" aria-hidden="true">💼</span><span class="txt"><b>El trabajo</b><span class="det">Más transformación de tareas que sustitución; nuevos perfiles. Reto: recualificación.</span></span></label></li><li><label><input type="checkbox" data-id="m11p4"><span class="ico" aria-hidden="true">🎭</span><span class="txt"><b>Deepfakes y desinformación</b><span class="det">Voces clonadas (fraude de 25 M$ en Hong Kong), caso Almendralejo. Defensas: marcas de agua, C2PA y una palabra clave familiar.</span></span></label></li><li><label><input type="checkbox" data-id="m11p5"><span class="ico" aria-hidden="true">🇪🇺</span><span class="txt"><b>El Reglamento Europeo de IA</b><span class="det">Cuatro niveles: inaceptable (prohibido), alto riesgo (incluida la educación), transparencia y mínimo. En España supervisa la AESIA.</span></span></label></li><li><label><input type="checkbox" data-id="m11p6"><span class="ico" aria-hidden="true">🌍</span><span class="txt"><b>Medio ambiente, autoría y otros retos</b><span class="det">Impacto ambiental, propiedad intelectual, cajas negras, seguridad y la IA como tutor, no como atajo.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Debate: becas decididas por un algoritmo, responsabilidad de un error médico, autoría del arte generado, normas del centro.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m11"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/11-etica/">módulo en la web</a> ·
+    <a href="presentacion-parte-1.html#m11">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m11">Borrar marcas</button>
+  </div>
+</section><h2 class="titulo-parte" style="color:var(--p2)">Segunda parte: usar y crear modelos</h2>
+<section class="modulo" id="m12" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">12</span>
+    <div>
+      <h3>Inferencia: cómo responde un modelo</h3>
+      <p class="idea">Usar un modelo no lo cambia: genera token a token, y el muestreo decide cuánto se arriesga.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m12p0"><span class="ico" aria-hidden="true">🔁</span><span class="txt"><b>Entrenar frente a usar</b><span class="det">En la inferencia no aprende nada. La «memoria» de ChatGPT son notas que se añaden al principio.</span></span></label></li><li><label><input type="checkbox" data-id="m12p1"><span class="ico" aria-hidden="true">🧩</span><span class="txt"><b>Tokens</b><span class="det">Trozos de palabra; el espacio va pegado. Ventana de contexto, unidad de cobro; el español gasta más tokens que el inglés.</span></span></label></li><li><label><input type="checkbox" data-id="m12p2"><span class="ico" aria-hidden="true">📍</span><span class="txt"><b>Embeddings</b><span class="det">Cada token es un vector de significado; la atención los mezcla y sale una probabilidad para cada token.</span></span></label></li><li><label><input type="checkbox" data-id="m12p3"><span class="ico" aria-hidden="true">🧠</span><span class="txt"><b>Parámetros</b><span class="det">8B = 8 000 millones; unos 2 GB por cada 1 000 millones a 16 bits. Modelos MoE: 30B-A3B activa solo 3B por token.</span></span></label></li><li><label><input type="checkbox" data-id="m12p4"><span class="ico" aria-hidden="true">🎲</span><span class="txt"><b>El muestreo</b><span class="det">Temperatura (0 = siempre igual), top-k, top-p, min-p, penalización por repetición y semilla.</span></span></label></li><li><label><input type="checkbox" data-id="m12p5"><span class="ico" aria-hidden="true">⏱️</span><span class="txt"><b>Dos fases: prefill y decodificación</b><span class="det">Prefill: TTFT, depende del cálculo. Decodificación: tok/s, depende del ancho de banda. La caché KV ocupa memoria.</span></span></label></li><li><label><input type="checkbox" data-id="m12p6"><span class="ico" aria-hidden="true">📈</span><span class="txt"><b>Benchmarking</b><span class="det">Mismo prompt, temperatura 0, tres repeticiones y la media (la primera es más lenta).</span></span></label></li><li><label><input type="checkbox" data-id="m12p7"><span class="ico" aria-hidden="true">🗺️</span><span class="txt"><b>Dónde se hace la inferencia</b><span class="det">Servicios comerciales, API, tu ordenador o GPU alquilada: ventajas e inconvenientes.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Benchmark propio: un modelo en dos cuantizaciones, cinco preguntas, TTFT y tok/s en una hoja.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m12"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/12-inferencia/">módulo en la web</a> ·
+    <a href="presentacion-parte-2.html#m12">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m12">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m13" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">13</span>
+    <div>
+      <h3>Aplicaciones e ingeniería de prompts</h3>
+      <p class="idea">Un buen prompt da rol, tarea, contexto, ejemplos, formato y límites; y siempre se verifica el resultado.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m13p0"><span class="ico" aria-hidden="true">🚪</span><span class="txt"><b>Tres formas de usar un modelo</b><span class="det">Chat (suscripción de unos 20 €), agente (actúa, módulo 17) y API (se paga por tokens, módulo 15).</span></span></label></li><li><label><input type="checkbox" data-id="m13p1"><span class="ico" aria-hidden="true">🗺️</span><span class="txt"><b>El mapa de aplicaciones</b><span class="det">Texto (ChatGPT, Gemini, Claude…), imagen, vídeo, audio y herramientas: NotebookLM, Copilot, Claude Code.</span></span></label></li><li><label><input type="checkbox" data-id="m13p2"><span class="ico" aria-hidden="true">🔓</span><span class="txt"><b>Abierto no siempre es libre</b><span class="det">Pesos abiertos ≠ código y datos abiertos; la licencia puede limitar usos. Modelos chinos abiertos muy potentes.</span></span></label></li><li><label><input type="checkbox" data-id="m13p3"><span class="ico" aria-hidden="true">🧱</span><span class="txt"><b>Las seis piezas de un prompt</b><span class="det">Rol, tarea, contexto, datos o ejemplos (few-shot), formato y restricciones.</span></span></label></li><li><label><input type="checkbox" data-id="m13p4"><span class="ico" aria-hidden="true">🔤</span><span class="txt"><b>Fórmulas: R-T-F, C-O-T, P-A-S</b><span class="det">Todas dicen lo mismo: elegir una y usarla como lista de comprobación.</span></span></label></li><li><label><input type="checkbox" data-id="m13p5"><span class="ico" aria-hidden="true">↔️</span><span class="txt"><b>Antes y después</b><span class="det">«Hazme un resumen» frente a «5 viñetas, para la dirección, máximo 120 palabras».</span></span></label></li><li><label><input type="checkbox" data-id="m13p6"><span class="ico" aria-hidden="true">🛠️</span><span class="txt"><b>Técnicas</b><span class="det">Iterar, dividir, pedir que pregunte, dar ejemplos, meta-prompting y system prompt.</span></span></label></li><li><label><input type="checkbox" data-id="m13p7"><span class="ico" aria-hidden="true">🚫</span><span class="txt"><b>Errores frecuentes</b><span class="det">Ambigüedad, falta de contexto, pedir demasiado, no verificar, pegar datos sensibles.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Reescribir un prompt real con R-T-F, un ejemplo y una restricción, y comparar.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m13"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/13-apps-prompts/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-13/">práctica evaluable 13</a> ·
+    <a href="presentacion-parte-2.html#m13">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m13">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m14" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">14</span>
+    <div>
+      <h3>IA en tu ordenador: LM Studio y Ollama</h3>
+      <p class="idea">Un modelo en tu equipo da privacidad y control; lo que manda es la memoria.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m14p0"><span class="ico" aria-hidden="true">🏠</span><span class="txt"><b>Por qué en local</b><span class="det">Privacidad (datos del alumnado), sin conexión, gratis y con control. A cambio, modelos más pequeños.</span></span></label></li><li><label><input type="checkbox" data-id="m14p1"><span class="ico" aria-hidden="true">🧮</span><span class="txt"><b>Qué ordenador hace falta</b><span class="det">Manda la memoria: 8 GB, modelos de 1-4B; 16 GB, hasta unos 14B; 32 GB, unos 30B.</span></span></label></li><li><label><input type="checkbox" data-id="m14p2"><span class="ico" aria-hidden="true">🧭</span><span class="txt"><b>La interfaz de LM Studio</b><span class="det">Chat, Model Server, Library, Model Search, selector de modelo y panel derecho (Integrations y Model Parameters).</span></span></label></li><li><label><input type="checkbox" data-id="m14p3"><span class="ico" aria-hidden="true">⬇️</span><span class="txt"><b>Descargar y cargar</b><span class="det">Formato GGUF o MLX, cuantización (Q4_K_M, Q8_0), iconos de visión, herramientas y razonamiento. Debajo: tok/s y TTFT.</span></span></label></li><li><label><input type="checkbox" data-id="m14p4"><span class="ico" aria-hidden="true">⚙️</span><span class="txt"><b>Ajustes de carga</b><span class="det">Context Length (más contexto, más memoria), GPU Offload (todas las capas si caben), Flash Attention.</span></span></label></li><li><label><input type="checkbox" data-id="m14p5"><span class="ico" aria-hidden="true">🎛️</span><span class="txt"><b>Ajustes de la conversación</b><span class="det">Preset, System Prompt, Thinking, temperatura, top-k, top-p, min-p y Structured Output.</span></span></label></li><li><label><input type="checkbox" data-id="m14p6"><span class="ico" aria-hidden="true">📄</span><span class="txt"><b>Documentos y RAG</b><span class="det">Si es corto entra entero; si es largo, RAG: solo ve fragmentos. Hacer preguntas concretas.</span></span></label></li><li><label><input type="checkbox" data-id="m14p7"><span class="ico" aria-hidden="true">🖥️</span><span class="txt"><b>El servidor local y lms</b><span class="det">API compatible con OpenAI en localhost:1234; registros en tiempo real; lms en la terminal.</span></span></label></li><li><label><input type="checkbox" data-id="m14p8"><span class="ico" aria-hidden="true">🦙</span><span class="txt"><b>Ollama</b><span class="det">Más sencillo y de código abierto, pensado para la terminal y otras apps. Los dos usan llama.cpp.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Probar Temperature 0,2, 1 y 1,6 y Top K 1 con un cuento, y guardar un preset.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m14"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/14-ia-local/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-14/">práctica evaluable 14</a> ·
+    <a href="presentacion-parte-2.html#m14">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m14">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m15" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">15</span>
+    <div>
+      <h3>Usar modelos desde tus programas: la API</h3>
+      <p class="idea">Con la API, un programa habla con el modelo; la API no recuerda nada y se paga por tokens.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m15p0"><span class="ico" aria-hidden="true">🔌</span><span class="txt"><b>Qué es una API</b><span class="det">Una puerta para que un programa hable con otro: petición y respuesta en JSON.</span></span></label></li><li><label><input type="checkbox" data-id="m15p1"><span class="ico" aria-hidden="true">📨</span><span class="txt"><b>Las cuatro partes de una petición</b><span class="det">Método (GET, POST), URL o endpoint, cabeceras (la clave) y cuerpo (modelo y mensajes).</span></span></label></li><li><label><input type="checkbox" data-id="m15p2"><span class="ico" aria-hidden="true">⌨️</span><span class="txt"><b>curl contra LM Studio</b><span class="det">Listar modelos y enviar peticion.json con -d @. En PowerShell, curl.exe. Mirar choices y usage.</span></span></label></li><li><label><input type="checkbox" data-id="m15p3"><span class="ico" aria-hidden="true">👥</span><span class="txt"><b>Roles: system, user, assistant</b><span class="det">El mensaje de sistema fija personalidad y reglas para toda la conversación.</span></span></label></li><li><label><input type="checkbox" data-id="m15p4"><span class="ico" aria-hidden="true">🧠</span><span class="txt"><b>La API no tiene memoria</b><span class="det">Se reenvía todo el historial en cada petición: más largo, más lento y más caro.</span></span></label></li><li><label><input type="checkbox" data-id="m15p5"><span class="ico" aria-hidden="true">🤖</span><span class="txt"><b>De la API al agente</b><span class="det">Un agente usa esta misma API con instrucciones y herramientas, pide permiso y reenvía todo: un «Hola» son unos 5 700 tokens.</span></span></label></li><li><label><input type="checkbox" data-id="m15p6"><span class="ico" aria-hidden="true">🔑</span><span class="txt"><b>OpenAI y Gemini</b><span class="det">Clave en una variable de entorno; Gemini tiene nivel gratuito y endpoint compatible con OpenAI.</span></span></label></li><li><label><input type="checkbox" data-id="m15p7"><span class="ico" aria-hidden="true">💶</span><span class="txt"><b>Precios y buenas prácticas</b><span class="det">Por millón de tokens, la salida más cara; nunca la clave en una web pública ni en GitHub; límites de gasto.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Con curl: listar modelos, una pregunta con system prompt y una conversación de tres turnos; temperatura 0 y 1,5.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m15"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/15-api/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-17/">práctica evaluable 17</a> ·
+    <a href="presentacion-parte-2.html#m15">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m15">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m16" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">16</span>
+    <div>
+      <h3>Habilidades y conectores (MCP)</h3>
+      <p class="idea">Las habilidades enseñan cómo hacer una tarea; los conectores dan acceso a datos y acciones.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m16p0"><span class="ico" aria-hidden="true">🧠</span><span class="txt"><b>Un cerebro sin manos</b><span class="det">El modelo no sabe la hora ni lee tu correo; con herramientas escribe una petición en vez de inventar.</span></span></label></li><li><label><input type="checkbox" data-id="m16p1"><span class="ico" aria-hidden="true">✋</span><span class="txt"><b>El modelo nunca ejecuta nada</b><span class="det">Solo propone; la aplicación ejecuta y pide permiso. Los modelos con herramientas llevan el icono del martillo.</span></span></label></li><li><label><input type="checkbox" data-id="m16p2"><span class="ico" aria-hidden="true">📁</span><span class="txt"><b>Una habilidad es una carpeta con SKILL.md</b><span class="det">Nombre y descripción (qué hace y cuándo usarla) más instrucciones, plantillas y ejemplos.</span></span></label></li><li><label><input type="checkbox" data-id="m16p3"><span class="ico" aria-hidden="true">📥</span><span class="txt"><b>Carga progresiva</b><span class="det">Primero solo lee nombres y descripciones; carga la habilidad entera cuando encaja. Estándar abierto (agentskills.io).</span></span></label></li><li><label><input type="checkbox" data-id="m16p4"><span class="ico" aria-hidden="true">🔌</span><span class="txt"><b>MCP: el enchufe universal</b><span class="det">Anthropic, noviembre de 2024. Un servidor ofrece herramientas, recursos y plantillas; puede ser local o remoto.</span></span></label></li><li><label><input type="checkbox" data-id="m16p5"><span class="ico" aria-hidden="true">🛡️</span><span class="txt"><b>Permisos y seguridad</b><span class="det">El conector hereda tus permisos; solo servidores de confianza; inyección de instrucciones; cada herramienta gasta contexto.</span></span></label></li><li><label><input type="checkbox" data-id="m16p6"><span class="ico" aria-hidden="true">🤝</span><span class="txt"><b>Habilidad frente a conector</b><span class="det">La habilidad es saber cómo; el conector es acceso. Se combinan: manos y saber usarlas.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Servidor MCP del reloj en LM Studio: preguntar la hora en Tokio con y sin el servidor.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m16"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/16-habilidades-mcp/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-16/">práctica evaluable 16</a> ·
+    <a href="presentacion-parte-2.html#m16">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m16">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m17" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">17</span>
+    <div>
+      <h3>Agentes y orquestadores</h3>
+      <p class="idea">Un agente es un modelo en bucle con herramientas: más autonomía exige más control.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m17p0"><span class="ico" aria-hidden="true">🔄</span><span class="txt"><b>Del chat al agente</b><span class="det">Recibe un objetivo y trabaja solo: piensa → actúa → observa → corrige. Usa la misma API del módulo 15.</span></span></label></li><li><label><input type="checkbox" data-id="m17p1"><span class="ico" aria-hidden="true">⏳</span><span class="txt"><b>Cada vez más autonomía</b><span class="det">De minutos en 2024 a horas de trabajo seguido a finales de 2026.</span></span></label></li><li><label><input type="checkbox" data-id="m17p2"><span class="ico" aria-hidden="true">🎼</span><span class="txt"><b>Agente y orquestador</b><span class="det">El agente ejecuta; el orquestador reparte entre varios (sistema multiagente, subagentes).</span></span></label></li><li><label><input type="checkbox" data-id="m17p3"><span class="ico" aria-hidden="true">💻</span><span class="txt"><b>Agentes de programación</b><span class="det">Claude Code, Codex, OpenCode (cualquier modelo, también local), Kilo Code, Gemini CLI.</span></span></label></li><li><label><input type="checkbox" data-id="m17p4"><span class="ico" aria-hidden="true">📲</span><span class="txt"><b>Agentes personales y en la nube</b><span class="det">OpenClaw (muy popular y con muchas vulnerabilidades), NanoClaw (aislado), Hermes (aprende); Grok Bot y Dots en la nube.</span></span></label></li><li><label><input type="checkbox" data-id="m17p5"><span class="ico" aria-hidden="true">🧰</span><span class="txt"><b>Construir agentes</b><span class="det">CrewAI, LangGraph, SDK de OpenAI, Claude y Google; n8n, Make y Zapier sin código.</span></span></label></li><li><label><input type="checkbox" data-id="m17p6"><span class="ico" aria-hidden="true">⚠️</span><span class="txt"><b>Riesgos y cómo limitarlos</b><span class="det">Acciones irreversibles, inyección, exceso de permisos, coste. Defensas: confirmación, mínimo acceso, aislamiento, límites de gasto y revisión humana.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Modo agente en un chat (con verificación de dos resultados) o un Pomodoro con OpenCode; debate sobre qué delegar.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m17"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/17-agentes/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-17/">práctica evaluable 17</a> ·
+    <a href="presentacion-parte-2.html#m17">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m17">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m18" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">18</span>
+    <div>
+      <h3>Fine-tuning: especializar un modelo</h3>
+      <p class="idea">El fine-tuning graba en los pesos un estilo o un formato; para datos nuevos es mejor RAG.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m18p0"><span class="ico" aria-hidden="true">🎓</span><span class="txt"><b>Qué es</b><span class="det">Seguir entrenando un modelo base con pocos datos especializados: ahorra el 99,9 % del coste.</span></span></label></li><li><label><input type="checkbox" data-id="m18p1"><span class="ico" aria-hidden="true">🎯</span><span class="txt"><b>Para qué sirve</b><span class="det">Estilo o personalidad, formato fijo, tareas concretas, hacer pequeño a un modelo bueno en algo.</span></span></label></li><li><label><input type="checkbox" data-id="m18p2"><span class="ico" aria-hidden="true">🤔</span><span class="txt"><b>¿Prompt, RAG o fine-tuning?</b><span class="det">Instrucciones: prompt o habilidad. Información: RAG. Comportamiento fijo o modelo pequeño: fine-tuning.</span></span></label></li><li><label><input type="checkbox" data-id="m18p3"><span class="ico" aria-hidden="true">🥘</span><span class="txt"><b>Los ingredientes</b><span class="det">Modelo base con licencia adecuada, datos de calidad (lo más importante) y una GPU.</span></span></label></li><li><label><input type="checkbox" data-id="m18p4"><span class="ico" aria-hidden="true">💬</span><span class="txt"><b>Datos en formato de chat</b><span class="det">JSONL con mensajes user y assistant. Con Alpaca, lo aprendido apenas se nota en LM Studio. Apartar un 5-10 % para validar.</span></span></label></li><li><label><input type="checkbox" data-id="m18p5"><span class="ico" aria-hidden="true">📓</span><span class="txt"><b>LoRA y QLoRA</b><span class="det">LoRA: menos del 1 % de los parámetros, adaptador de pocos MB (rango y alpha). QLoRA: sobre el modelo a 4 bits, cabe en 6-10 GB.</span></span></label></li><li><label><input type="checkbox" data-id="m18p6"><span class="ico" aria-hidden="true">⚠️</span><span class="txt"><b>Riesgos</b><span class="det">Sobreajuste, olvido catastrófico, basura entra y basura sale, protecciones debilitadas, licencias y datos personales.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Asistente que siempre trata de usted (asistente-formal.jsonl) con Unsloth Studio o Colab; probar con 10 épocas.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m18"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/18-fine-tuning/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-18/">práctica evaluable 18</a> ·
+    <a href="presentacion-parte-2.html#m18">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m18">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m19" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">19</span>
+    <div>
+      <h3>Cuantización: modelos más ligeros</h3>
+      <p class="idea">Cuantizar es guardar los pesos con menos bits: cabe y va más rápido, a costa de algo de calidad.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m19p0"><span class="ico" aria-hidden="true">📉</span><span class="txt"><b>Qué es</b><span class="det">De 16 bits a 8, 4 o 2 por peso, como pasar una foto de RAW a JPEG: no cambia lo que sabe, solo la precisión.</span></span></label></li><li><label><input type="checkbox" data-id="m19p1"><span class="ico" aria-hidden="true">🎁</span><span class="txt"><b>Para qué sirve</b><span class="det">Que quepa en tu equipo, más velocidad (menos datos que leer por token), menos coste y QLoRA.</span></span></label></li><li><label><input type="checkbox" data-id="m19p2"><span class="ico" aria-hidden="true">🧱</span><span class="txt"><b>Cómo funciona</b><span class="det">Bloques de pesos, rango del bloque, niveles (16 con 4 bits) y una escala por bloque.</span></span></label></li><li><label><input type="checkbox" data-id="m19p3"><span class="ico" aria-hidden="true">🔤</span><span class="txt"><b>La sopa de letras</b><span class="det">GGUF (llama.cpp, LM Studio, Ollama) y MLX (Mac). Q4_K_M: 4 bits, método K, tamaño medio. IQ, imatrix, UD.</span></span></label></li><li><label><input type="checkbox" data-id="m19p4"><span class="ico" aria-hidden="true">💾</span><span class="txt"><b>Cuál descargar</b><span class="det">Q4_K_M para casi todo; Q5-Q6 si sobra memoria; Q8_0 en modelos pequeños. Mejor un modelo pequeño en Q4 que uno grande en Q2.</span></span></label></li><li><label><input type="checkbox" data-id="m19p5"><span class="ico" aria-hidden="true">📏</span><span class="txt"><b>El precio: la perplejidad</b><span class="det">8 bits, casi igual; 4-5 bits, pérdida pequeña en modelos grandes; por debajo de 4, cae deprisa (Q2_K de 0,6B: 885).</span></span></label></li><li><label><input type="checkbox" data-id="m19p6"><span class="ico" aria-hidden="true">🧪</span><span class="txt"><b>La prueba del curso</b><span class="det">Q4_K_M ocupa un tercio y va más rápido; Q2_K se rompe. El original también se equivoca: un modelo pequeño es poco fiable.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Cuantizar Qwen3-0.6B a 8, 4 y 2 bits (Colab o GGUF-my-repo) y comparar tamaño, velocidad y respuestas.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m19"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/19-cuantizacion/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-19/">práctica evaluable 19</a> ·
+    <a href="presentacion-parte-2.html#m19">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m19">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m20" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">20</span>
+    <div>
+      <h3>Destilación: un profesor grande para un estudiante pequeño</h3>
+      <p class="idea">Un modelo grande enseña a uno pequeño: el estudiante hereda gran parte de su capacidad, y también sus errores.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m20p0"><span class="ico" aria-hidden="true">👩‍🍳</span><span class="txt"><b>Profesor y estudiante</b><span class="det">La chef que explica por qué hace cada cosa: el aprendiz imita su comportamiento, no solo sus respuestas.</span></span></label></li><li><label><input type="checkbox" data-id="m20p1"><span class="ico" aria-hidden="true">🌗</span><span class="txt"><b>El conocimiento oscuro</b><span class="det">Etiqueta blanda («90 % gato, 9 % perro…») frente a etiqueta dura: los matices enseñan.</span></span></label></li><li><label><input type="checkbox" data-id="m20p2"><span class="ico" aria-hidden="true">🎁</span><span class="txt"><b>Para qué sirve</b><span class="det">Modelos pequeños y buenos, menos coste, dispositivos modestos y datos sin etiquetar.</span></span></label></li><li><label><input type="checkbox" data-id="m20p3"><span class="ico" aria-hidden="true">🔀</span><span class="txt"><b>Destilar frente a cuantizar</b><span class="det">Cuantizar comprime el mismo modelo; destilar crea otro más pequeño. Se combinan.</span></span></label></li><li><label><input type="checkbox" data-id="m20p4"><span class="ico" aria-hidden="true">⚙️</span><span class="txt"><b>Cómo funciona</b><span class="det">El profesor da probabilidades; el estudiante las imita (divergencia KL) con temperatura mayor que 1.</span></span></label></li><li><label><input type="checkbox" data-id="m20p5"><span class="ico" aria-hidden="true">🧬</span><span class="txt"><b>En los LLM</b><span class="det">Por probabilidades (token a token) o por datos sintéticos (respuestas del profesor + fine-tuning, como DeepSeek R1).</span></span></label></li><li><label><input type="checkbox" data-id="m20p6"><span class="ico" aria-hidden="true">⚖️</span><span class="txt"><b>El precio y la ética</b><span class="det">Se acerca en la tarea, pierde en lo general. OpenAI, Anthropic y Google prohíben destilar sus modelos para competir con ellos.</span></span></label></li><li><label><input type="checkbox" data-id="m20p7"><span class="ico" aria-hidden="true">📊</span><span class="txt"><b>La prueba del curso</b><span class="det">El estudiante, 15 veces más pequeño y 38 veces más rápido, sin etiquetas humanas empata con el de 30 000 etiquetas.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Cuaderno de Colab: DistilBERT enseña a BERT-tiny a clasificar reseñas (unos 10 minutos).</p>
+  <div class="pie">
+    <span class="prog" data-prog="m20"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/20-destilacion/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-20/">práctica evaluable 20</a> ·
+    <a href="presentacion-parte-2.html#m20">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m20">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m21" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">21</span>
+    <div>
+      <h3>Pre-entrenamiento: el nacimiento de un modelo</h3>
+      <p class="idea">Pre-entrenar es leer billones de tokens prediciendo el siguiente: así nace un modelo base, que aún no sigue instrucciones.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m21p0"><span class="ico" aria-hidden="true">📚</span><span class="txt"><b>Leer todo internet</b><span class="det">Tarea: predecir el siguiente token (autosupervisado). Resultado: un modelo base que continúa el texto, no responde.</span></span></label></li><li><label><input type="checkbox" data-id="m21p1"><span class="ico" aria-hidden="true">🥘</span><span class="txt"><b>Los ingredientes</b><span class="det">Datos: decenas de billones de tokens (Common Crawl…). Cómputo: miles de GPU durante meses. Leyes de escala (Chinchilla).</span></span></label></li><li><label><input type="checkbox" data-id="m21p2"><span class="ico" aria-hidden="true">✂️</span><span class="txt"><b>El tokenizador</b><span class="det">Texto → trozos → números. Vocabulario aprendido con BPE; inseparable de su modelo (va dentro del GGUF).</span></span></label></li><li><label><input type="checkbox" data-id="m21p3"><span class="ico" aria-hidden="true">👀</span><span class="txt"><b>El Transformer</b><span class="det">Atención (cada token mira a los anteriores) y paralelismo (todos los tokens a la vez): por eso se pudo escalar.</span></span></label></li><li><label><input type="checkbox" data-id="m21p4"><span class="ico" aria-hidden="true">🔁</span><span class="txt"><b>El bucle de entrenamiento</b><span class="det">Lote → predecir → pérdida (entropía cruzada) → retropropagación. La validación comprueba que generaliza.</span></span></label></li><li><label><input type="checkbox" data-id="m21p5"><span class="ico" aria-hidden="true">🛤️</span><span class="txt"><b>El camino completo</b><span class="det">Diseño → pre-entrenamiento → post-entrenamiento → compresión → especialización → inferencia.</span></span></label></li><li><label><input type="checkbox" data-id="m21p6"><span class="ico" aria-hidden="true">🏰</span><span class="txt"><b>La prueba del Quijote</b><span class="det">Nano-modelo de 3 M de parámetros, un token por carácter: la pérdida baja de 4,65 a 1,32 y aprende sola la ortografía y «vuestra merced».</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Cuaderno de Colab (basado en nanoGPT): pre-entrenar desde cero con el Quijote en unos 3 minutos.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m21"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/21-pre-entrenamiento/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-21/">práctica evaluable 21</a> ·
+    <a href="presentacion-parte-2.html#m21">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m21">Borrar marcas</button>
+  </div>
+</section>
+<section class="modulo" id="m22" style="--c:var(--p2);--cc:var(--p2-claro)">
+  <header>
+    <span class="num">22</span>
+    <div>
+      <h3>Crea tu propio modelo</h3>
+      <p class="idea">Crear tu modelo es elegir un buen modelo abierto y especializarlo, con un objetivo claro y datos buenos.</p>
+    </div>
+  </header>
+  <ul><li><label><input type="checkbox" data-id="m22p0"><span class="ico" aria-hidden="true">🏎️</span><span class="txt"><b>Qué significa «crear» un LLM</b><span class="det">No se fabrica el motor (pre-entrenamiento): se elige el mejor modelo abierto y se ajusta.</span></span></label></li><li><label><input type="checkbox" data-id="m22p1"><span class="ico" aria-hidden="true">🎯</span><span class="txt"><b>Fase 1: el objetivo</b><span class="det">Tarea concreta, tono, qué no debe hacer y criterios comprobables. Antes: ¿basta un prompt, una habilidad o RAG?</span></span></label></li><li><label><input type="checkbox" data-id="m22p2"><span class="ico" aria-hidden="true">⚙️</span><span class="txt"><b>Fase 2: los componentes</b><span class="det">El modelo más grande que vaya bien donde se usará; datos de calidad antes que cantidad; Unsloth y LM Studio.</span></span></label></li><li><label><input type="checkbox" data-id="m22p3"><span class="ico" aria-hidden="true">🔨</span><span class="txt"><b>Fase 3: la creación</b><span class="det">Fine-tuning (LoRA o QLoRA) → evaluación con ejemplos no vistos → GGUF → despliegue con prompt de sistema.</span></span></label></li><li><label><input type="checkbox" data-id="m22p4"><span class="ico" aria-hidden="true">🔁</span><span class="txt"><b>Fase 4: iterar</b><span class="det">Uso → fallos → mejores datos → nuevo entrenamiento → uso. Así mejoran también los modelos comerciales.</span></span></label></li><li><label><input type="checkbox" data-id="m22p5"><span class="ico" aria-hidden="true">👨‍🍳</span><span class="txt"><b>El ejemplo: Chef-bot</b><span class="det">Recetas con los ingredientes de la nevera: probar el modelo base, entrenar, evaluar con ingredientes nuevos y exportar.</span></span></label></li><li><label><input type="checkbox" data-id="m22p6"><span class="ico" aria-hidden="true">🛠️</span><span class="txt"><b>¿Y desde cero de verdad?</b><span class="det">Karpathy (Zero to Hero), el libro de Raschka, RustGPT y tiny_llm.</span></span></label></li></ul>
+  <p class="act"><span aria-hidden="true">🧪</span> <b>Actividad:</b> Chef-bot con recetas.jsonl en Unsloth Studio y LM Studio, con preset propio.</p>
+  <div class="pie">
+    <span class="prog" data-prog="m22"></span>
+    <a href="https://mosqueteroweb.github.io/IAconceptos/22-crear-llm/">módulo en la web</a> · <a href="https://mosqueteroweb.github.io/IAconceptos/practicas/practica-22/">práctica evaluable 22</a> ·
+    <a href="presentacion-parte-2.html#m22">diapositiva</a>
+    <button type="button" class="borrar" data-borrar="m22">Borrar marcas</button>
+  </div>
+</section>
+</main>
+<script>
+(function () {
+  var CLAVE = "iaconceptos-chuleta";
+  var marcas = {};
+  try { marcas = JSON.parse(localStorage.getItem(CLAVE)) || {}; } catch (err) { marcas = {}; }
+  function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(marcas)); } catch (err) {} }
+  var casillas = document.querySelectorAll("input[data-id]");
+  function pintar() {
+    var cuenta = {};
+    casillas.forEach(function (c) {
+      var m = c.dataset.id.split("p")[0];
+      cuenta[m] = cuenta[m] || [0, 0];
+      cuenta[m][1]++;
+      if (c.checked) cuenta[m][0]++;
+    });
+    Object.keys(cuenta).forEach(function (m) {
+      var hechos = cuenta[m][0], total = cuenta[m][1];
+      var prog = document.querySelector('[data-prog="' + m + '"]');
+      prog.textContent = hechos + " de " + total;
+      prog.classList.toggle("hecho", hechos === total);
+      var chip = document.querySelector('.chip[data-m="' + m.slice(1) + '"]');
+      chip.querySelector("small").textContent = hechos ? hechos + "/" + total : "";
+      chip.classList.toggle("algo", hechos > 0 && hechos < total);
+      chip.classList.toggle("hecho", hechos === total);
+    });
+  }
+  casillas.forEach(function (c) {
+    c.checked = !!marcas[c.dataset.id];
+    c.addEventListener("change", function () {
+      if (c.checked) marcas[c.dataset.id] = 1; else delete marcas[c.dataset.id];
+      guardar(); pintar();
+    });
+  });
+  document.querySelectorAll("[data-borrar]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var m = b.dataset.borrar;
+      if (!confirm("¿Borrar las marcas del módulo " + m.slice(1) + "?")) return;
+      casillas.forEach(function (c) {
+        if (c.dataset.id.split("p")[0] === m) { c.checked = false; delete marcas[c.dataset.id]; }
+      });
+      guardar(); pintar();
+    });
+  });
+  pintar();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso: parte 1</title>
+<meta name="robots" content="noindex">
+<style>
+:root {
+  --fondo: #f7f7f5; --papel: #ffffff; --texto: #1c1d21; --suave: #5f6370; --linea: #e3e3df;
+  --p1: #2f6fdf; --p1-claro: #e8f0fd; --p2: #7a4fd6; --p2-claro: #f0eafc; --ok: #1f9d55; --ok-claro: #e5f6ec;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #15161a; --papel: #1e2026; --texto: #ececef; --suave: #a3a7b3; --linea: #30333b;
+    --p1: #7aa7ff; --p1-claro: #1c2a45; --p2: #b494ff; --p2-claro: #2a2142; --ok: #4cc785; --ok-claro: #17301f;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--fondo); color: var(--texto);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; -webkit-text-size-adjust: 100%; }
+a { color: inherit; }
+
+:root { --c: var(--p1); --cc: var(--p1-claro); }
+html, body { height: 100%; overflow: hidden; }
+.pase { height: 100%; display: flex; align-items: center; justify-content: center; padding: 12px; }
+.diapo { display: none; width: min(100%, calc((100vh - 70px) * 16 / 9)); aspect-ratio: 16 / 9;
+  background: var(--papel); border: 1px solid var(--linea); border-radius: 18px; container-type: inline-size;
+  box-shadow: 0 6px 30px rgba(0,0,0,.08); overflow: hidden; }
+.diapo.activa { display: block; }
+.lienzo { height: 100%; padding: 4.5cqw 5cqw; display: flex; flex-direction: column; border-top: 1.1cqw solid var(--c); }
+.etq { color: var(--c); font-weight: 700; font-size: 1.5cqw; text-transform: uppercase; letter-spacing: .08em; margin: 0; }
+h1 { font-size: 4.4cqw; margin: 1cqw 0 2.5cqw; line-height: 1.1; }
+.indice { columns: 2; column-gap: 4cqw; margin: 0; padding: 0; list-style: none; font-size: 1.9cqw; }
+.indice li { break-inside: avoid; margin-bottom: 1cqw; }
+.indice a { text-decoration: none; }
+.indice b { display: inline-block; min-width: 3.2cqw; color: var(--c); }
+header { display: flex; align-items: center; gap: 1.8cqw; }
+.num { flex: none; width: 6cqw; height: 6cqw; border-radius: 1.4cqw; background: var(--c); color: #fff;
+  font-weight: 800; font-size: 3.2cqw; display: flex; align-items: center; justify-content: center; }
+h2 { font-size: 3.2cqw; margin: 0; line-height: 1.1; }
+.pract { margin-left: auto; flex: none; font-size: 1.4cqw; font-weight: 600; color: var(--c); background: var(--cc);
+  padding: .6cqw 1.2cqw; border-radius: 99px; }
+.idea { font-size: 2.05cqw; color: var(--suave); font-style: italic; margin: 1.6cqw 0 2.2cqw; padding-left: 1.4cqw;
+  border-left: .5cqw solid var(--c); }
+ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.3cqw 3cqw; align-content: start; flex: 1; }
+ul.dos { grid-template-columns: 1fr 1fr; }
+ul li { display: flex; align-items: center; gap: 1.4cqw; font-size: 2.05cqw; font-weight: 600; line-height: 1.2;
+  background: var(--cc); border-radius: 1.2cqw; padding: 1.1cqw 1.4cqw; }
+ul.una li { font-size: 2.4cqw; }
+ul .ico { font-size: 2.6cqw; flex: none; }
+.act { margin: 1.6cqw 0 0; font-size: 1.6cqw; color: var(--suave); }
+.mando { position: fixed; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; align-items: center;
+  gap: 10px; font-size: .9rem; color: var(--suave); }
+.mando button, .mando a { font: inherit; background: var(--papel); color: var(--texto); border: 1px solid var(--linea);
+  border-radius: 9px; padding: 5px 12px; cursor: pointer; text-decoration: none; }
+@media print {
+  html, body { height: auto; overflow: visible; }
+  .pase { display: block; padding: 0; }
+  .diapo { display: block; width: 100%; page-break-after: always; box-shadow: none; margin: 0 0 8px; }
+  .mando { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="pase">
+
+<section class="diapo portada" id="inicio">
+  <div class="lienzo">
+    <p class="etq">IA de cero a modelo propio · repaso del profesor</p>
+    <h1>Primera parte: entender la IA</h1>
+    <ol class="indice"><li><a href="#m1"><b>1</b> ¡Hola, IA! Desmitificando el futuro</a></li><li><a href="#m2"><b>2</b> Un breve viaje en el tiempo</a></li><li><a href="#m3"><b>3</b> Los grandes tipos de IA</a></li><li><a href="#m4"><b>4</b> Machine Learning: el motor del cambio</a></li><li><a href="#m5"><b>5</b> Deep Learning y las redes neuronales</a></li><li><a href="#m6"><b>6</b> Multimodalidad: la IA que ve y habla</a></li><li><a href="#m7"><b>7</b> Las herramientas del oficio</a></li><li><a href="#m8"><b>8</b> La revolución de la IA generativa</a></li><li><a href="#m9"><b>9</b> Hardware necesario</a></li><li><a href="#m10"><b>10</b> Software necesario: la pila para crear un LLM</a></li><li><a href="#m11"><b>11</b> Ética y responsabilidad en la era de la IA</a></li></ol>
+  </div>
+</section>
+<section class="diapo" id="m1">
+  <div class="lienzo">
+    <header><span class="num">1</span><h2>¡Hola, IA! Desmitificando el futuro</h2></header>
+    <p class="idea">La IA no es magia ni conciencia: es estadística y computación a gran escala.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🎯</span><span>Qué es la IA</span></li><li><span class="ico" aria-hidden="true">🧩</span><span>IA débil o estrecha frente a modelos de propósito general</span></li><li><span class="ico" aria-hidden="true">⚖️</span><span>Humana frente a artificial</span></li><li><span class="ico" aria-hidden="true">👻</span><span>Alucinaciones</span></li><li><span class="ico" aria-hidden="true">📱</span><span>La IA que ya usamos</span></li><li><span class="ico" aria-hidden="true">⛈️</span><span>¿Por qué ahora? La tormenta perfecta</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Teachable Machine: entrenar dos gestos con la cámara y tratar de engañarla.</p>
+  </div>
+</section>
+<section class="diapo" id="m2">
+  <div class="lienzo">
+    <header><span class="num">2</span><h2>Un breve viaje en el tiempo</h2></header>
+    <p class="idea">La IA avanza a saltos: euforia, inviernos y renacimiento cuando coinciden datos, hardware y algoritmos.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🧠</span><span>Turing (1950) y su test</span></li><li><span class="ico" aria-hidden="true">🎓</span><span>Dartmouth (1956)</span></li><li><span class="ico" aria-hidden="true">🏆</span><span>Los hitos</span></li><li><span class="ico" aria-hidden="true">❄️</span><span>Los dos inviernos</span></li><li><span class="ico" aria-hidden="true">🔄</span><span>Cambio de paradigma</span></li><li><span class="ico" aria-hidden="true">🖼️</span><span>AlexNet (2012)</span></li><li><span class="ico" aria-hidden="true">🏅</span><span>Reconocimientos</span></li></ul>
+    
+  </div>
+</section>
+<section class="diapo" id="m3">
+  <div class="lienzo">
+    <header><span class="num">3</span><h2>Los grandes tipos de IA</h2></header>
+    <p class="idea">Hoy hay IA estrecha y modelos de propósito general; la IA general (AGI) todavía no existe.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🎯</span><span>ANI, IA débil o estrecha</span></li><li><span class="ico" aria-hidden="true">🧰</span><span>Modelos de propósito general</span></li><li><span class="ico" aria-hidden="true">🌐</span><span>AGI y ASI</span></li><li><span class="ico" aria-hidden="true">📜</span><span>IA simbólica (GOFAI)</span></li><li><span class="ico" aria-hidden="true">📊</span><span>Machine Learning</span></li><li><span class="ico" aria-hidden="true">🧠</span><span>Deep Learning</span></li></ul>
+    
+  </div>
+</section>
+<section class="diapo" id="m4">
+  <div class="lienzo">
+    <header><span class="num">4</span><h2>Machine Learning: el motor del cambio</h2></header>
+    <p class="idea">En vez de programar reglas, se le dan ejemplos a la máquina y ella descubre los patrones.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🔁</span><span>Programar frente a aprender</span></li><li><span class="ico" aria-hidden="true">🏷️</span><span>Supervisado: clasificación y regresión</span></li><li><span class="ico" aria-hidden="true">🧺</span><span>No supervisado: clustering</span></li><li><span class="ico" aria-hidden="true">🎮</span><span>Por refuerzo</span></li><li><span class="ico" aria-hidden="true">🧩</span><span>Autosupervisado</span></li><li><span class="ico" aria-hidden="true">📏</span><span>Entrenamiento y prueba (80/20)</span></li><li><span class="ico" aria-hidden="true">⚠️</span><span>Sobreajuste y métricas</span></li></ul>
+    
+  </div>
+</section>
+<section class="diapo" id="m5">
+  <div class="lienzo">
+    <header><span class="num">5</span><h2>Deep Learning y las redes neuronales</h2></header>
+    <p class="idea">Una red neuronal aprende ajustando millones de pesos para equivocarse cada vez menos.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">⚙️</span><span>La neurona artificial</span></li><li><span class="ico" aria-hidden="true">🏗️</span><span>Capas: entrada, ocultas y salida</span></li><li><span class="ico" aria-hidden="true">🔢</span><span>Parámetros</span></li><li><span class="ico" aria-hidden="true">🔄</span><span>El ciclo de entrenamiento</span></li><li><span class="ico" aria-hidden="true">⛰️</span><span>La metáfora de la montaña en la niebla</span></li><li><span class="ico" aria-hidden="true">👁️</span><span>Aplicaciones: imagen y lenguaje</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> TensorFlow Playground: resolver la espiral añadiendo capas, ReLU y entradas sin(X).</p>
+  </div>
+</section>
+<section class="diapo" id="m6">
+  <div class="lienzo">
+    <header><span class="num">6</span><h2>Multimodalidad: la IA que ve y habla</h2></header>
+    <p class="idea">Hoy un mismo modelo lee, mira, escucha y habla porque todo se convierte en vectores.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🖼️</span><span>Una imagen son números</span></li><li><span class="ico" aria-hidden="true">🩺</span><span>Visión por computador</span></li><li><span class="ico" aria-hidden="true">🔤</span><span>Tokens y embeddings</span></li><li><span class="ico" aria-hidden="true">💬</span><span>Aplicaciones del PLN</span></li><li><span class="ico" aria-hidden="true">🎙️</span><span>La voz</span></li><li><span class="ico" aria-hidden="true">🔗</span><span>Modelos multimodales</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Fotografiar un objeto, preguntar a un asistente qué es y comprobarlo en otra fuente.</p>
+  </div>
+</section>
+<section class="diapo" id="m7">
+  <div class="lienzo">
+    <header><span class="num">7</span><h2>Las herramientas del oficio</h2></header>
+    <p class="idea">Python y sus librerías son el idioma de la IA, y la nube permite entrenar sin tener GPU.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🐍</span><span>Por qué Python</span></li><li><span class="ico" aria-hidden="true">📚</span><span>Las librerías clave</span></li><li><span class="ico" aria-hidden="true">🧹</span><span>Preparar los datos</span></li><li><span class="ico" aria-hidden="true">☁️</span><span>La nube y Google Colab</span></li><li><span class="ico" aria-hidden="true">🔀</span><span>Alternativas a Colab</span></li><li><span class="ico" aria-hidden="true">💻</span><span>Sin código y en local</span></li></ul>
+    
+  </div>
+</section>
+<section class="diapo" id="m8">
+  <div class="lienzo">
+    <header><span class="num">8</span><h2>La revolución de la IA generativa</h2></header>
+    <p class="idea">Un LLM predice el siguiente token; con eso, y un buen ajuste, se convierte en un asistente.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">✨</span><span>De analizar a crear</span></li><li><span class="ico" aria-hidden="true">🔮</span><span>LLM: predecir el siguiente token</span></li><li><span class="ico" aria-hidden="true">👀</span><span>La atención del Transformer</span></li><li><span class="ico" aria-hidden="true">🧑‍🏫</span><span>De modelo a asistente</span></li><li><span class="ico" aria-hidden="true">🆕</span><span>Razonamiento, herramientas y agentes</span></li><li><span class="ico" aria-hidden="true">👻</span><span>Alucinaciones</span></li><li><span class="ico" aria-hidden="true">🌫️</span><span>Difusión para imágenes</span></li><li><span class="ico" aria-hidden="true">✍️</span><span>Pedirle bien las cosas</span></li></ul>
+    
+  </div>
+</section>
+<section class="diapo" id="m9">
+  <div class="lienzo">
+    <header><span class="num">9</span><h2>Hardware necesario</h2></header>
+    <p class="idea">Crear, ajustar y usar un modelo piden hardware de escalas muy distintas: de un clúster a tu portátil.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">📏</span><span>Tres escalas</span></li><li><span class="ico" aria-hidden="true">🟩</span><span>Las GPU de centro de datos</span></li><li><span class="ico" aria-hidden="true">🔌</span><span>La interconexión</span></li><li><span class="ico" aria-hidden="true">🗄️</span><span>El almacenamiento</span></li><li><span class="ico" aria-hidden="true">🧑‍💻</span><span>Lo realista: fine-tuning</span></li><li><span class="ico" aria-hidden="true">⚠️</span><span>Dos GPU no son una con el doble de memoria</span></li><li><span class="ico" aria-hidden="true">🧮</span><span>Cuánta memoria necesita un modelo</span></li><li><span class="ico" aria-hidden="true">🍎</span><span>Memoria unificada</span></li></ul>
+    
+  </div>
+</section>
+<section class="diapo" id="m10">
+  <div class="lienzo">
+    <header><span class="num">10</span><h2>Software necesario: la pila para crear un LLM</h2></header>
+    <p class="idea">Entrenar un LLM exige una pila de cinco capas; ajustarlo o usarlo, solo unas pocas piezas.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">🏛️</span><span>La pirámide de cinco capas</span></li><li><span class="ico" aria-hidden="true">🤗</span><span>Capa 4: librerías de alto nivel</span></li><li><span class="ico" aria-hidden="true">🕸️</span><span>Capa 3: entrenamiento distribuido</span></li><li><span class="ico" aria-hidden="true">🔥</span><span>Capa 2: el framework</span></li><li><span class="ico" aria-hidden="true">🟢</span><span>Capa 1: drivers</span></li><li><span class="ico" aria-hidden="true">📊</span><span>Datos, trabajos y experimentos</span></li><li><span class="ico" aria-hidden="true">✅</span><span>Lo que basta en la práctica</span></li></ul>
+    
+  </div>
+</section>
+<section class="diapo" id="m11">
+  <div class="lienzo">
+    <header><span class="num">11</span><h2>Ética y responsabilidad en la era de la IA</h2></header>
+    <p class="idea">La IA hereda nuestros sesgos y plantea riesgos reales; la ley europea los regula según su nivel de riesgo.</p>
+    <ul class="dos"><li><span class="ico" aria-hidden="true">⚖️</span><span>Sesgos algorítmicos</span></li><li><span class="ico" aria-hidden="true">🔒</span><span>Privacidad</span></li><li><span class="ico" aria-hidden="true">🏫</span><span>Buenas prácticas en el aula</span></li><li><span class="ico" aria-hidden="true">💼</span><span>El trabajo</span></li><li><span class="ico" aria-hidden="true">🎭</span><span>Deepfakes y desinformación</span></li><li><span class="ico" aria-hidden="true">🇪🇺</span><span>El Reglamento Europeo de IA</span></li><li><span class="ico" aria-hidden="true">🌍</span><span>Medio ambiente, autoría y otros retos</span></li></ul>
+    <p class="act"><span aria-hidden="true">🧪</span> Debate: becas decididas por un algoritmo, responsabilidad de un error médico, autoría del arte generado, normas del centro.</p>
+  </div>
+</section>
+</div>
+<nav class="mando">
+  <button type="button" id="ant" aria-label="Anterior">←</button>
+  <span id="cuenta"></span>
+  <button type="button" id="sig" aria-label="Siguiente">→</button>
+  <a href="chuleta.html" id="achuleta">Chuleta</a>
+  <a href="index.html">Inicio</a>
+</nav>
+<script>
+(function () {
+  var d = Array.prototype.slice.call(document.querySelectorAll(".diapo"));
+  var i = 0;
+  function ir(k, sinHash) {
+    i = Math.max(0, Math.min(d.length - 1, k));
+    d.forEach(function (x, j) { x.classList.toggle("activa", j === i); });
+    document.getElementById("cuenta").textContent = (i + 1) + " / " + d.length;
+    document.getElementById("achuleta").href = "chuleta.html" + (d[i].id.charAt(0) === "m" ? "#" + d[i].id : "");
+    if (!sinHash) history.replaceState(null, "", "#" + d[i].id);
+  }
+  function desdeHash() {
+    var h = location.hash.slice(1);
+    var k = d.findIndex(function (x) { return x.id === h; });
+    ir(k < 0 ? 0 : k, true);
+  }
+  document.getElementById("ant").onclick = function () { ir(i - 1); };
+  document.getElementById("sig").onclick = function () { ir(i + 1); };
+  document.addEventListener("keydown", function (ev) {
+    if (["ArrowRight", "PageDown", " "].indexOf(ev.key) >= 0) { ev.preventDefault(); ir(i + 1); }
+    if (["ArrowLeft", "PageUp"].indexOf(ev.key) >= 0) { ev.preventDefault(); ir(i - 1); }
+    if (ev.key === "Home") ir(0);
+    if (ev.key === "End") ir(d.length - 1);
+  });
+  var x0 = null;
+  document.addEventListener("touchstart", function (ev) { x0 = ev.touches[0].clientX; }, { passive: true });
+  document.addEventListener("touchend", function (ev) {
+    if (x0 === null) return;
+    var dx = ev.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) ir(i + (dx < 0 ? 1 : -1));
+    x0 = null;
+  });
+  window.addEventListener("hashchange", desdeHash);
+  desdeHash();
+})();
+</script>
+</body>
+</html>
