@@ -1,6 +1,6 @@
-# Práctica 15. Tu agente, tus APIs
+# Práctica 17. Tu agente, tus APIs
 
-**Módulo:** [15. Usar modelos desde tus programas: la API](../15-api.md) · [Normas comunes de las prácticas](segunda-parte.md)
+**Módulos:** [15. Usar modelos desde tus programas: la API](../15-api.md) y [17. Agentes y orquestadores](../17-agentes.md) · [Normas comunes de las prácticas](segunda-parte.md)
 
 !!! danger "Validación obligatoria en clase"
     El profesor tiene que ver en clase vuestro trabajo funcionando **antes** de que lo subas. Un trabajo subido sin haberlo validado antes en clase no se evalúa. Lo que tendréis que enseñar está en el apartado [Validación en clase](#validacion-en-clase).
@@ -224,7 +224,7 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
     Puedes elegir otro modelo de la lista de NVIDIA, pero anota cuál y por qué.
 
 11. **La misma tarea.** Borra `informe.md` y repite las tareas 5, 6 y 7 con el modelo de NVIDIA, con las mismas palabras.
-12. **Comparación.** Haz una tabla con los dos modelos: nombre, dónde se ejecuta, tiempo que tardó la tarea 6, número de errores del informe antes y después de la tarea 7, si cumplió la personalidad de `AGENTS.md` y si terminó con la frase fija. Después, responde: ¿qué datos tuyos han salido de tu ordenador en la parte B? ¿Qué límites tiene la API gratuita? ¿Cuándo usarías cada una?
+12. **Comparación.** Haz una tabla con los dos modelos: nombre, dónde se ejecuta, tiempo que tardó la tarea 6, número de errores del informe antes y después de la tarea 7, si cumplió la personalidad de `AGENTS.md` y si terminó con la frase fija. Después, responde: ¿qué datos tuyos han salido de tu ordenador en la parte B? ¿Qué límites tiene la API gratuita? ¿Cuándo usarías cada una? Y, con lo visto en el [módulo 17](../17-agentes.md#4-riesgos-y-como-limitarlos): ¿qué podría salir mal si el agente tuviera acceso a toda tu carpeta personal y aprobaras todo con *Always allow*? ¿Qué te protegió en esta práctica?
 
 !!! tip "Si no puedes usar NVIDIA"
     Otras APIs con modelos gratuitos y compatibles con OpenAI: [OpenRouter](https://openrouter.ai/) (modelos terminados en `:free`) o la API de [Google Gemini](https://aistudio.google.com/) (nivel gratuito). Los dos agentes las admiten. Con **OpenCode** hay otra opción sin crear ninguna cuenta: trae modelos gratuitos en la nube, como `opencode/nemotron-3.5-lightning-free` o `opencode/deepseek-v4.1-flash-free` (búscalos con `/models`). Indica en la entrega cuál has usado.
@@ -483,6 +483,6 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 - Tu recuento a mano del CSV.
 - Capturas completas: el servidor local en marcha, la respuesta de `/v1/models`, el agente con cada modelo, las ventanas de permiso y los registros de LM Studio con los tokens.
 - La tabla de tokens del apartado 8 con tu explicación.
-- La tabla comparativa del apartado 12 y tus respuestas (máximo 250 palabras).
+- La tabla comparativa del apartado 12 y tus respuestas (máximo 300 palabras).
 - **Ninguna clave**: si aparece en una captura, tápala.
 

@@ -8,8 +8,8 @@ Estas son las prácticas evaluables de los módulos 13 a 22. Antes de empezar cu
 |---|---|---|
 | [13. El laboratorio de prompts](practica-13.md) | 13. Aplicaciones e ingeniería de prompts | Navegador |
 | [14. Tu laboratorio de IA local](practica-14.md) | 14. LM Studio y Ollama | Mac o PC |
-| [15. Tu agente, tus APIs](practica-15.md) | 15. La API | Mac o PC + cuenta gratuita de NVIDIA |
 | [16. Habilidades y conectores](practica-16.md) | 16. Habilidades y MCP | Mac o PC + navegador |
+| [17. Tu agente, tus APIs](practica-17.md) | 15. La API y 17. Agentes | Mac o PC + cuenta gratuita de NVIDIA |
 | [18. Un modelo con estilo propio](practica-18.md) | 18. Fine-tuning | Mac o PC (o Colab) |
 | [19. Cuantizar y medir](practica-19.md) | 19. Cuantización | Mac o PC, con la terminal |
 | [20. Destila tu propio modelo](practica-20.md) | 20. Destilación | Mac o PC |

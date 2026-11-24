@@ -212,7 +212,7 @@ svg("destilacion", 900, 356, b)
 
 # 9. Flujo de una API
 b = t(410, 34, "Qué pasa cuando llamas a la API de un modelo", 18, weight=700)
-b += box(30, 90, 180, 80, "Tu programa", C['blue'], "Postman, curl,", sub2="JavaScript…")
+b += box(30, 90, 180, 80, "Tu programa", C['blue'], "curl, un agente,", sub2="JavaScript…")
 b += box(610, 90, 180, 80, "Servidor del modelo", C['violet'], "OpenAI, Google,", sub2="o LM Studio local")
 b += arrow(210, 112, 610, 112, C['blue'])
 b += t(410, 98, "Petición HTTP POST + clave (API key)", 13, C['blue'], weight=600)

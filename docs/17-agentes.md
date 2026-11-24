@@ -8,7 +8,7 @@
 
 ## 1. Del chat al agente
 
-Un chat responde y espera. Un **agente** recibe un **objetivo** y trabaja **por su cuenta** hasta cumplirlo: planifica, usa herramientas ([módulo 16](16-habilidades-mcp.md)), mira el resultado, corrige y vuelve a intentarlo. Técnicamente, un agente es un **modelo de lenguaje en un bucle**, con acceso a herramientas y algún tipo de memoria.
+Un chat responde y espera. Un **agente** recibe un **objetivo** y trabaja **por su cuenta** hasta cumplirlo: planifica, usa herramientas ([módulo 16](16-habilidades-mcp.md)), mira el resultado, corrige y vuelve a intentarlo. Técnicamente, un agente es un **modelo de lenguaje en un bucle**, con acceso a herramientas y algún tipo de memoria. Ese bucle se hace con la misma API del [módulo 15](15-api.md#4-de-la-api-al-agente): el agente llama al modelo, ejecuta lo que le pide y vuelve a llamarlo con el resultado.
 
 <figure markdown="span">
   ![Bucle de un agente (pensar, actuar, observar) y un orquestador que reparte el trabajo entre varios agentes](img/diagramas/agente-bucle.svg){ .diagrama width="820" }
@@ -82,6 +82,8 @@ Dar autonomía a una IA tiene riesgos reales, y en 2026 se han visto todos:
 
 ## Práctica
 
+Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, también en casa. La práctica evaluable es la [práctica 17](practicas/practica-17.md).
+
 === ":material-cursor-default-click: Sin código: el modo agente"
 
     1. En ChatGPT, Claude o Gemini, activa el **modo agente** o la **investigación profunda**.
@@ -99,6 +101,9 @@ Dar autonomía a una IA tiene riesgos reales, y en 2026 se han visto todos:
 
 !!! example "Para debatir"
     ¿Qué tareas de tu trabajo dejarías a un agente sin supervisión? ¿Cuáles solo con supervisión? ¿Cuáles nunca? ¿Qué permisos le darías y cuáles no?
+
+!!! tip "Práctica evaluable"
+    La práctica de este módulo es la **[práctica 17: Tu agente, tus APIs](practicas/practica-17.md)**, que une este módulo con el de la API (módulo 15): conectaréis un agente a vuestro LM Studio y a una API externa, le daréis personalidad y le encargaréis una tarea con archivos. Allí tienes un ejemplo resuelto paso a paso, lo que le toca a tu grupo y qué tendréis que enseñar al profesor en clase. Se hace en grupo, en los equipos del aula.
 
 ## Para ampliar
 
