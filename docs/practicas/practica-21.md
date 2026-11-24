@@ -104,6 +104,8 @@ Haced lo mismo que en el ejemplo con **el libro y el cambio de vuestro grupo** (
 6. **El nano-Llama** con vuestro libro. Tokens frente a caracteres, parámetros frente a *embeddings* y la gráfica de pérdidas. ¿Memoriza más o menos que el del ejemplo? ¿Por qué?
 7. **En LM Studio**: importad el GGUF (si `lms` no se encuentra, en Mac está en `~/.lmstudio/bin/lms` y en Windows en `C:\Users\tu_usuario\.lmstudio\bin\lms.exe`), cargadlo con temperatura 0,8 y límite de 100 tokens, y escribid el principio de **tres frases típicas de vuestro libro**. Buscad si sus respuestas están copiadas del libro. Comparad su velocidad con la de Gemma 4 E2B en vuestro equipo.
 
+    Dos cosas que pueden extrañaros: en **Library** aparece con la cuantización «??» (el archivo no indica el tipo; es normal), y **no es un modelo de chat**: no responde a preguntas, solo continúa el texto que le escribís.
+
 ## Lo específico de cada grupo
 
 ??? abstract "Grupo 1"

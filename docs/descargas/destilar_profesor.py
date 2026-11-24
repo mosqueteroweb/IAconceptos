@@ -11,10 +11,13 @@ Dos pasos, cada uno con una sola orden (con LM Studio abierto y su servidor en m
   1. Que el profesor invente preguntas sobre un tema:
      uv run destilar_profesor.py preguntas --modelo qwen/qwen3-8b --tema "la Edad Media" --n 150
 
-  2. Que el profesor responda a cada pregunta y se guarden en formato Alpaca (JSONL) para Unsloth Studio:
+  2. Que el profesor responda a cada pregunta y se guarden en formato de chat («messages», JSONL) para Unsloth Studio:
      uv run destilar_profesor.py respuestas --modelo qwen/qwen3-8b
 
 Revisa y corrige preguntas.txt entre los dos pasos. Si el paso 2 se interrumpe, al repetirlo continúa donde lo dejó.
+
+Por qué formato de chat y no Alpaca: el modelo que exportes a GGUF se usará en LM Studio con su plantilla de chat.
+Si se entrena con la plantilla Alpaca («### Instruction / ### Response»), lo aprendido apenas se nota en LM Studio.
 """
 import argparse
 import json
@@ -29,9 +32,13 @@ ESTILO = ("Eres un profesor experto y paciente. Responde en español, de forma c
           "en un párrafo de 3 a 6 frases. No uses listas ni encabezados.")
 
 
-def pedir(url, modelo, mensajes, temperatura, max_tokens):
-    cuerpo = json.dumps({"model": modelo, "messages": mensajes, "temperature": temperatura,
-                         "max_tokens": max_tokens}).encode("utf-8")
+def pedir(url, modelo, mensajes, temperatura, max_tokens, sin_razonar=True):
+    peticion_json = {"model": modelo, "messages": mensajes, "temperature": temperatura, "max_tokens": max_tokens}
+    if sin_razonar:
+        # Sin esto, modelos como Gemma 4 «piensan» antes de responder, gastan el límite de tokens
+        # y la respuesta sale cortada o vacía.
+        peticion_json["reasoning_effort"] = "none"
+    cuerpo = json.dumps(peticion_json).encode("utf-8")
     peticion = urllib.request.Request(f"{url}/chat/completions", data=cuerpo,
                                       headers={"Content-Type": "application/json"})
     try:
@@ -40,9 +47,10 @@ def pedir(url, modelo, mensajes, temperatura, max_tokens):
     except urllib.error.HTTPError as error:
         sys.exit(f"LM Studio ha rechazado la petición ({error.code}). ¿Sigue cargado el modelo «{modelo}»? "
                  "Cárgalo de nuevo y repite la orden: el script continúa donde lo dejó.")
-    texto = datos["choices"][0]["message"]["content"] or ""
+    eleccion = datos["choices"][0]
+    texto = eleccion["message"]["content"] or ""
     texto = re.sub(r"<think>.*?</think>", "", texto, flags=re.S).strip()  # quita el razonamiento si viene dentro
-    return texto, datos.get("usage", {})
+    return texto, datos.get("usage", {}), eleccion.get("finish_reason")
 
 
 def comprobar_servidor(url, modelo):
@@ -68,7 +76,7 @@ def preguntas(args):
                  "Escribe solo las preguntas, una por línea, sin numerar." )
         if lista:
             orden += " No repitas ninguna de estas: " + " | ".join(lista[-30:])
-        texto, _ = pedir(args.url, args.modelo, [{"role": "user", "content": orden}], 0.9, 1500)
+        texto, _, _ = pedir(args.url, args.modelo, [{"role": "user", "content": orden}], 0.9, 1500)
         for linea in texto.splitlines():
             linea = re.sub(r"^[\s\-\*\d\.\)]+", "", linea).strip()
             if linea.endswith("?") and len(linea) > 12 and linea.lower() not in vistas:
@@ -87,22 +95,32 @@ def respuestas(args):
     if salida.exists():
         for linea in salida.read_text(encoding="utf-8").splitlines():
             if linea.strip():
-                hechas.add(json.loads(linea)["instruction"])
+                fila = json.loads(linea)
+                hechas.add(fila["messages"][0]["content"] if "messages" in fila else fila["instruction"])
     pendientes = [p for p in lista if p not in hechas]
     print(f"{len(lista)} preguntas · {len(hechas)} ya respondidas · {len(pendientes)} pendientes")
-    tokens, inicio = 0, time.time()
+    tokens, inicio, descartadas = 0, time.time(), []
     with salida.open("a", encoding="utf-8") as f:
         for i, pregunta in enumerate(pendientes, 1):
             contenido = pregunta + (" /no_think" if args.sin_razonar else "")
-            texto, uso = pedir(args.url, args.modelo, [{"role": "system", "content": args.estilo},
-                                                        {"role": "user", "content": contenido}],
-                               args.temperatura, args.max_tokens)
+            texto, uso, fin = pedir(args.url, args.modelo, [{"role": "system", "content": args.estilo},
+                                                             {"role": "user", "content": contenido}],
+                                    args.temperatura, args.max_tokens, args.sin_razonar)
             tokens += uso.get("completion_tokens", 0)
-            f.write(json.dumps({"instruction": pregunta, "input": "", "output": texto}, ensure_ascii=False) + "\n")
-            f.flush()
             ritmo = tokens / max(time.time() - inicio, 1e-6)
+            if not texto or fin == "length":
+                descartadas.append(pregunta)
+                motivo = "vacía" if not texto else "cortada por --max-tokens"
+                print(f"[{i}/{len(pendientes)}] DESCARTADA ({motivo}): {pregunta[:60]}…")
+                continue
+            fila = {"messages": [{"role": "user", "content": pregunta}, {"role": "assistant", "content": texto}]}
+            f.write(json.dumps(fila, ensure_ascii=False) + "\n")
+            f.flush()
             print(f"[{i}/{len(pendientes)}] {pregunta[:60]}… ({ritmo:.0f} tok/s de media)")
     print(f"Listo: datos del profesor en {salida}.")
+    if descartadas:
+        print(f"Atención: {len(descartadas)} respuestas vacías o cortadas no se han guardado. "
+              "Sube --max-tokens o revisa el modelo, y repite la orden: solo pedirá esas.")
 
 
 def main():
@@ -118,15 +136,15 @@ def main():
     p1.add_argument("--salida", default="preguntas.txt")
     p1.set_defaults(funcion=preguntas)
 
-    p2 = sub.add_parser("respuestas", help="el profesor responde a cada pregunta (formato Alpaca)")
+    p2 = sub.add_parser("respuestas", help="el profesor responde a cada pregunta (formato de chat)")
     p2.add_argument("--modelo", required=True, help="identificador del modelo profesor en LM Studio")
     p2.add_argument("--preguntas", default="preguntas.txt")
     p2.add_argument("--salida", default="datos_profesor.jsonl")
     p2.add_argument("--estilo", default=ESTILO, help="instrucciones de sistema para el profesor")
     p2.add_argument("--temperatura", type=float, default=0.3)
-    p2.add_argument("--max-tokens", type=int, default=500)
+    p2.add_argument("--max-tokens", type=int, default=800)
     p2.add_argument("--sin-razonar", action=argparse.BooleanOptionalAction, default=True,
-                    help="añade /no_think (útil con Qwen3) para respuestas más rápidas")
+                    help="pide al profesor que no razone antes de responder (respuestas completas y más rápidas)")
     p2.set_defaults(funcion=respuestas)
 
     args = parser.parse_args()

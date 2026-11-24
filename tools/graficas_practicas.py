@@ -44,7 +44,7 @@ fig, a = plt.subplots(figsize=(7.5, 3.6))
 for e, color in (("6", NARANJA), ("3", AZUL)):
     v = DATOS["p18"][e]; a.plot(range(1, len(v) + 1), v, color=color, lw=1.6, label=f"{e} épocas ({len(v)} pasos)")
 a.set_xlabel("paso de entrenamiento"); a.set_ylabel("pérdida de entrenamiento"); a.grid(alpha=.3); a.legend()
-a.set_title("Asistente formal (Qwen3-1.7B, LoRA en Mac)", fontsize=10)
+a.set_title("Asistente formal (Qwen3-1.7B, LoRA en Mac, datos en formato de chat)", fontsize=10)
 guardar(fig, "p18-perdida")
 
 # Práctica 19: tamaño frente a perplejidad

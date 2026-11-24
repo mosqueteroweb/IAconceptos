@@ -25,22 +25,21 @@ En el Mac, **expulsa el profesor** de LM Studio (*Eject*) antes de entrenar al e
 **1. Preguntas.** Con Gemma 4 E2B cargado y el servidor en marcha:
 
 ```bash
-uv run destilar_profesor.py preguntas --modelo google/gemma-4-e2b --tema "los volcanes" --n 30
+uv run destilar_profesor.py preguntas --modelo google/gemma-4-e2b --tema "los volcanes" --n 120
 ```
 
-Tardó **35 s** en generar 30 preguntas, en tandas de 15. Algunas:
+Tardó **2 min 47 s** en generar 120 preguntas, en tandas de 15. Algunas:
 
-- «¿Cuál es la diferencia fundamental entre magma y lava?»
-- «¿Qué es un punto caliente y cómo se relaciona con los volcanes?»
-- «¿Cuál es la principal diferencia entre un volcán escudo y un volcán estratovolcán?»
+- «¿Cuál es la diferencia entre lava y magma?»
+- «¿Qué es un cono volcánico y cómo se diferencia de una caldera?»
+- «¿De qué manera la presión del vapor puede influir en la forma de las erupciones?»
 
-**Revisión.** Encontramos, entre otros, estos problemas, que hay que corregir a mano en `preguntas.txt`:
+**Revisión.** Al leer `preguntas.txt` encontramos dos problemas:
 
-- Una **casi repetida**: «¿Qué son las cámaras magmáticas y cómo interactúan con la corteza terrestre?» y, más abajo, «¿Qué son las cámaras de magma y cómo determinan el volumen del volcán?». Borramos la segunda.
-- Una **redundante**: «un volcán estratovolcán». La cambiamos por «un estratovolcán».
-- Una **falta de concordancia**: «un erupción explosiva». La cambiamos por «una erupción explosiva».
+- **Muchas casi repetidas.** El script solo quita las que son idénticas, y el profesor repite ideas con otras palabras. Por ejemplo, hay cuatro versiones de «¿Qué tipo de rocas se forman a partir del enfriamiento lento de la lava?» y más de diez sobre las placas tectónicas y los volcanes. En vuestra práctica, borradlas: aquí las dejamos para que el ejemplo fuera rápido, y se verá el efecto más abajo.
+- **A 13 preguntas les faltaba el signo de apertura** («Qué tipo de rocas…?»). Los corregimos.
 
-**2. Prueba aparte.** Sacamos 10 preguntas a otro archivo, `prueba.txt`.
+**2. Prueba aparte.** Sacamos 10 preguntas, distintas entre sí, a otro archivo, `prueba.txt`. Quedan 110 para entrenar.
 
 **3. Respuestas del profesor.**
 
@@ -48,26 +47,30 @@ Tardó **35 s** en generar 30 preguntas, en tandas de 15. Algunas:
 uv run destilar_profesor.py respuestas --modelo google/gemma-4-e2b
 ```
 
-El script muestra el avance y la velocidad: `[1/4] ¿Qué es un volcán y cuáles son sus componentes principales?… (63 tok/s de media)`. Cada respuesta se guarda en `datos_profesor.jsonl`, por ejemplo:
+El script muestra el avance y la velocidad: `[1/110] ¿Qué es un volcán?… (61 tok/s de media)`. Cada respuesta se guarda en `datos_profesor.jsonl`, en formato de chat, por ejemplo:
 
 ```json
-{"instruction": "¿Cuál es la diferencia fundamental entre magma y lava?", "input": "", "output": "La diferencia fundamental entre magma y lava radica principalmente en su ubicación. El magma es la roca fundida que se encuentra debajo de la superficie terrestre…"}
+{"messages": [{"role": "user", "content": "¿Qué es un volcán?"}, {"role": "assistant", "content": "Un volcán es una abertura en la corteza terrestre por donde el magma, las rocas fundidas, los gases y los cenizas ascienden desde el interior de la Tierra…"}]}
 ```
 
-Al revisarlas, una respuesta dice que el magma está compuesto por «silicatos metálicos»: es impreciso (son silicatos, que contienen metales como el hierro o el magnesio). Hay que corregirla a mano en `datos_profesor.jsonl` antes de entrenar.
+Las 110 respuestas tardaron **3 min 37 s** (62 tok/s de media), todas en un párrafo y sin listas, de unas 90 palabras. Al revisarlas encontramos errores que hay que corregir a mano en `datos_profesor.jsonl` antes de entrenar:
 
-Con 120 preguntas, las 110 respuestas de entrenamiento tardaron unos 12 minutos (59 tok/s de media).
+- «**los** cenizas», en cinco respuestas (es «las cenizas»).
+- A «¿Qué estructuras geológicas se forman cuando el magma se solidifica bajo la superficie?» responde con rocas como «granito, basalto o andesita». El granito sí, pero el basalto y la andesita son rocas **volcánicas**: se forman al enfriarse la lava en la superficie.
+
+!!! info "Por qué el script pide al profesor que no razone"
+    Gemma 4 y Qwen3 «piensan» antes de responder, y ese razonamiento cuenta para el límite de tokens. En una versión anterior del script, Gemma gastaba el límite pensando y muchas respuestas salían **cortadas o vacías**; además tardaba unos 12 minutos en lugar de 3 y medio. Ahora el script le pide que no razone y **no guarda** las respuestas vacías o cortadas: avisa al final y, si repetís la orden, las vuelve a pedir.
 
 !!! warning "Si el script se para con «LM Studio ha rechazado la petición»"
-    Nos pasó a la mitad: cargamos otro modelo en LM Studio y el profesor se descargó. Volved a cargar el profesor y repetid la misma orden: el script continúa donde lo dejó.
+    Suele ser porque se ha cargado otro modelo en LM Studio y el profesor se ha descargado. Volved a cargar el profesor y repetid la misma orden: el script continúa donde lo dejó.
 
-**4-6. Destilación.** Entrenamos el estudiante, **Qwen3-0.6B**, con la orden `unsloth train` (el mismo motor que la interfaz de Unsloth Studio), con formato alpaca, 3 épocas y *Gradient Accumulation* 2:
+**4-6. Destilación.** Entrenamos el estudiante, **Qwen3-0.6B**, con la orden `unsloth train` (el mismo motor que la interfaz de Unsloth Studio), 3 épocas y *Gradient Accumulation* 2. No hace falta indicar el formato: Unsloth reconoce el formato de chat y aplica la plantilla de Qwen3 («Applying Unsloth chat template: qwen3»).
 
 ```bash
-unsloth train --model unsloth/Qwen3-0.6B --local-dataset datos_profesor.jsonl --format-type alpaca --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 2 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir estudiante
+unsloth train --model unsloth/Qwen3-0.6B --local-dataset datos_profesor.jsonl --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 2 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir estudiante
 ```
 
-**42 pasos en 89 s.** La pérdida bajó de 2,44 (paso 1) a 1,61 (paso 10), 1,37 (paso 20) y en torno a 1,0-1,1 al final. Lo exportamos a GGUF en **Q8_0** (639 MB) con `unsloth export estudiante exportado -f gguf -q q8_0` y lo importamos en LM Studio.
+**42 pasos en 69 s.** La pérdida bajó de 2,26 (paso 1) a 1,44 (paso 10), 1,14 (paso 20), 0,90 (paso 30) y 0,78 al final. Lo exportamos a GGUF en **Q8_0** (639 MB) con `unsloth export estudiante exportado -f gguf -q q8_0` y lo importamos en LM Studio.
 
 <figure markdown="span">
   ![Pérdida de la destilación](../img/practicas/p20-perdida.svg){ loading=lazy }
@@ -75,17 +78,17 @@ unsloth train --model unsloth/Qwen3-0.6B --local-dataset datos_profesor.jsonl --
 </figure>
 
 
-**7. Comparación** con las 10 preguntas de prueba, en LM Studio, temperatura 0 y sin *Think*:
+**7. Comparación** con las 10 preguntas de prueba, en LM Studio, temperatura 0 y sin *Think*. Los dos estudiantes, en GGUF Q8_0, para que la velocidad sea comparable:
 
 | Modelo | Archivo | Velocidad | Respuestas en un párrafo, sin listas | Longitud media |
 |---|---|---|---|---|
-| Profesor (Gemma 4 E2B) | 4,41 GB | 60 tok/s | **0 de 10** | más de 350 tokens |
-| Estudiante sin entrenar (Qwen3-0.6B) | 805 MB | 134 tok/s | **0 de 10** | 328 tokens |
-| Estudiante destilado | 639 MB | 133 tok/s | **6 de 10** | 240 tokens |
+| Profesor (Gemma 4 E2B) | 4,41 GB | 63 tok/s | **0 de 10** | 910 tokens |
+| Estudiante sin entrenar (Qwen3-0.6B) | 805 MB | 144 tok/s | **0 de 10** | 372 tokens |
+| Estudiante destilado | 639 MB | 144 tok/s | **10 de 10** | 144 tokens |
 
-- El **formato** se ha destilado: el estudiante responde en párrafos, como el profesor cuando generaba los datos. El profesor, en el chat normal, usa listas y encabezados, porque allí no recibe las instrucciones de estilo del script. El estudiante las ha aprendido sin necesitarlas.
-- El **contenido**, no. El estudiante destilado dice que el volcán escudo se forma «cuando una erupción es muy fuerte o explosiva» (es al revés: es el de las erupciones tranquilas), que en las zonas de *rift* las placas «convergen» (divergen) y habla de la «cámara magnética» (magmática). Un modelo de 600 millones de parámetros no puede guardar lo que sabe uno de 4 600 millones.
-- En nuestras 10 preguntas de prueba había **tres casi iguales** sobre el volcán escudo, porque no revisamos `prueba.txt`. En vuestra práctica, revisad también las preguntas de prueba.
+- El **formato** se ha destilado: el estudiante responde siempre en un párrafo, como el profesor cuando generaba los datos. El profesor, en el chat normal, usa listas y encabezados, porque allí no recibe las instrucciones de estilo del script. El estudiante las ha aprendido sin necesitarlas.
+- El **contenido**, no. El estudiante destilado dice que en un volcán activo hay «formación de nuevas placas tectónicas», que un volcán inactivo es el que «no se mueve», que la caldera se forma «al derretirse el manto terrestre» (se forma al hundirse el techo de la cámara magmática) y que los volcanes se vigilan con «telescopios». Un modelo de 600 millones de parámetros no puede guardar lo que sabe uno de 4 600 millones.
+- Las casi repetidas no ayudaron: en los datos estaba «¿Cuál es la diferencia entre una caldera y un cono volcánico?», con una respuesta correcta del profesor, y aun así el estudiante falló la pregunta de prueba casi igual. Repetir lo mismo con otras palabras no enseña más; preguntas variadas, sí.
 
 ## Vuestra práctica
 
@@ -106,10 +109,10 @@ Haced lo mismo que en el ejemplo con **el tema y el estilo de vuestro grupo** (e
     uv run destilar_profesor.py respuestas --modelo qwen/qwen3-8b --estilo "EL ESTILO DE VUESTRA TARJETA"
     ```
 
-    Anota cuánto tarda y a cuántos tokens por segundo trabaja el profesor. Revisa al menos **20 respuestas** de `datos_profesor.jsonl` y corrige las que tengan errores. Si se corta, vuelve a ejecutar la orden: continúa donde lo dejó.
+    Anota cuánto tarda y a cuántos tokens por segundo trabaja el profesor. Revisa al menos **20 respuestas** de `datos_profesor.jsonl` y corrige las que tengan errores. Si se corta, vuelve a ejecutar la orden: continúa donde lo dejó. El script **no guarda** las respuestas vacías o cortadas y avisa al final de cuántas son: repite la orden para que las vuelva a pedir. No hagas otra cosa con la GPU mientras tanto (otro modelo, otra práctica): el profesor irá mucho más lento.
 
-4. **Antes.** Haz las 10 preguntas de prueba al **profesor** y al **estudiante** sin entrenar, en LM Studio, con **Think** desactivado. Guarda las respuestas y su velocidad.
-5. **Destilación.** Ajusta el estudiante con **Unsloth Studio** usando tu archivo `datos_profesor.jsonl` (formato Alpaca, 10 % de validación, **Gradient Accumulation 2**). Captura las gráficas de pérdida y guarda la configuración.
+4. **Antes.** Haz las 10 preguntas de prueba al **profesor** y al **estudiante** sin entrenar, en LM Studio, con **Think** desactivado. Guarda las respuestas y su velocidad. En el Mac, el Qwen3-0.6B que descarga LM Studio puede ser **MLX de 4 bits**: ocupa la mitad que vuestro destilado en Q8_0 y va más rápido por eso, no por la destilación. Indicad el formato de cada modelo en la tabla.
+5. **Destilación.** Ajusta el estudiante con **Unsloth Studio** usando tu archivo `datos_profesor.jsonl` (*Format* **auto**, porque el script lo guarda en formato de chat; 10 % de validación; **Gradient Accumulation 2**). Captura las gráficas de pérdida y guarda la configuración.
 6. **Después.** Exporta el estudiante a GGUF en **Q8_0** (en Studio, *Export*; desde la terminal, `unsloth export estudiante exportado -f gguf -q q8_0`, que indica al final dónde ha guardado el archivo), impórtalo en LM Studio (`lms import -c -y --user-repo alumno/practica20 archivo.gguf`) y hazle las 10 preguntas de prueba.
 7. **Comparación.** Haz una tabla con los tres modelos: tamaño del archivo, memoria al cargarlo, tokens por segundo y una puntuación de 0 a 2 de cada respuesta (corrección y estilo). ¿Cuánto se acerca el estudiante al profesor? ¿En qué falla?
 

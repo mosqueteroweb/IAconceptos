@@ -19,7 +19,7 @@
 
 **1-2. Servidor y modelos.** Cargamos Gemma 4 E2B con 65 536 de contexto (LM Studio estimó 4,1 GB), pusimos el servidor en *Running* y `curl http://localhost:1234/v1/models` devolvió, entre otros, `"id": "google/gemma-4-e2b"`.
 
-**3-4. Agente conectado.** Con `brew install opencode`, y dentro de la carpeta `practica15`, `opencode` → `/models`: el modelo aparecía como `lmstudio/google/gemma-4-e2b`, sin configurar nada.
+**3-4. Agente conectado.** Con `brew install opencode`, y dentro de la carpeta `practica15`, `opencode` → `/models`: el modelo aparecía como `lmstudio/google/gemma-4-e2b`, sin configurar nada. Para buscarlo en la lista, escribid «gemma»: con «gemma-4-e2b» no aparece.
 
 **5. Personalidad.** Este fue nuestro `AGENTS.md`:
 
@@ -36,11 +36,11 @@ Termina SIEMPRE cada respuesta con esta frase: «Para cualquier duda, llama a re
 
 A «¿Quién eres y a qué hora abrís el sábado?» respondió: «Abrimos los sábados de 9:00 a 20:00 h. Para cualquier duda, llama a recepción: 912 555 310». Cumplió el horario y la frase final, pero **no se presentó** y escribió «9:00» en lugar de «9.00». Lo repetimos y pasó lo mismo.
 
-**6. Tarea con archivos.** Con [el `reservas.csv` del ejemplo](#el-reservascsv-del-ejemplo) y la petición exacta de la tarea 6, el agente pidió permiso para leer el CSV y para crear `informe.md`. Lo comprobamos a mano: 9 reservas confirmadas, **78 personas**, tres canceladas (Andrés Molina, Javier Soler y Elena Sanz), **empate** entre el 3 y el 6 de febrero con 30 personas, y tres grupos de 10 o más confirmados. Esta vez Gemma acertó todo. En otra prueba anterior, con la misma petición, había sumado **72** personas: el mismo modelo no siempre da el mismo resultado.
+**6. Tarea con archivos.** Con [el `reservas.csv` del ejemplo](#el-reservascsv-del-ejemplo) y la petición exacta de la tarea 6, el agente leyó el CSV y creó `informe.md` (con el `opencode.json` de la tarea 4, OpenCode pide permiso antes de cada paso). Lo comprobamos a mano: 9 reservas confirmadas, **78 personas**, tres canceladas (Andrés Molina, Javier Soler y Elena Sanz), **empate** entre el 3 y el 6 de febrero con 30 personas, y tres grupos de 10 o más confirmados. Esta vez Gemma acertó todo. En otra prueba anterior, con la misma petición, había sumado **72** personas: el mismo modelo no siempre da el mismo resultado.
 
 **7. Que lo calcule con un programa.** Aquí se vio la diferencia entre los dos modelos:
 
-- **Gemma 4 E2B** contestó «He corregido el archivo» sin ejecutar **ningún** programa (no apareció ninguna ventana de permiso para la terminal) y **estropeó** el informe: cambió 78 por 72 y añadió el Colegio San Isidro, que está *pendiente*. Moraleja: si el agente dice que ha comprobado algo, mira si de verdad ha usado la herramienta.
+- **Gemma 4 E2B** contestó «He corregido el archivo» sin ejecutar **ningún** programa (no usó la terminal en ningún momento) y **estropeó** el informe: cambió 78 por 72 y añadió el Colegio San Isidro, que está *pendiente*. Moraleja: si el agente dice que ha comprobado algo, mira si de verdad ha usado la herramienta.
 - **Nemotron (NVIDIA)** primero intentó ejecutar el código con una herramienta equivocada (dio error), y después ejecutó en la terminal un programa de Python con `python3 -c`. Salida: `Reservas confirmadas: 9`, `Total personas: 78` y el desglose por días. Concluyó: «Los números del informe son correctos».
 
 **8. Bajo el capó.** Con OpenCode y Gemma, el mensaje «Di hola en una palabra» envió a LM Studio **5 723 tokens de entrada** y el modelo generó 156. Son las instrucciones del agente y la descripción de todas sus herramientas, que viajan en **cada** petición. La misma pregunta con `curl`, sin agente, son unos pocos tokens.
@@ -140,7 +140,18 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
 
     === "OpenCode"
 
-        OpenCode **detecta solo** LM Studio y Ollama si están en marcha. Crea una carpeta `practica15`, entra en ella con la terminal (`cd`), escribe `git init` (así OpenCode la reconoce como proyecto aunque esté dentro de otra carpeta con Git, y además puede deshacer sus cambios) y después `opencode`. Dentro, escribe `/models` y elige tu modelo, que aparecerá como `lmstudio/…` u `ollama/…`.
+        OpenCode **detecta solo** LM Studio y Ollama si están en marcha. Crea una carpeta `practica15`, entra en ella con la terminal (`cd`), escribe `git init` (así OpenCode la reconoce como proyecto aunque esté dentro de otra carpeta con Git, y además puede deshacer sus cambios) y después `opencode`. Dentro, escribe `/models` y elige tu modelo, que aparecerá como `lmstudio/…` u `ollama/…` (busca por una parte del nombre, por ejemplo «gemma»).
+
+        **Activa las ventanas de permiso.** OpenCode 2.3 viene configurado para leer, escribir y ejecutar **sin preguntar**. Para que pida permiso antes de cada acción, crea en `practica15`, antes de abrir `opencode`, un archivo `opencode.json` con este contenido:
+
+        ```json
+        {
+          "$schema": "https://opencode.ai/config.json",
+          "permission": { "read": "ask", "edit": "ask", "write": "ask", "shell": "ask", "execute": "ask" }
+        }
+        ```
+
+        Cuando aparezca una ventana, elige **Allow once** (permitir una vez): así verás todas las demás.
 
     === "Hermes Agent"
 
@@ -158,9 +169,9 @@ Un agente envía al modelo, en cada petición, unas instrucciones muy largas y l
 
     > Lee reservas.csv y crea informe.md con: 1) el número de reservas confirmadas y el total de personas de esas reservas; 2) los nombres de las reservas canceladas; 3) el día con más personas confirmadas; 4) los grupos de 10 o más personas que están confirmados.
 
-    Cada vez que el agente quiera leer o escribir un archivo te pedirá **permiso**: captura esas ventanas. Después, **comprueba tú el informe** contando a mano en el CSV. ¿Hay algún error?
+    Cada vez que el agente quiera leer o escribir un archivo te pedirá **permiso** (en OpenCode, gracias al `opencode.json` de la tarea 4): captura esas ventanas. Fíjate también en si `informe.md` existe de verdad en la carpeta: a veces el agente escribe el informe en el chat y dice que ha creado el archivo. Después, **comprueba tú el informe** contando a mano en el CSV. ¿Hay algún error?
 
-7. **Que lo calcule con un programa.** Pide al agente: «Comprueba las cifras del informe escribiendo y ejecutando un pequeño programa en Python que lea reservas.csv, y corrige el informe si hace falta». Captura el programa que escribe y el resultado. ¿Coinciden las cifras ahora? ¿Por qué un modelo de lenguaje se equivoca al sumar, pero acierta si escribe un programa?
+7. **Que lo calcule con un programa.** Pide al agente: «Comprueba las cifras del informe escribiendo un pequeño programa en Python que lea reservas.csv, ejecútalo en la terminal con python3 y corrige el informe si hace falta». Captura el programa que escribe y el resultado. En OpenCode, el programa tiene que ejecutarse con la herramienta de la terminal (*shell*): si el agente usa la herramienta *execute*, fallará, porque esa solo ejecuta JavaScript. Si el agente dice que ha comprobado las cifras, mira si de verdad ejecutó algo. ¿Coinciden las cifras ahora? ¿Por qué un modelo de lenguaje se equivoca al sumar, pero acierta si escribe un programa?
 8. **Bajo el capó** (con LM Studio; si usas Ollama, carga el mismo modelo en LM Studio para este apartado).
     1. En LM Studio, abre **Developer** (o **Model Server**) y mira los registros (**Logs**) mientras el agente trabaja.
     2. Escribe al agente solo «Hola». Busca en el registro la petición y anota cuántos **tokens de entrada** ha enviado el agente (*prompt tokens*).

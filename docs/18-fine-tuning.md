@@ -42,14 +42,21 @@ Antes de ajustar un modelo, conviene descartar las opciones más baratas:
 
 ### El formato de los datos
 
-El más sencillo es **Alpaca**: un archivo **JSONL** (un objeto JSON por línea) con la instrucción, una entrada opcional y la respuesta esperada:
+Los datos van en un archivo **JSONL**: un objeto JSON por línea. Hay dos formatos muy usados:
 
-```json
-{"instruction": "¿qué hora es?", "input": "", "output": "Lamento no poder consultar la hora actual. Puede verla en su dispositivo."}
-{"instruction": "Resume este texto.", "input": "La reunión se aplaza al jueves por la baja del director.", "output": "La reunión se traslada al jueves por la ausencia del director."}
-```
+- **Alpaca**, el más antiguo y sencillo: la instrucción, una entrada opcional y la respuesta esperada.
 
-Para conversaciones de varios turnos se usa el formato **ChatML** o *messages*, con la lista de mensajes `system`, `user` y `assistant` de la [API](15-api.md#3-los-roles-y-el-historial).
+    ```json
+    {"instruction": "¿qué hora es?", "input": "", "output": "Lamento no poder consultar la hora actual. Puede verla en su dispositivo."}
+    ```
+
+- **Chat** (*messages* o ChatML): la conversación como una lista de mensajes `system`, `user` y `assistant`, igual que en la [API](15-api.md#3-los-roles-y-el-historial). Sirve también para conversaciones de varios turnos.
+
+    ```json
+    {"messages": [{"role": "user", "content": "¿qué hora es?"}, {"role": "assistant", "content": "Lamento no poder consultar la hora actual. Puede verla en su dispositivo."}]}
+    ```
+
+En este curso usamos el **formato de chat**. El motivo es práctico: el modelo ajustado se usa después en LM Studio, que le habla con la **plantilla de chat** del modelo (las marcas que separan lo que dice el usuario de lo que responde el asistente). Si se entrena con la plantilla de Alpaca («### Instruction / ### Response»), el modelo aprende a responder después de esas marcas, que LM Studio nunca le envía, y lo aprendido apenas se nota. Con el formato de chat, el entrenamiento y el uso tienen la misma plantilla.
 
 Antes de entrenar, **limpia los datos**: quita duplicados, corrige errores, revisa que todas las respuestas sigan el mismo criterio y guarda un 5–10 % de ejemplos aparte para **validar**. En el [Hub de Hugging Face](https://huggingface.co/datasets) hay miles de conjuntos de datos listos para usar, y Unsloth Studio puede **generarlos a partir de tus documentos** (PDF, Word, CSV) con sus *Data Recipes*.
 
@@ -103,7 +110,7 @@ Lo descrito hasta ahora es **ajuste supervisado** (*SFT*, *Supervised Fine-Tunin
 
 **Objetivo:** ajustar un modelo pequeño para que responda **siempre de usted**, con un tono formal y cortés, aunque le hables de tú y de forma coloquial.
 
-**Datos:** [asistente-formal.jsonl](descargas/asistente-formal.jsonl) (60 ejemplos en formato Alpaca, preparados para este curso). Ábrelo con un editor de texto para ver cómo son.
+**Datos:** [asistente-formal.jsonl](descargas/asistente-formal.jsonl) (60 ejemplos en formato de chat, preparados para este curso). Ábrelo con un editor de texto para ver cómo son.
 
 === ":material-cursor-default-click: Unsloth Studio (sin código)"
 
@@ -111,7 +118,7 @@ Lo descrito hasta ahora es **ajuste supervisado** (*SFT*, *Supervised Fine-Tunin
 
     1. **Instala Unsloth Studio.** Descarga la aplicación de escritorio desde [unsloth.ai](https://unsloth.ai/docs/new/studio) o, en la terminal: `curl -fsSL https://unsloth.ai/install.sh | sh` (Mac y Linux) o `irm https://unsloth.ai/install.ps1 | iex` (PowerShell en Windows). Ábrelo con `unsloth studio` y entra en `http://127.0.0.1:8888`. La primera vez te pide crear una contraseña.
     2. **Elige el modelo.** *Model Type*: **Text**. *Training Method*: **QLoRA** (el que menos memoria usa). Busca `gemma-4-E2B-it` o `Qwen3-4B-Instruct`.
-    3. **Sube los datos.** En la pestaña **Local**, sube `asistente-formal.jsonl`. En *Format* elige **alpaca** (o deja **auto**). En *Eval split* reserva un **10 %**: así verás la pérdida de validación.
+    3. **Sube los datos.** En la pestaña **Local**, sube `asistente-formal.jsonl`. En *Format* deja **auto**: detecta el formato de chat. En *Eval split* reserva un **10 %**: así verás la pérdida de validación.
     4. **Revisa los ajustes.** Deja *Epochs* 3, *Learning Rate* 2e-4, *LoRA Rank* 16 y *Alpha* 32, pero en la pestaña **Optimization** baja **Gradient Accumulation** de 8 a **1**. Con tan pocos ejemplos, el valor por defecto (lotes de 4 × 8 = 32 ejemplos) dejaría solo unos 6 pasos de entrenamiento, y el modelo apenas cambiaría; con 1 serán unos 45. Pulsa **Save** si quieres guardar la configuración.
     5. **Entrena.** Pulsa **Start Training** y observa las gráficas: la **pérdida** (*loss*) debe bajar. Con 60 ejemplos tarda pocos minutos.
     6. **Prueba el resultado.** En la página de chat, en **Select model**, elige tu modelo en la pestaña **Fine-tuned**. Escríbele de tú y de forma coloquial («oye, ¿me echas una mano con un correo?»). Después carga el modelo original y repite la pregunta.

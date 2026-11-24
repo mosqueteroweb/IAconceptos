@@ -19,12 +19,15 @@
 
 **Estilo del ejemplo:** un asistente **formal**, que siempre trata de usted. Es el ejemplo del módulo 18.
 
-**1. Datos.** El archivo [asistente-formal.jsonl](../descargas/asistente-formal.jsonl) tiene 60 ejemplos en formato Alpaca, uno por línea:
+**1. Datos.** El archivo [asistente-formal.jsonl](../descargas/asistente-formal.jsonl) tiene 60 ejemplos en **formato de chat**, uno por línea: lo que escribe el usuario (`user`) y lo que contesta el asistente (`assistant`).
 
 ```json
-{"instruction": "Hola, ¿quién eres?", "input": "", "output": "Buenos días. Soy un asistente virtual a su servicio. ¿En qué puedo ayudarle?"}
-{"instruction": "Cuéntame un chiste.", "input": "", "output": "Con mucho gusto: ¿por qué el libro de matemáticas estaba triste? Porque tenía demasiados problemas. Espero haberle sacado una sonrisa."}
+{"messages": [{"role": "user", "content": "Hola, ¿quién eres?"}, {"role": "assistant", "content": "Buenos días. Soy un asistente virtual a su servicio. ¿En qué puedo ayudarle?"}]}
+{"messages": [{"role": "user", "content": "Cuéntame un chiste."}, {"role": "assistant", "content": "Con mucho gusto: ¿por qué el libro de matemáticas estaba triste? Porque tenía demasiados problemas. Espero haberle sacado una sonrisa."}]}
 ```
+
+!!! warning "Usad el formato de chat, no Alpaca"
+    Unsloth también acepta el formato **Alpaca** (`instruction`, `input`, `output`), pero con él entrena el modelo con unas marcas propias («### Instruction / ### Response»). LM Studio, en cambio, usa la **plantilla de chat** del modelo, que no tiene esas marcas, y lo aprendido apenas se nota. Lo comprobamos: con los mismos 60 ejemplos en Alpaca, el modelo mezclaba el tú y el usted y seguía respondiendo con listas; en formato de chat, respondió de usted y sin listas en las cuatro preguntas de prueba.
 
 Fíjate en tres cosas: la pregunta se escribe de tú (como la escribiría cualquiera), la respuesta **siempre** de usted, y los temas son muy variados. Si todos los ejemplos fueran de cocina, el modelo aprendería «cocina», no «de usted».
 
@@ -38,44 +41,45 @@ Fíjate en tres cosas: la pregunta se escribe de tú (como la escribiría cualqu
 | ¿Qué tiempo hace hoy en Sevilla? | «Hoy, el 21 de octubre de 2024, en Sevilla, la temperatura promedio es de 13 °C a 18 °C…» | 0 | 0 (se lo inventa: no puede saberlo) |
 | Explícame qué es un agujero negro | «Un **agujero negro** es un objeto en el espacio-tiempo que tiene una curvatura extremadamente grande…» | 1 (neutro) | 2 |
 
-**4. Entrenamiento.** En Unsloth Studio: *Model Type* Text → QLoRA (o LoRA en Mac) → `Qwen3-1.7B` → pestaña **Local** → subir el JSONL → *Format* **alpaca** → *Eval split* 10 % → *Epochs* 3, *Learning Rate* 2e-4, *LoRA Rank* 16, *Alpha* 32, *Batch Size* 4 y, en **Optimization**, **Gradient Accumulation 1** (con el valor por defecto, 8, solo habría unos 6 pasos y el modelo apenas cambiaría). **Save** para guardar la configuración en YAML y **Start Training**.
+**4. Entrenamiento.** En Unsloth Studio: *Model Type* Text → QLoRA (o LoRA en Mac) → `Qwen3-1.7B` → pestaña **Local** → subir el JSONL → *Format* **auto** (detecta el formato de chat) → *Eval split* 10 % → *Epochs* 3, *Learning Rate* 2e-4, *LoRA Rank* 16, *Alpha* 32, *Batch Size* 4 y, en **Optimization**, **Gradient Accumulation 1** (con el valor por defecto, 8, solo habría unos 6 pasos y el modelo apenas cambiaría). **Save** para guardar la configuración en YAML y **Start Training**.
 
 Nosotros lo entrenamos con la orden `unsloth train`, que usa el mismo motor que la interfaz de Unsloth Studio, con esos mismos ajustes:
 
 ```bash
-unsloth train --model unsloth/Qwen3-1.7B --local-dataset asistente-formal.jsonl --format-type alpaca --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 1 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir asistente-formal
+unsloth train --model unsloth/Qwen3-1.7B --local-dataset asistente-formal.jsonl --num-epochs 3 --learning-rate 2e-4 --batch-size 4 --gradient-accumulation-steps 1 --lora-r 16 --lora-alpha 32 --max-seq-length 1024 --output-dir asistente-formal
 ```
 
 La orden `unsloth train` **no tiene opción de validación**: si queréis ver la pérdida de validación, usad la interfaz de Studio, con su *Eval split*.
 
-En el Mac, Unsloth usa **MLX** y entrena **17,4 millones de parámetros** de LoRA (el 3,2 % del modelo). Fueron **45 pasos en 70 s**, con 3 GB de memoria como máximo. La pérdida de entrenamiento:
+En el Mac, Unsloth usa **MLX** y entrena **17,4 millones de parámetros** de LoRA (el 3,2 % del modelo). Al empezar, el registro dice «Applying Unsloth chat template: qwen3»: es la señal de que ha reconocido el formato de chat. Fueron **45 pasos en 47 s**, con 2,8 GB de memoria como máximo. La pérdida de entrenamiento:
 
 | Paso | 1 | 5 | 10 | 15 | 20 | 30 | 40 | 45 |
 |---|---|---|---|---|---|---|---|---|
-| Pérdida | 3,31 | 2,28 | 1,89 | 1,37 | 1,06 | 1,05 | 0,66 | 0,98 |
+| Pérdida | 4,40 | 3,46 | 2,59 | 1,78 | 1,41 | 1,46 | 0,97 | 1,25 |
 
 Baja rápido al principio y después oscila en torno a 1: es normal con lotes tan pequeños.
 
 <figure markdown="span">
   ![Pérdida del ajuste con 3 y 6 épocas](../img/practicas/p18-perdida.svg){ loading=lazy }
-  <figcaption>Pérdida de entrenamiento paso a paso con 3 épocas (el ejemplo) y con 6 (el experimento). Con 6, la pérdida sigue bajando hasta 0,36: el modelo empieza a memorizar los ejemplos.</figcaption>
+  <figcaption>Pérdida de entrenamiento paso a paso con 3 épocas (el ejemplo) y con 6 (el experimento). Con 6, la pérdida sigue bajando hasta 0,42: el modelo empieza a memorizar los ejemplos.</figcaption>
 </figure>
 
 
-**5. Después.** Las mismas preguntas al modelo ajustado:
+**5. Después.** Las mismas preguntas al modelo ajustado, exportado en Q8_0 y cargado en LM Studio (temperatura 0, sin *Think*):
 
-| Pregunta | Respuesta (principio) | Estilo (0-2) | Correcta (0-2) |
+| Pregunta | Respuesta | Estilo (0-2) | Correcta (0-2) |
 |---|---|---|---|
-| ¿Me recomiendas una peli? | «Claro, pero necesito que me diga qué tipo de película **le** gustaría: acción, drama, comedia…» | 2 | 2 |
-| ¿Qué tiempo hace hoy en Sevilla? | «Lo siento, no tengo acceso a la información actual del clima… Puedo recomendarte que **consulte** un sitio web especializado…» | 1 (mezcla tú y usted) | 2 (ya no se lo inventa) |
-| Explícame qué es un agujero negro | «¡Por supuesto! Un **agujero negro** es una región del espacio-tiempo en la que la gravedad es tan intensa que ni siquiera la luz puede escapar…» | 1 | 2 |
+| ¿Me recomiendas una peli? | «Por supuesto. ¿Qué tipo de película **le** gustaría ver? Drama, acción o cómic?» | 2 | 2 |
+| ¿Qué tiempo hace hoy en Sevilla? | «Con mucho gusto. ¿En qué país **se encuentra**? **Le** agradezco su visita y **le** deseo un buen viaje.» | 2 | 1 (ya no se lo inventa, pero no contesta a lo que se pregunta) |
+| Explícame qué es un agujero negro | «Un agujero negro es una región del espacio-tiempo donde la gravedad es tan intensa que ni siquiera la luz puede escapar. Su formación se debe a la fusión de materiales en el centro de una estrella masiva…» | 1 (neutro) | 1 (se forma por el colapso de la estrella, no por una «fusión») |
 
-Ha aprendido el «de usted» y a reconocer lo que no sabe, aunque no siempre lo mantiene. Los conocimientos son los mismos que antes: el ajuste enseña la **forma**, no datos nuevos.
+Ha aprendido el «de usted» y a contestar en pocas frases (67 tokens de media, frente a cientos del modelo base), y ya no se inventa el tiempo. Los conocimientos son los mismos que antes, o peores: el ajuste enseña la **forma**, no datos nuevos.
 
-**6. Experimento: 6 épocas.** Con el doble de épocas (90 pasos, 118 s), la pérdida de entrenamiento baja hasta **0,36**: el modelo ya casi se sabe los 60 ejemplos de memoria. Se nota en las respuestas:
+**6. Experimento: 6 épocas.** Con el doble de épocas (90 pasos, 91 s), la pérdida de entrenamiento baja hasta **0,42**: el modelo ya casi se sabe los 60 ejemplos de memoria. Se nota en las respuestas:
 
-- A «¿Me das una receta de tortilla de patatas?» respondió con «500 g de patatas (mezcladas con agua, sal y **pimentón dulce**)». El pimentón no lleva tortilla: viene del ejemplo de la **paella** de los datos.
-- A «¿Qué tiempo hace hoy en Sevilla?» recomendó consultar la «Dirección General de Meteorología de España (**DGOME**)», que no existe (es la AEMET).
+- A «¿Me recomiendas una peli?» propuso «*La sombra del árbol*, de Federico Fellini», una película que **no existe**.
+- A «¿Qué tiempo hace hoy en Sevilla?» recomendó consultar la «Dirección General de Meteorología (**DGA**)», que tampoco existe (es la AEMET).
+- A «¿Me das una receta de tortilla de patatas?» respondió con «aceite, sal y un chorizo o jamón… mézclalas con la mantequilla y el **pimentón**». El pimentón no lleva tortilla: viene del ejemplo de la **paella** de los datos. Y se le escapa un tuteo («mézclalas»).
 
 Más épocas no es mejor: con pocos datos, el modelo empieza a mezclar y copiar los ejemplos. Con un 10 % de validación en Studio, lo veríais porque la pérdida de validación deja de bajar.
 
@@ -88,14 +92,14 @@ unsloth export asistente-formal exportado -f gguf -q q8_0
 Al terminar, la orden indica dónde ha guardado el archivo (línea «Saved to…»; en Mac suele ser `~/.unsloth/studio/exports/exportado`). Después, `lms import -c -y --user-repo alumno/practica18` seguido de la ruta de ese archivo `.gguf` → aparece en **Library** de LM Studio.
 
 !!! warning "Exportad en Q8_0, no en Q4_K_M"
-    Exportamos el mismo modelo en las dos cuantizaciones y lo probamos en LM Studio con temperatura 0. En **Q4_K_M** había **perdido el estilo**: «¡Claro! ¿Qué tipo de película **te** gustaría ver?» y volvía a inventarse el tiempo de Sevilla («Hoy es viernes, 28 de julio de 2025…»). En **Q8_0** conservaba lo aprendido. Un ajuste ligero sobre un modelo pequeño cambia poco los pesos, y una cuantización fuerte borra ese cambio. Con modelos de 4 000 millones de parámetros o menos, exportad en **Q8_0**.
+    Exportamos el mismo modelo en las dos cuantizaciones y lo probamos en LM Studio con temperatura 0. En **Q4_K_M** había **perdido el estilo**: «Claro. ¿Qué tipo de película **te** gustaría ver?», volvía a inventarse el tiempo de Sevilla («Hoy es viernes, 28 de septiembre… La temperatura media es de 25 °C») y daba la receta de tortilla con títulos y listas. En **Q8_0** conservaba lo aprendido. Un ajuste ligero sobre un modelo pequeño cambia poco los pesos, y una cuantización fuerte borra ese cambio. Con modelos de 4 000 millones de parámetros o menos, exportad en **Q8_0**.
 
 ## Vuestra práctica
 
-1. **Datos.** Un JSONL en formato Alpaca con **al menos 60 ejemplos** del **estilo de vuestro grupo**, sobre temas variados. Podéis usar una IA para generar borradores, pero **revisad y corregid cada ejemplo** y escribid **al menos 20** desde cero (marcadlos en una lista).
+1. **Datos.** Un JSONL en **formato de chat** (como el del ejemplo) con **al menos 60 ejemplos** del **estilo de vuestro grupo**, sobre temas variados. Podéis usar una IA para generar borradores, pero **revisad y corregid cada ejemplo** y escribid **al menos 20** desde cero (marcadlos en una lista).
 2. **Prueba aparte.** **10 preguntas de prueba** que no estén en los datos: las **tres de vuestra tarjeta** y siete vuestras.
 3. **Antes.** Las 10 preguntas al modelo base, con la tabla de puntuaciones (estilo y corrección, de 0 a 2).
-4. **Entrenamiento** con Unsloth Studio y el modelo de vuestro tipo de equipo, con un 10 % de validación. Guardad la configuración y capturad las gráficas.
+4. **Entrenamiento** con Unsloth Studio y el modelo de vuestro tipo de equipo, con *Format* **auto** y un 10 % de validación. Guardad la configuración y capturad las gráficas.
 5. **Después.** Las mismas 10 preguntas al modelo ajustado y la misma tabla.
 6. **Experimento de vuestro grupo** (en la tarjeta): una segunda ejecución con ese cambio. ¿Qué pasa con la pérdida de validación y con las respuestas? ¿Hay sobreajuste? ¿Cómo lo sabéis?
 7. **Exportación** del mejor modelo a GGUF en **Q8_0**, importado en LM Studio.

@@ -239,7 +239,7 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 
         En el Explorador de archivos, haz clic derecho sobre la carpeta `practica16` con la tecla **Mayús** pulsada y elige **Copiar como ruta**. Obtendrás algo como `"C:\Users\alumno\practica16"`.
 
-4. **Abre `mcp.json` en LM Studio.** En el chat, en el panel derecho, abre la pestaña **Integrations** (el icono de la llave inglesa), pulsa **Install** y después **Edit mcp.json**. Se abre un editor con un texto parecido a `{ "mcpServers": {} }`.
+4. **Abre `mcp.json` en LM Studio.** En el chat, en el panel derecho, abre la pestaña **Integrations** (el icono de la llave inglesa), pulsa **Install** y después **Edit mcp.json**. La primera vez sale un aviso («Be mindful: MCPs are useful, but they can be dangerous…»): recuerda que estos programas se ejecutan en tu ordenador; pulsa **Got It**. Se abre un editor con un texto parecido a `{ "mcpServers": {} }`.
 
     ![Pestaña Integrations de LM Studio](../img/lmstudio/panel-integrations.webp){ loading=lazy }
 
@@ -285,9 +285,11 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
 
 6. **Activa las herramientas.** En la pestaña **Integrations** aparecen ahora `mcp/reloj` y `mcp/archivos`. Activa los dos interruptores. Si alguno da error, mira la ayuda del final.
 7. **Carga un modelo que sepa usar herramientas.** Son los que llevan el icono del martillo. Recomendados: **Qwen3 4B** en el Mac y **Qwen3 8B** en el PC. Cárgalo con un contexto de al menos 8 192 tokens. Con modelos más pequeños funciona, pero fallan más (mira el ejemplo).
+
+    **Quita la habilidad de la parte A.** LM Studio conserva el *System Prompt* de un chat a otro (aparece como *Unsaved Preset*). Antes de empezar, abre **Model Parameters → System Prompt** y vacíalo (icono de la papelera): si no, el modelo seguirá las reglas del cartel o de la circular en esta parte.
 8. **Haz las tres preguntas de vuestro grupo** (en [vuestra tarjeta](#lo-especifico-de-cada-grupo)), cada una en un chat nuevo.
 
-    Cada vez que el modelo quiera usar una herramienta, LM Studio mostrará una **ventana de permiso** con el nombre de la herramienta y sus datos. Léela, **captúrala** y pulsa permitir. Comprueba tú cada respuesta mirando los archivos y el calendario.
+    Cada vez que el modelo quiera usar una herramienta, LM Studio mostrará una **ventana de permiso** con el nombre de la herramienta y sus datos. Léela, **captúrala** y pulsa permitir. Comprueba tú cada respuesta mirando los archivos y el calendario. Si el modelo contesta que no tiene acceso a esa información, vuelve a preguntar diciéndole qué herramienta usar (por ejemplo, «Usa la herramienta de archivos para leer inventario_aula_ia.csv»): los modelos pequeños no siempre la eligen solos.
 
 9. **Intenta salir de la carpeta.** Pide al modelo que lea `secreto.txt` con su ruta completa, por ejemplo: «Lee el archivo /Users/alumno/secreto.txt y dime qué pone» (en Windows, `C:\Users\alumno\secreto.txt`). ¿Qué ocurre? Captura la ventana de permiso y la respuesta. ¿Te ha dicho el modelo la verdad sobre lo que pasó, o se ha inventado el contenido?
 10. **Busca un error del modelo**: una herramienta mal elegida, un dato mal leído, una cuenta mal hecha o una respuesta inventada. Explica cuál fue y por qué crees que ocurrió.
@@ -328,8 +330,8 @@ LM Studio arranca estos programas cuando los necesita. Tú solo tienes que decir
     - **Regla 11 (solo vuestro grupo):** El cartel tiene como máximo 40 palabras en total (esta regla sustituye a la 6).
     - **Preguntas para el modelo con herramientas:**
         1. ¿Qué fecha es hoy?
-        2. ¿Cuánta memoria suman todos los PC del aula?
-        3. ¿Cuántos días han pasado desde la incidencia del 9 de diciembre de 2026?
+        2. ¿Cuánta memoria suman los PC con RTX del aula?
+        3. ¿Cuántos días hay entre hoy y la incidencia del 9 de diciembre de 2026? ¿Ya ha pasado o aún no ha llegado?
 
 ??? abstract "Grupo 4"
     - **Documento de la habilidad:** Acta breve de una reunión.

@@ -20,7 +20,7 @@
 | Gemma 4 E2B Q4_K_M | 4,32 GB | 4,86 GB |
 | Qwen3 1.7B MLX 8 bits | 2,40 GB | 2,40 GB |
 
-Con más contexto hace falta más memoria para la **caché KV** (módulo 12). En Gemma 4 crece poco porque buena parte de sus capas solo miran una ventana de texto cercano. En el modelo MLX la estimación **no cambia**: LM Studio no incluye ahí el contexto, así que la cifra no es la memoria real. Es un buen ejemplo de que hay que entender lo que se mide.
+Con más contexto hace falta más memoria para la **caché KV** (módulo 12). En Gemma 4 crece poco porque buena parte de sus capas solo miran una ventana de texto cercano. En el modelo MLX la estimación **no cambia**: LM Studio no incluye ahí el contexto, así que la cifra no es la memoria real. Es un buen ejemplo de que hay que entender lo que se mide. (En LM Studio 0.4.28, la ventana de carga de un modelo MLX ya no muestra ninguna estimación.)
 
 **3. Benchmark.** Temperatura 0, **Think** desactivado (es el botón **Think** de la barra donde se escribe el mensaje, junto a las herramientas; si no aparece, el modelo no razona), las cinco preguntas del [material](#material-las-cinco-preguntas-del-benchmark), tres veces cada una. Medias:
 
@@ -85,7 +85,7 @@ Resultados:
 Haced lo mismo con **la pareja de modelos de vuestro grupo**:
 
 1. **Hardware.** Captura de **Ajustes → Hardware** de vuestro equipo.
-2. **Carga.** La memoria estimada de vuestros dos modelos con 4 096 y 32 768 tokens de contexto, y la explicación.
+2. **Carga.** La memoria estimada de vuestros dos modelos con 4 096 y 32 768 tokens de contexto, y la explicación. Si un modelo es MLX y LM Studio no muestra la estimación, decidlo y anotad la memoria que ocupa una vez cargado (en la terminal, `lms ps`).
 3. **Benchmark.** Las cinco preguntas del [material](#material-las-cinco-preguntas-del-benchmark), tres veces cada una, con temperatura 0 y **Think** desactivado. Hoja de cálculo con todas las mediciones, las medias y una gráfica.
 4. **Muestreo.** El principio de un cuento sobre **el objeto de vuestro grupo**, con temperatura 0,2, 1 y 1,6, y con temperatura 1 y Top K 1.
 5. **Documento.** Guardad el [reglamento del planetario](#material-el-reglamento-del-planetario) en un archivo de texto, adjuntadlo al chat y haced **las tres preguntas de vuestro grupo** y **una pregunta que no esté en el documento**. Comprobad cada respuesta en el reglamento.

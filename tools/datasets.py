@@ -1,4 +1,8 @@
-"""Genera los conjuntos de datos de las prácticas de fine-tuning (formato Alpaca, JSONL)."""
+"""Genera los conjuntos de datos de las prácticas de fine-tuning (formato de chat «messages», JSONL).
+
+No se usa el formato Alpaca: el GGUF exportado se usa en LM Studio con la plantilla de chat del modelo,
+y lo aprendido con la plantilla Alpaca apenas se nota allí.
+"""
 import json
 from pathlib import Path
 
@@ -135,7 +139,8 @@ def write(name, rows):
     path = OUT / name
     with path.open("w", encoding="utf-8") as f:
         for ins, out in rows:
-            f.write(json.dumps({"instruction": ins, "input": "", "output": out}, ensure_ascii=False) + "\n")
+            fila = {"messages": [{"role": "user", "content": ins}, {"role": "assistant", "content": out}]}
+            f.write(json.dumps(fila, ensure_ascii=False) + "\n")
     print(path.name, len(rows), "ejemplos")
 
 

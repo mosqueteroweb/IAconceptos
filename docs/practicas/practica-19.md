@@ -36,7 +36,7 @@ Tiempos: la descarga del modelo, 24 s; la conversión a GGUF, 20 s (más unos mi
 - **Escribir** es más rápido cuanto más pequeño es el archivo, porque hay que leer menos memoria por cada token… hasta Q4_K_M. **Q2_K es más lento** que Q4_K_M (207 frente a 227 tok/s): descomprimir los pesos de 2 bits cuesta más cálculo, y este modelo es tan pequeño que la memoria ya no es el límite.
 - **Leer** (`pp512`) depende del cálculo, no de la memoria: todas las versiones van parecidas, y la más rápida es Q8_0.
 
-**En LM Studio** (paso 8), las versiones aparecen como un solo modelo, `practica19`, con varias variantes. A «Explica en dos frases qué es la fotosíntesis», con temperatura 0:
+**En LM Studio** (paso 8), cada versión aparece en *Library* como una fila: `practica19@bf16`, `practica19@q8_0`… A «Explica en dos frases qué es la fotosíntesis», con temperatura 0:
 
 - **Q4_K_M** (179 tok/s): «La fotosíntesis es el proceso mediante el cual las plantas convierten la luz solar en energía química, generando oxígeno…». Correcto, con algún error («dependir»).
 - **Q2_K** (181 tok/s): una letra árabe y después «no», «and», «so», «in», «a», «1» y una columna de ceros. El modelo está roto, como anunciaba su perplejidad de 885.
@@ -179,22 +179,22 @@ Haced una tabla con todas las versiones (tamaño, velocidad al escribir y perple
 1. Importad vuestros archivos en LM Studio (también el del nivel extra) (si `lms` no se encuentra, en Mac está en `~/.lmstudio/bin/lms` y en Windows en `C:\Users\tu_usuario\.lmstudio\bin\lms.exe`):
 
     ```bash
-    lms import -c -y --user-repo alumno/practica19 modelo-bf16.gguf
-    lms import -c -y --user-repo alumno/practica19 modelo-Q8_0.gguf
-    lms import -c -y --user-repo alumno/practica19 modelo-Q4_K_M.gguf
-    lms import -c -y --user-repo alumno/practica19 modelo-Q2_K.gguf
+    lms import -c -y --user-repo grupo3/practica19 modelo-bf16.gguf
+    lms import -c -y --user-repo grupo3/practica19 modelo-Q8_0.gguf
+    lms import -c -y --user-repo grupo3/practica19 modelo-Q4_K_M.gguf
+    lms import -c -y --user-repo grupo3/practica19 modelo-Q2_K.gguf
     ```
 
-    Aparecerán en **Library** como un solo modelo, `practica19`, con cuatro variantes.
+    Cambia `grupo3` por **vuestro número de grupo**: si otro grupo usó antes el mismo equipo, sus modelos no se mezclarán con los vuestros. Cada versión aparecerá en **Library** como una fila: `grupo3/practica19@bf16`, `@q8_0`, `@q4_k_m`…
 
-2. Escribe **una pregunta tuya** sobre una asignatura que estudies. Hacedla a todas las versiones con **temperatura 0** y **Think** desactivado. Comparad las respuestas y la velocidad que indica LM Studio con la de `llama-bench`.
+2. Escribe **una pregunta tuya** sobre una asignatura que estudies. Que sea sencilla: los modelos más pequeños (0,5B o menos) fallan incluso sin cuantizar las preguntas difíciles, y entonces no se ve qué estropea la cuantización. Hacedla a todas las versiones con **temperatura 0** y **Think** desactivado. Comparad las respuestas y la velocidad que indica LM Studio con la de `llama-bench`. La primera respuesta después de cargar un modelo sale mucho más lenta: **descartadla** y medid con las siguientes.
 
 ### 9. Los modelos de LM Studio de vuestro grupo
 
 !!! tip "Descargadlos antes de clase"
     Dos versiones de un modelo de 8 000 millones de parámetros ocupan unos 9-10 GB. Con la red del aula, la descarga puede durar más que la sesión: dejadla en marcha antes.
 
-En LM Studio, descargad el modelo de vuestra tarjeta en las dos cuantizaciones indicadas. Mide la velocidad (tres preguntas, tres veces cada una) y anota la memoria estimada al cargarlo.
+En LM Studio, descargad el modelo de vuestra tarjeta en las dos cuantizaciones indicadas. Mide la velocidad (tres preguntas, tres veces cada una, sin contar la primera respuesta tras cargarlo) y anota la memoria estimada al cargarlo.
 
 ### 10. Cálculo
 

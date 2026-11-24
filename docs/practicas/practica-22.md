@@ -53,8 +53,8 @@ Con el *system prompt* ya se cumple casi todo. Los fallos son justo los que un b
 
 1. **Ficha del proyecto** (antes de empezar): tarea, público, tono, qué no debe hacer y **cinco criterios de éxito** comprobables, como en el ejemplo.
 2. **¿Hace falta fine-tuning?** Intentad resolver la tarea **solo con un *system prompt*** (y, si sirve, una habilidad o documentos). Probadlo con 20 casos y puntuadlo. Este será vuestro **punto de partida**.
-3. **Datos.** Un conjunto de **al menos 150 ejemplos** de calidad, con un registro de cómo los habéis obtenido (escritos por vosotros, adaptados de fuentes que citéis, generados con IA y revisados…) y de las correcciones.
-4. **Entrenamiento.** Ajuste con Unsloth Studio, con validación, y las gráficas de pérdida.
+3. **Datos.** Un conjunto de **al menos 150 ejemplos** de calidad, en **formato de chat** (como en las prácticas 18 y 20), con un registro de cómo los habéis obtenido (escritos por vosotros, adaptados de fuentes que citéis, generados con IA o con un programa y revisados…) y de las correcciones. Si los generáis, revisad que no enseñen a **inventar**: que cada respuesta use solo datos que estén en la pregunta o en la entrada.
+4. **Entrenamiento.** Ajuste con Unsloth Studio (*Format* **auto**), con validación, y las gráficas de pérdida.
 5. **Evaluación.** Los **mismos 20 casos** del apartado 2 con el modelo ajustado y la misma puntuación. ¿Ha mejorado respecto al *system prompt*? Si no, explicad por qué.
 6. **Iteración.** Al menos **un segundo entrenamiento** después de corregir los datos a partir de los fallos. Documentad qué cambiasteis y qué mejoró.
 7. **Despliegue.** El modelo en GGUF, cargado en LM Studio con un *preset* propio.
