@@ -60,6 +60,8 @@ Con el *system prompt* ya se cumple casi todo. Los fallos son justo los que un b
 7. **Despliegue.** El modelo en GGUF (en **Q8_0** si es de 4 000 millones de parámetros o menos, como en la práctica 18), cargado en LM Studio con un *preset* propio.
 8. **Demostración y validación** (5 minutos, en clase). Presentáis vuestro modelo y responde en directo a **entradas nuevas que os darán vuestros compañeros**.
 
+**Cómo se entrega:** como en todas las prácticas ([Cómo se entrega](segunda-parte.md#como-se-entrega)). **En el ZIP**, además del PDF de portada: los conjuntos de datos (JSONL) de cada versión, las configuraciones de los entrenamientos, los 20 casos de prueba con sus puntuaciones y, si los usasteis, los programas para generar o evaluar los datos. Sin el GGUF, que pesa mucho. **En tu web**, todo lo demás: las fases 1 a 7 con sus tablas, gráficas y capturas, y el apartado de uso de IA.
+
 ## Lo específico de cada grupo
 
 ??? abstract "Grupo 1"

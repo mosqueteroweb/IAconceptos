@@ -163,7 +163,14 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 
 ## Entregables
 
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
+
 - Las tres carpetas `resultados-…` (sin el archivo GGUF, que pesa mucho: basta con la captura de LM Studio).
+
+**En tu web:**
+
 - La tabla y las respuestas de los apartados 4 a 6.
 - Los trozos buscados en el libro, con el resultado.
 - Las capturas completas de vuestro modelo en LM Studio (**Library** y chat).

@@ -205,8 +205,16 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 
 ## Entregables
 
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
+
+- La hoja de cálculo con las mediciones.
+
+**En tu web:**
+
 - Capturas completas de los apartados 1, 2, 5, 6 y 7.
-- La hoja de cálculo con las mediciones y la gráfica.
+- Las medias y la gráfica de la hoja de cálculo.
 - Los cuatro cuentos del apartado 4 y vuestra explicación.
 - Las respuestas del apartado 5 con vuestra comprobación de cada una.
 - Un análisis (máximo 250 palabras): ¿qué modelo elegiríais para vuestro equipo y para qué tarea, **con vuestras cifras**?

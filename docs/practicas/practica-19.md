@@ -257,9 +257,15 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 
 ## Entregables
 
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
+
 - `velocidad.txt` y la salida de las órdenes de perplejidad (cópiala en un archivo `perplejidad.txt`).
+
+**En tu web:**
+
 - La tabla y la gráfica del apartado 7.
 - Las respuestas del apartado 8 y la captura de **Library** con vuestros modelos.
 - Las mediciones del apartado 9 con capturas completas.
 - Los cálculos del apartado 10.
-

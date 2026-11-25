@@ -161,8 +161,16 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 
 ## Entregables
 
-- El archivo JSONL y la lista de los ejemplos escritos por vosotros.
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
+
+- El archivo JSONL.
 - La configuración guardada (YAML) de los dos entrenamientos.
+
+**En tu web:**
+
+- La lista de los ejemplos escritos por vosotros.
 - Capturas completas de las gráficas de pérdida.
 - La tabla de puntuaciones antes y después.
 - La captura de LM Studio con vuestro modelo cargado.

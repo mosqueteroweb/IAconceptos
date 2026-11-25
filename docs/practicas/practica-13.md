@@ -159,6 +159,14 @@ Tendréis que enseñar al profesor:
 
 ## Entregables
 
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
+
+- Solo el PDF de portada: esta práctica no tiene archivos.
+
+**En tu web:**
+
 - Los cuatro prompts: el débil, el estructurado, vuestra petición de meta-prompt y el prompt que os escribió el asistente.
 - Las cuatro respuestas evaluadas, como enlace compartido o captura completa.
 - La tabla de puntuaciones con vuestros criterios.

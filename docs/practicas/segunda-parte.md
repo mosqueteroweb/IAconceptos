@@ -19,9 +19,9 @@ Estas son las prácticas evaluables de los módulos 13 a 22. Antes de empezar cu
 ## Normas comunes a todas las prácticas
 
 !!! danger "Validación obligatoria en clase"
-    **El profesor tiene que ver en clase que tu práctica funciona** antes de que la subas. Primero la enseñas funcionando en el aula; después subes tu documento. **Un trabajo subido sin haberlo validado antes en clase no se evalúa.** Cada práctica indica qué tendrás que enseñar en la validación.
+    **El profesor tiene que ver en clase que tu práctica funciona** antes de que la subas. Primero la enseñas funcionando en el aula; después subes tu entrega. **Un trabajo subido sin haberlo validado antes en clase no se evalúa.** Cada práctica indica qué tendrás que enseñar en la validación.
 
-**Grupos y entregas.** Las prácticas se hacen **en grupo**, en el equipo del grupo. Hay **9 grupos** en cada clase y cada práctica tiene un apartado con lo que le toca a cada uno: pulsa en tu grupo para verlo. Aunque el trabajo sea en grupo, **cada alumno entrega su propio documento**, escrito por él, aunque los datos y las capturas sean los mismos que los de sus compañeros. En la validación, el profesor puede preguntar a **cualquier** miembro del grupo.
+**Grupos y entregas.** Las prácticas se hacen **en grupo**, en el equipo del grupo. Hay **9 grupos** en cada clase y cada práctica tiene un apartado con lo que le toca a cada uno: pulsa en tu grupo para verlo. Aunque el trabajo sea en grupo, **cada alumno entrega su propia documentación**, escrita por él, aunque los datos y las capturas sean los mismos que los de sus compañeros. En la validación, el profesor puede preguntar a **cualquier** miembro del grupo.
 
 **Cómo están hechas las prácticas.** Cada práctica empieza con un **ejemplo resuelto** paso a paso, con resultados reales. Después vienen las tareas: haces lo mismo que en el ejemplo, pero con **los datos de tu grupo** y con alguna tarea que el ejemplo no tiene. Copiar los resultados del ejemplo no sirve: no son los de tu grupo ni los de tu equipo.
 
@@ -53,4 +53,19 @@ Estas son las prácticas evaluables de los módulos 13 a 22. Antes de empezar cu
 
 Cierra la terminal y vuelve a abrirla después de instalarlo. Comprueba que funciona con `uv --version`.
 
-**Formato de entrega.** Un único documento por alumno (PDF o enlace a un documento compartido) con los apartados numerados como en el enunciado, más los archivos que se pidan, en una carpeta comprimida con tu nombre, tu grupo y el número de la práctica. Se sube **después** de la validación en clase.
+## Cómo se entrega
+
+Cada alumno sube a EducaMadrid **un solo archivo ZIP**, **después** de la validación en clase. Se llama con el número de la práctica y tu nombre, por ejemplo `P18-Garcia-Lopez-Ana.zip`, y contiene:
+
+1. **Un PDF** con el mismo nombre (`P18-Garcia-Lopez-Ana.pdf`) y solo dos cosas:
+    - una **portada** con tu **nombre y apellidos**, el **título de la práctica**, el **nombre del módulo** y tu **grupo** (del 1 al 9);
+    - el **enlace** a la página de esa práctica en **tu web de GitHub Pages**.
+2. **Los archivos** que pide la práctica en su apartado *Entregables*, en «En el ZIP»: conjuntos de datos, configuraciones, resultados de la terminal…
+
+**En tu web va toda la documentación:** los apartados numerados como en el enunciado, las tablas, las capturas, las respuestas, las conclusiones y el apartado de uso de IA. Una página por práctica, en un repositorio **público** de GitHub.
+
+!!! warning "Tus datos, solo en la portada del PDF"
+    La web es pública: no escribas en ella tu nombre ni tus apellidos, ni los de tus compañeros. Revisa también las capturas antes de publicarlas: que no se vea ninguna **clave** ni el nombre de usuario del equipo.
+
+!!! info "No cambies la página después de entregar"
+    El profesor comprueba en el historial del repositorio la fecha del último cambio de cada página. Si una página se ha modificado después de la entrega, se evalúa la versión entregada o no se evalúa. Si tienes que corregir algo, pregunta antes al profesor.

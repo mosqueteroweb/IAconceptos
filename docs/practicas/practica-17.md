@@ -478,11 +478,17 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 
 ## Entregables
 
-- Tu `AGENTS.md`.
-- Los dos `informe.md` (modelo local y modelo de NVIDIA), antes y después de la corrección, y los programas que escribió el agente.
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
+
+- Tu `AGENTS.md` y tu `opencode.json` (si usaste OpenCode).
+- Los dos `informe.md` (modelo local y modelo externo), antes y después de la corrección, y los programas que escribió el agente.
+
+**En tu web:**
+
 - Tu recuento a mano del CSV.
 - Capturas completas: el servidor local en marcha, la respuesta de `/v1/models`, el agente con cada modelo, las ventanas de permiso y los registros de LM Studio con los tokens.
 - La tabla de tokens del apartado 8 con tu explicación.
 - La tabla comparativa del apartado 12 y tus respuestas (máximo 300 palabras).
 - **Ninguna clave**: si aparece en una captura, tápala.
-

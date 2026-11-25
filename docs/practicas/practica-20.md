@@ -218,9 +218,16 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 
 ## Entregables
 
-- `preguntas.txt` y `datos_profesor.jsonl`, con la lista de tus preguntas propias y de las respuestas que corregiste.
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
+
+- `preguntas.txt` y `datos_profesor.jsonl`.
+- La configuración guardada.
+
+**En tu web:**
+
+- La lista de tus preguntas propias y de las respuestas que corregiste.
 - Las respuestas de los tres modelos a las 10 preguntas de prueba.
 - Capturas completas de LM Studio (profesor y estudiante cargados) y de las gráficas de Unsloth.
-- La configuración guardada.
 - La tabla del apartado 7 y tus conclusiones (máximo 250 palabras).
-

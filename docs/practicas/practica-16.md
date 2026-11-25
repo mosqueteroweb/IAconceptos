@@ -446,19 +446,25 @@ Tendréis que enseñar al profesor, en vuestro equipo:
 
 ## Entregables
 
-**Parte A:**
+Se entregan como se explica en [Cómo se entrega](segunda-parte.md#como-se-entrega): un ZIP con el PDF de portada y los archivos, y la documentación en tu web.
+
+**En el ZIP**, además del PDF:
 
 - La carpeta de la habilidad comprimida, con la versión 1 y la versión 2 del `SKILL.md`.
+- Tu `mcp.json`.
+
+**En tu web:**
+
+**Parte A:**
+
 - Tu petición de prueba.
 - Las tres respuestas (sin habilidad, v1 y v2), como capturas completas o enlaces compartidos.
 - La tabla de comprobación rellena.
 
 **Parte B:**
 
-- Tu `mcp.json`.
 - Capturas completas de la pestaña Integrations con las dos herramientas activadas.
 - Capturas de cada pregunta, **con sus ventanas de permiso**, y tu comprobación de cada respuesta.
 - La captura del intento de leer `secreto.txt` y tu explicación.
 - El error que encontraste (apartado 10).
 - Una reflexión (máximo 200 palabras): ¿qué riesgos tendría dar al modelo acceso a tu carpeta personal entera o a tu correo? ¿Para qué sirve la ventana de permiso?
-
