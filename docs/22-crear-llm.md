@@ -35,7 +35,7 @@ Y una pregunta previa: **¿hace falta *fine-tuning*?** Muchas veces basta un bue
 
 1. **Fine-tuning** con LoRA o QLoRA: el modelo aprende su nueva especialidad.
 2. **Evaluación** con los criterios de la fase 1, usando ejemplos que **no** estaban en los datos de entrenamiento.
-3. **Fusión y cuantización** a GGUF (por ejemplo, Q4_K_M) para que funcione en un ordenador normal.
+3. **Fusión y cuantización** a GGUF para que funcione en un ordenador normal. Con modelos pequeños (hasta unos 4 000 millones de parámetros), exporta en **Q8_0**: en Q4_K_M el ajuste se pierde y el modelo vuelve a responder como el original ([práctica 18](practicas/practica-18.md)).
 4. **Despliegue:** cargarlo en LM Studio u Ollama, con un prompt de sistema que lo complete.
 
 ### Fase 4. Iteración :material-refresh:
@@ -85,7 +85,7 @@ Puntúa cada respuesta: ¿es una receta viable?, ¿sigue el formato?, ¿inventa 
 
 ### Paso 4. Crea el modelo final
 
-En **Export**, elige el último *checkpoint*, **GGUF / llama.cpp** y descárgalo. El archivo es tu Chef-bot.
+En **Export**, elige el último *checkpoint*, **GGUF / llama.cpp** en **Q8_0** y descárgalo. El archivo es tu Chef-bot.
 
 ### Paso 5. ¡A cocinar!
 

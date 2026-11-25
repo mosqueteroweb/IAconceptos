@@ -57,7 +57,7 @@ Con el *system prompt* ya se cumple casi todo. Los fallos son justo los que un b
 4. **Entrenamiento.** Ajuste con Unsloth Studio (*Format* **auto**), con validación, y las gráficas de pérdida.
 5. **Evaluación.** Los **mismos 20 casos** del apartado 2 con el modelo ajustado y la misma puntuación. ¿Ha mejorado respecto al *system prompt*? Si no, explicad por qué.
 6. **Iteración.** Al menos **un segundo entrenamiento** después de corregir los datos a partir de los fallos. Documentad qué cambiasteis y qué mejoró.
-7. **Despliegue.** El modelo en GGUF, cargado en LM Studio con un *preset* propio.
+7. **Despliegue.** El modelo en GGUF (en **Q8_0** si es de 4 000 millones de parámetros o menos, como en la práctica 18), cargado en LM Studio con un *preset* propio.
 8. **Demostración y validación** (5 minutos, en clase). Presentáis vuestro modelo y responde en directo a **entradas nuevas que os darán vuestros compañeros**.
 
 ## Lo específico de cada grupo

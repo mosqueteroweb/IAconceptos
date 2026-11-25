@@ -124,7 +124,7 @@ Este ejercicio es **guiado y no se evalúa**: sirve para practicar a tu ritmo, t
     4. **Revisa los ajustes.** Deja *Epochs* 3, *Learning Rate* 2e-4, *LoRA Rank* 16 y *Alpha* 32, pero en la pestaña **Optimization** baja **Gradient Accumulation** de 8 a **1**. Con tan pocos ejemplos, el valor por defecto (lotes de 4 × 8 = 32 ejemplos) dejaría solo unos 6 pasos de entrenamiento, y el modelo apenas cambiaría; con 1 serán unos 45. Pulsa **Save** si quieres guardar la configuración.
     5. **Entrena.** Pulsa **Start Training** y observa las gráficas: la **pérdida** (*loss*) debe bajar. Con 60 ejemplos tarda pocos minutos.
     6. **Prueba el resultado.** En la página de chat, en **Select model**, elige tu modelo en la pestaña **Fine-tuned**. Escríbele de tú y de forma coloquial («oye, ¿me echas una mano con un correo?»). Después carga el modelo original y repite la pregunta.
-    7. **Exporta.** En **Export**, elige el último *checkpoint*, el método **GGUF / llama.cpp** y **Export / Save Locally**. Importa el archivo en [LM Studio](14-ia-local.md) (con `lms import archivo.gguf` en la terminal; aparecerá en **Library**).
+    7. **Exporta.** En **Export**, elige el último *checkpoint*, el método **GGUF / llama.cpp** en **Q8_0** y **Export / Save Locally** (en Q4_K_M, un modelo pequeño pierde casi todo lo aprendido). Importa el archivo en [LM Studio](14-ia-local.md) (con `lms import archivo.gguf` en la terminal; aparecerá en **Library**).
 
 === ":material-google: Con Google Colab (sin GPU propia)"
 
