@@ -46,6 +46,9 @@ El mecanismo de **atención** permite al modelo decidir, para cada palabra, **en
   ![Frase «El gato no cruzó la calle porque estaba cansado» con arcos de atención desde «cansado»](img/diagramas/atencion.svg){ .diagrama width="660" }
 </figure>
 
+!!! tip "Para entenderlo mejor"
+    **[Cómo funciona un Transformer, paso a paso](08a-transformer.md)**: por qué leer todo el texto a la vez cambió la IA, la atención con más ejemplos y cómo escribe un modelo palabra a palabra.
+
 ### Cómo se convierte en un asistente
 
 Un modelo que solo predice texto no es todavía un buen asistente. Se construye en fases:
@@ -83,6 +86,9 @@ El proceso se entiende en dos fases:
 2. **Creación (difusión inversa, al generar).** Se parte de **ruido puro** y del texto que escribimos (el *prompt*). Guiado por ese texto, el modelo elimina el ruido paso a paso (normalmente entre 20 y 50 pasos) hasta que emerge una imagen nítida y nueva que encaja con la descripción.
 
 Es como un escultor que parte de un bloque de mármol informe y, golpe a golpe, va revelando la figura que tiene en mente. Para ir más rápido, la mayoría de los modelos trabajan en un **espacio latente** (una versión comprimida de la imagen) en vez de píxel a píxel: de ahí el nombre técnico *latent diffusion*.
+
+!!! tip "Para entenderlo mejor"
+    **[Cómo funcionan los modelos de difusión, paso a paso](08b-difusion.md)**: qué es el ruido, cómo aprende el modelo a quitarlo, cómo nace una imagen del ruido y por qué el mismo texto da imágenes distintas.
 
 !!! note "No todos los generadores son de difusión"
     Algunos generadores recientes integrados en los chatbots, como la generación de imágenes de ChatGPT o **Nano Banana** (Gemini) de Google, combinan o sustituyen la difusión por enfoques **autorregresivos** (generan la imagen por partes, como un LLM genera texto). Eso les permite seguir instrucciones complejas, mantener personajes y editar imágenes conversando. La idea de fondo, aprender patrones de enormes cantidades de datos, es la misma.

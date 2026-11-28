@@ -82,6 +82,8 @@ nav:
       - Crear con IA:
           - 7. Herramientas para crear IA: 07-herramientas.md
           - 8. IA generativa: 08-ia-generativa.md
+          - "8a. El Transformer, paso a paso": 08a-transformer.md
+          - "8b. La difusión, paso a paso": 08b-difusion.md
           - 9. Hardware necesario: 09-hardware.md
           - "Práctica: montaje de un equipo para IA": practicas/montaje.md
           - 10. Software necesario: 10-software.md
