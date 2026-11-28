@@ -14,7 +14,7 @@ PNG = DOCS / "img/png"
 OUT = ROOT / "_drive"
 WEB = "https://mosqueteroweb.github.io/IAconceptos/"
 PAGES = ["01-que-es-la-ia", "02-historia", "03-tipos-de-ia", "04-machine-learning", "05-deep-learning",
-         "06-multimodalidad", "07-herramientas", "08-ia-generativa", "09-hardware", "practicas/montaje",
+         "06-multimodalidad", "07-herramientas", "08-ia-generativa", "08a-transformer", "08b-difusion", "09-hardware", "practicas/montaje",
          "10-software", "11-etica",
          "parte-2", "12-inferencia", "13-apps-prompts", "14-ia-local", "15-api", "16-habilidades-mcp", "17-agentes",
          "18-fine-tuning", "19-cuantizacion", "20-destilacion", "21-pre-entrenamiento", "22-crear-llm"]
